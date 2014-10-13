@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:layout_height="wrap_content" android:text="Email: "/>
+
+        <TextView
+            android:id="@+id/email"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:layout_height="wrap_content" android:text="First Name: "/>
+
+        <TextView
+            android:id="@+id/firstName"
+            android:textStyle="italic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text=""/>
+        </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:layout_height="wrap_content" android:text="Last Name: "/>
+
+        <TextView
+            android:textStyle="italic"
+            android:id="@+id/lastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text=""/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:layout_height="wrap_content" android:text="Mobile: "/>
+
+        <TextView
+            android:textStyle="italic"
+            android:id="@+id/mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text=""/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:layout_height="wrap_content" android:text="Country: "/>
+
+        <TextView
+            android:textStyle="italic"
+            android:id="@+id/country"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:layout_height="wrap_content" android:text="Bank Name: "/>
+
+        <TextView
+            android:textStyle="italic"
+            android:id="@+id/bankName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text=""/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="5dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="18dp"
+            android:layout_height="wrap_content" android:text="Credits: "/>
+
+        <TextView
+            android:textStyle="italic"
+            android:id="@+id/credits"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" android:text=""/>
+    </LinearLayout>
+
+</LinearLayout>

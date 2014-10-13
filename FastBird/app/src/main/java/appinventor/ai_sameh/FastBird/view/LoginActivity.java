@@ -1,4 +1,4 @@
-package appinventor.ai_sameh.FastBird;
+package appinventor.ai_sameh.FastBird.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -6,8 +6,11 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -16,6 +19,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,15 +29,25 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+
 import java.util.ArrayList;
 import java.util.List;
+
+import appinventor.ai_sameh.FastBird.PreferenceUtil;
+import appinventor.ai_sameh.FastBird.R;
+import appinventor.ai_sameh.FastBird.api.ApiRequests;
+import appinventor.ai_sameh.FastBird.api.LoginResponse;
+import appinventor.ai_sameh.FastBird.api.UserInfoResponse;
 
 
 /**
  * A login screen that offers login via email/password.
-
  */
-public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
+public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -42,6 +56,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    private static final String TAG = LoginActivity.class.getSimpleName();
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
@@ -56,6 +71,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (PreferenceUtil.getUserLoggedIn(this)) {
+            finish();
+            startActivity(new Intent(this, MainActivity.class));
+            return;
+        }
+
         setContentView(R.layout.activity_login);
 
         // Set up the login form.
@@ -112,8 +133,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
-        String email = mEmailView.getText().toString();
-        String password = mPasswordView.getText().toString();
+        final String email = mEmailView.getText().toString();
+        final String password = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -138,10 +159,32 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            //mAuthTask = new UserLoginTask(email, password);
+            //mAuthTask.execute((Void) null);
+            ApiRequests.login(getApplicationContext(), email, password, new Response.Listener<LoginResponse>() {
+                @Override
+                public void onResponse(LoginResponse loginResponse) {
+                    loginUser(email, password);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError volleyError) {
+                    Log.e(TAG, volleyError.toString());
+                    loginUser(email, password);
+                }
+            });
         }
     }
+
+    private void loginUser(String email, String password) {
+        showProgress(false);
+        finish();
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+        PreferenceUtil.saveEmail(getApplicationContext(), email);
+        PreferenceUtil.savePassword(getApplicationContext(), password);
+        PreferenceUtil.saveUserLoggedIn(getApplicationContext(), true);
+    }
+
     private boolean isEmailValid(String email) {
         return email.contains("@");
     }
@@ -192,7 +235,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
                 // Select only email addresses.
                 ContactsContract.Contacts.Data.MIMETYPE +
                         " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                                                                     .CONTENT_ITEM_TYPE},
+                .CONTENT_ITEM_TYPE},
 
                 // Show primary email addresses first. Note that there won't be
                 // a primary email address if the user hasn't specified one.
@@ -250,10 +293,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor>{
             return emailAddressCollection;
         }
 
-	    @Override
-	    protected void onPostExecute(List<String> emailAddressCollection) {
-	       addEmailsToAutoComplete(emailAddressCollection);
-	    }
+        @Override
+        protected void onPostExecute(List<String> emailAddressCollection) {
+            addEmailsToAutoComplete(emailAddressCollection);
+        }
     }
 
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
