@@ -1,6 +1,7 @@
 package appinventor.ai_sameh.FastBird.view;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -55,7 +56,7 @@ public class SettingsFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Crouton.makeText(getActivity(), volleyError.getMessage(), Style.ALERT);
+                Crouton.showText(getActivity(), String.valueOf(volleyError.networkResponse.statusCode), Style.ALERT);
             }
         });
     }
@@ -82,7 +83,14 @@ public class SettingsFragment extends Fragment {
         email = (TextView) getActivity().findViewById(R.id.email);
         bankName = (TextView) getActivity().findViewById(R.id.bankName);
         credits = (TextView) getActivity().findViewById(R.id.credits);
-
+        View logout = getActivity().findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().finish();
+                startActivity(new Intent(getActivity(), LoginActivity.class));
+            }
+        });
     }
 
     private void updateUi() {
