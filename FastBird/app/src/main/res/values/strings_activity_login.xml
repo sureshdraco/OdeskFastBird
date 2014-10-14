@@ -1,5 +1,5 @@
 <resources>
-        <string name="title_activity_login">Fast Bird, Sign in</string>
+        <string name="title_activity_login">Fast Bird</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
