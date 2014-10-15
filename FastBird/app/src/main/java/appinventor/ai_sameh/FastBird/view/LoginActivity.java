@@ -147,7 +147,12 @@ public class LoginActivity extends Activity {
             ApiRequests.login(getApplicationContext(), email, password, new Response.Listener<LoginResponse>() {
                 @Override
                 public void onResponse(LoginResponse loginResponse) {
-                    loginUser(email, password);
+                    if (TextUtils.isEmpty(loginResponse.getData().getError())) {
+                        loginUser(email, password);
+                    } else {
+                        showProgress(false);
+                        Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
+                    }
                 }
             }, new Response.ErrorListener() {
                 @Override
