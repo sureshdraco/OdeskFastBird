@@ -50,7 +50,6 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onResponse(UserInfoResponse userInfoResponse) {
                 cacheResponse(userInfoResponse);
-                Toast.makeText(getActivity(), userInfoResponse.getData().getEmail(), Toast.LENGTH_SHORT).show();
                 updateUi();
             }
         }, new Response.ErrorListener() {
@@ -87,6 +86,7 @@ public class SettingsFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                PreferenceUtil.saveUserLoggedIn(getActivity(), false);
                 getActivity().finish();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
