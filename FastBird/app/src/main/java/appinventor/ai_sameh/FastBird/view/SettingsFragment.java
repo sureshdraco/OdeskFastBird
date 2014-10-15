@@ -16,6 +16,8 @@ import com.android.volley.VolleyError;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
+import appinventor.ai_sameh.FastBird.api.RegisterDeviceResponse;
+import appinventor.ai_sameh.FastBird.api.UnregisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.UserInfoResponse;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -86,6 +88,19 @@ public class SettingsFragment extends Fragment {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String email = PreferenceUtil.getEmail(getActivity());
+                String password = PreferenceUtil.getPassword(getActivity());
+//                ApiRequests.unregisterDevice(getActivity(), new UnregisterDeviceRequest(PreferenceUtil.getRegistrationId(getActivity()), email, password), new Response.Listener<RegisterDeviceResponse>() {
+//                    @Override
+//                    public void onResponse(RegisterDeviceResponse registerDeviceResponse) {
+//
+//                    }
+//                }, new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError volleyError) {
+//
+//                    }
+//                });
                 PreferenceUtil.saveUserLoggedIn(getActivity(), false);
                 getActivity().finish();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
