@@ -64,7 +64,7 @@ public class GcmIntentService extends IntentService {
                 NotificationUtil.cacheNotification(this, title, message);
 
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
-                // Post notification of received message. 
+                // Post notification of received message.
                 NotificationUtil.sendNotification(getApplicationContext(), title, message);
                 Log.i(TAG, "Received: " + extras.toString());
             } 
