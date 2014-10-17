@@ -4,6 +4,8 @@ package appinventor.ai_sameh.FastBird.view;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,9 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.android.gms.gcm.GoogleCloudMessaging;
+
+import java.io.IOException;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
@@ -28,6 +33,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class SettingsFragment extends Fragment {
 
 
+    private static final String TAG = SettingsFragment.class.getSimpleName();
     private TextView firstName, lastName, country, mobile;
     private TextView email, bankName, credits;
 
@@ -90,22 +96,39 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 String email = PreferenceUtil.getEmail(getActivity());
                 String password = PreferenceUtil.getPassword(getActivity());
-//                ApiRequests.unregisterDevice(getActivity(), new UnregisterDeviceRequest(PreferenceUtil.getRegistrationId(getActivity()), email, password), new Response.Listener<RegisterDeviceResponse>() {
-//                    @Override
-//                    public void onResponse(RegisterDeviceResponse registerDeviceResponse) {
-//
-//                    }
-//                }, new Response.ErrorListener() {
-//                    @Override
-//                    public void onErrorResponse(VolleyError volleyError) {
-//
-//                    }
-//                });
+                if(!TextUtils.isEmpty(PreferenceUtil.getRegistrationId(getActivity()))) {
+                    ApiRequests.unregisterDevice(getActivity(), new UnregisterDeviceRequest(PreferenceUtil.getRegistrationId(getActivity()), email, password), new Response.Listener<RegisterDeviceResponse>() {
+                        @Override
+                        public void onResponse(RegisterDeviceResponse registerDeviceResponse) {
+                            unregisterFromGcm();
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            unregisterFromGcm();
+                        }
+                    });
+                }
                 PreferenceUtil.saveUserLoggedIn(getActivity(), false);
                 getActivity().finish();
                 startActivity(new Intent(getActivity(), LoginActivity.class));
             }
         });
+    }
+
+    private void unregisterFromGcm() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    GoogleCloudMessaging.getInstance(getActivity()).unregister();
+                    PreferenceUtil.storeRegistrationId(getActivity(), "");
+                } catch (IOException e) {
+                    Log.e(TAG, e.toString());
+                }
+
+            }
+        }).start();
     }
 
     private void updateUi() {

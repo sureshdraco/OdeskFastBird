@@ -11,6 +11,23 @@ repositories {
 }
 
 android {
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("release_key/release_key.jks")
+            storePassword "fastbird"
+            keyAlias "fastbird"
+            keyPassword "fastbird"
+        }
+    }
+
     compileSdkVersion 20
     buildToolsVersion "20.0.0"
 
@@ -23,6 +40,7 @@ android {
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

@@ -32,7 +32,7 @@ import appinventor.ai_sameh.FastBird.api.RegisterDeviceResponse;
 
 public class MainActivity extends FragmentActivity {
 
-    String SENDER_ID = "995500187929";
+    String SENDER_ID = "773072195235";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     private static final String TAG = MainActivity.class.getSimpleName();

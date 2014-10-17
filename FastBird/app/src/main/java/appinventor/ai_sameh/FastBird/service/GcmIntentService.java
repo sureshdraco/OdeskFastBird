@@ -29,6 +29,7 @@ public class GcmIntentService extends IntentService {
  
     @Override 
     protected void onHandleIntent(Intent intent) {
+        Log.d(TAG, "received gcm");
         Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         // The getMessageType() intent parameter must be the intent you received 
