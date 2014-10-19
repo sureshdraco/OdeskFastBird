@@ -4,8 +4,29 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" android:background="@drawable/border">
+
+        <TextView
+            android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/balance"
+            android:layout_alignParentLeft="true"
+            android:text="@string/balance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/withdrawBtn"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Withdraw" />
+    </RelativeLayout>
 
     <FrameLayout
         android:id="@+id/realtabcontent"
@@ -13,11 +34,10 @@
         android:layout_height="0dip"
         android:layout_weight="1" />
 
-
     <android.support.v4.app.FragmentTabHost
         android:id="@android:id/tabhost"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
 
         <FrameLayout
@@ -26,6 +46,5 @@
             android:layout_height="0dp"
             android:layout_weight="0" />
     </android.support.v4.app.FragmentTabHost>
-
 
 </LinearLayout>

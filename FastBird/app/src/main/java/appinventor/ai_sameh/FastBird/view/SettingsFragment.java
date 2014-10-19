@@ -1,6 +1,7 @@
 package appinventor.ai_sameh.FastBird.view;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 
 import java.io.IOException;
 
+import appinventor.ai_sameh.FastBird.FastBirdApplication;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
@@ -69,7 +71,7 @@ public class SettingsFragment extends Fragment {
     }
 
     private void cacheResponse(UserInfoResponse userInfoResponse) {
-        if(userInfoResponse == null) {
+        if (userInfoResponse == null) {
             Crouton.makeText(getActivity(), "Unable to get user information.", Style.ALERT);
             return;
         }
@@ -80,6 +82,7 @@ public class SettingsFragment extends Fragment {
         PreferenceUtil.saveLastName(getActivity(), userInfoResponse.getData().getLastName());
         PreferenceUtil.saveBankName(getActivity(), userInfoResponse.getData().getBankName());
         PreferenceUtil.saveCredits(getActivity(), userInfoResponse.getData().getCredits());
+        ((MainActivity) getActivity()).updateBalance();
     }
 
     private void initView() {
@@ -96,7 +99,7 @@ public class SettingsFragment extends Fragment {
             public void onClick(View view) {
                 String email = PreferenceUtil.getEmail(getActivity());
                 String password = PreferenceUtil.getPassword(getActivity());
-                if(!TextUtils.isEmpty(PreferenceUtil.getRegistrationId(getActivity()))) {
+                if (!TextUtils.isEmpty(PreferenceUtil.getRegistrationId(getActivity()))) {
                     ApiRequests.unregisterDevice(getActivity(), new UnregisterDeviceRequest(PreferenceUtil.getRegistrationId(getActivity()), email, password), new Response.Listener<RegisterDeviceResponse>() {
                         @Override
                         public void onResponse(RegisterDeviceResponse registerDeviceResponse) {
@@ -121,8 +124,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    GoogleCloudMessaging.getInstance(getActivity()).unregister();
-                    PreferenceUtil.storeRegistrationId(getActivity(), "");
+                    GoogleCloudMessaging.getInstance(FastBirdApplication.appContext).unregister();
+                    PreferenceUtil.storeRegistrationId(FastBirdApplication.appContext, "");
                 } catch (IOException e) {
                     Log.e(TAG, e.toString());
                 }

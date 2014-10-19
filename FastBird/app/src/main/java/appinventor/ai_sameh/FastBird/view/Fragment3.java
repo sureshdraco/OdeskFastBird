@@ -41,7 +41,7 @@ public class Fragment3 extends Fragment1 {
 		b = new Bundle();
 		b.putString("key", "Contacts");
 		mTabHost.addTab(mTabHost.newTabSpec("contacts")
-				.setIndicator("Contacts"), Fragment2.class, b);
+				.setIndicator("Contacts"), NotificationFragment.class, b);
 		return mTabHost;
 	} 
 } 

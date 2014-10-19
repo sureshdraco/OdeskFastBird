@@ -1,16 +1,20 @@
 package appinventor.ai_sameh.FastBird.view;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -18,10 +22,16 @@ import com.android.volley.VolleyError;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
-import org.w3c.dom.Text;
+import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
@@ -29,6 +39,8 @@ import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.RegisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.RegisterDeviceResponse;
+import appinventor.ai_sameh.FastBird.util.NotificationItem;
+import appinventor.ai_sameh.FastBird.util.NotificationUtil;
 
 public class MainActivity extends FragmentActivity {
 
@@ -44,11 +56,15 @@ public class MainActivity extends FragmentActivity {
     Context context;
 
     String regid;
+    private TextView balance;
+    private int NOTIFICATION_ID = 1;
+    private Gson gson;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        gson = new Gson();
         context = getApplicationContext();
         if (checkPlayServices()) {
             // If this check succeeds, proceed with normal processing.
@@ -61,6 +77,7 @@ public class MainActivity extends FragmentActivity {
             }
         }
         setContentView(R.layout.activity_main);
+        balance = (TextView) findViewById(R.id.balance);
         mTabHost = (FragmentTabHost) findViewById(android.R.id.tabhost);
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
@@ -70,14 +87,28 @@ public class MainActivity extends FragmentActivity {
                 SettingsFragment.class, b);
         //
         b = new Bundle();
-        b.putString("key", "Contacts");
-        mTabHost.addTab(mTabHost.newTabSpec("contacts")
-                .setIndicator("Contacts"), Fragment2.class, b);
+        b.putString("key", "Notifications");
+        mTabHost.addTab(mTabHost.newTabSpec("Notifications")
+                .setIndicator("Notifications"), NotificationFragment.class, b);
         b = new Bundle();
         b.putString("key", "Custom");
         mTabHost.addTab(mTabHost.newTabSpec("custom").setIndicator("Custom"),
                 Fragment3.class, b);
         // setContentView(mTabHost);
+        updateBalance();
+        findViewById(R.id.withdrawBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(), "not implemented", Toast.LENGTH_SHORT).show();
+                NotificationUtil.cacheNotification(getApplicationContext(), "FastBird", "this is test content");
+                NotificationUtil.sendNotification(MainActivity.this, "FastBird", "This is test content, delivered");
+            }
+        });
+    }
+
+    public void updateBalance() {
+        String balanceStr = PreferenceUtil.getCredits(this);
+        balance.setText(getString(R.string.balance, balanceStr));
     }
 
     @Override
@@ -91,6 +122,24 @@ public class MainActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
         checkPlayServices();
+        updateBalance();
+        handleIntent(getIntent());
+    }
+
+    private void handleIntent(Intent intent) {
+        try {
+            if(intent.getExtras().getBoolean("notifications", false)) {
+                mTabHost.setCurrentTabByTag("Notifications");
+            }
+        }catch (Exception ignored) {
+
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIntent(intent);
     }
 
     /**

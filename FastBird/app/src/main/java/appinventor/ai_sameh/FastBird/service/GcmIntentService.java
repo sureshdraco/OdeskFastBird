@@ -9,20 +9,28 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.receiver.GcmBroadcastReceiver;
+import appinventor.ai_sameh.FastBird.util.NotificationUtil;
 import appinventor.ai_sameh.FastBird.view.MainActivity;
+import appinventor.ai_sameh.FastBird.util.NotificationItem;
 
 public class GcmIntentService extends IntentService {
-    public static final int NOTIFICATION_ID = 1;
     private static final String TAG = GcmIntentService.class.getSimpleName();
-    private NotificationManager mNotificationManager;
-    NotificationCompat.Builder builder;
- 
+
     public GcmIntentService() { 
         super("GcmIntentService"); 
     } 
@@ -45,52 +53,23 @@ public class GcmIntentService extends IntentService {
              */ 
             if (GoogleCloudMessaging.
                     MESSAGE_TYPE_SEND_ERROR.equals(messageType)) {
-                sendNotification("Send error: " + extras.toString());
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_DELETED.equals(messageType)) {
-                sendNotification("Deleted messages on server: " + 
-                        extras.toString());
-            // If it's a regular GCM message, do some work. 
+            // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.
                     MESSAGE_TYPE_MESSAGE.equals(messageType)) {
-                // This loop represents the service doing some work. 
-                for (int i=0; i<5; i++) {
-                    Log.i(TAG, "Working... " + (i + 1)
-                            + "/5 @ " + SystemClock.elapsedRealtime());
-                    try { 
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                    } 
-                } 
+                String title = extras.getString("title", getApplicationContext().getResources().getString(R.string.app_name));
+                String message = extras.getString("message", "");
+
+                NotificationUtil.cacheNotification(this, title, message);
+
                 Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
                 // Post notification of received message. 
-                sendNotification("Received: " + extras.toString());
+                NotificationUtil.sendNotification(getApplicationContext(), title, message);
                 Log.i(TAG, "Received: " + extras.toString());
             } 
         } 
         // Release the wake lock provided by the WakefulBroadcastReceiver. 
         GcmBroadcastReceiver.completeWakefulIntent(intent);
-    } 
- 
-    // Put the message into a notification and post it. 
-    // This is just one simple example of what you might choose to do with 
-    // a GCM message. 
-    private void sendNotification(String msg) {
-        mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
- 
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
-                new Intent(this, MainActivity.class), 0);
- 
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-        .setSmallIcon(R.drawable.ic_launcher)
-        .setContentTitle("GCM Notification") 
-        .setStyle(new NotificationCompat.BigTextStyle()
-        .bigText(msg))
-        .setContentText(msg);
- 
-        mBuilder.setContentIntent(contentIntent);
-        mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-    } 
-} 
+    }
+}

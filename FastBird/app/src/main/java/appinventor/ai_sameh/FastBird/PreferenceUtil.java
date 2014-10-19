@@ -2,6 +2,7 @@ package appinventor.ai_sameh.FastBird;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -29,6 +30,9 @@ public class PreferenceUtil {
     public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
     private static final String PROPERTY_APP_VERSION = "appVersion";
+    private static final String NOTIFICATION_LIST = "notificationList";
+    public static final String NOTIFICATIONS_UPDATED_BROADCAST = "notificationsUpdated";
+    private static final String NOTIFICATION_COUNT = "notificationCount";
 
     // Preference backend access.
     private static SharedPreferences.Editor prefEditor;
@@ -184,5 +188,27 @@ public class PreferenceUtil {
             // should never happen
             throw new RuntimeException("Could not get package name: " + e);
         }
+    }
+
+    public static String getNotificationList(Context context) {
+        return getPref(context).getString(getNotificationName(context), "[]");
+    }
+
+    public static void saveNotificationsList(Context context, String notificationsLsit) {
+        getPrefEditor(context).putString(getNotificationName(context), notificationsLsit).commit();
+    }
+
+    private static String getNotificationName(Context context) {
+        return getPref(context).getString(EMAIL, "") + NOTIFICATION_LIST;
+    }
+
+    public static int getIncrementedNotificationCount(Context context) {
+        int count = getPref(context).getInt(NOTIFICATION_COUNT, 0);
+        getPrefEditor(context).putInt(NOTIFICATION_COUNT, ++count).commit();
+        return count;
+    }
+
+    public static void resetNotificationCount(Context context) {
+        getPrefEditor(context).putInt(NOTIFICATION_COUNT, 0).commit();
     }
 }
