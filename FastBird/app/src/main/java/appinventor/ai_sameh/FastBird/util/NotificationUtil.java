@@ -30,15 +30,16 @@ public class NotificationUtil {
     private static Gson gson = new Gson();
 
     public static void cacheNotification(Context context, String title, String message) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("DD/MM/yyyy HH:mm");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date date = new Date();
         NotificationItem notificationItem = new NotificationItem(title, simpleDateFormat.format(date), message);
         Type listType = new TypeToken<ArrayList<NotificationItem>>() {
         }.getType();
         ArrayList<NotificationItem> notificationItemArrayList = gson.fromJson(PreferenceUtil.getNotificationList(context), listType);
         CircularFifoQueue<NotificationItem> queue = new CircularFifoQueue<NotificationItem>(10);
+        Collections.reverse(notificationItemArrayList);
+        notificationItemArrayList.add(notificationItem);
         queue.addAll(notificationItemArrayList);
-        queue.add(notificationItem);
         notificationItemArrayList = new ArrayList<NotificationItem>(queue);
         Collections.reverse(notificationItemArrayList);
         PreferenceUtil.saveNotificationsList(context, gson.toJson(notificationItemArrayList));
