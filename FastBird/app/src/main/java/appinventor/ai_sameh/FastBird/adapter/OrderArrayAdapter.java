@@ -1,5 +1,6 @@
 package appinventor.ai_sameh.FastBird.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -7,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.Order;
 import appinventor.ai_sameh.FastBird.model.Card;
@@ -19,13 +22,16 @@ import appinventor.ai_sameh.FastBird.model.Card;
 public class OrderArrayAdapter extends ArrayAdapter<Order> {
     private static final String TAG = "CardArrayAdapter";
     private List<Order> orderList = new ArrayList<Order>();
+    private Context context;
 
     static class OrderViewHolder {
         TextView orderNumber, orderTo, phone1, phone2, orderStatus;
+        Button infoButton;
     }
 
     public OrderArrayAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
+        this.context = context;
     }
 
     @Override
@@ -57,9 +63,10 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
             viewHolder.orderTo = (TextView) row.findViewById(R.id.orderTo);
             viewHolder.phone1 = (TextView) row.findViewById(R.id.phone1);
             viewHolder.phone2 = (TextView) row.findViewById(R.id.phone2);
+            viewHolder.infoButton = (Button) row.findViewById(R.id.btnInfo);
             row.setTag(viewHolder);
         } else {
-            viewHolder = (OrderViewHolder)row.getTag();
+            viewHolder = (OrderViewHolder) row.getTag();
         }
         Order order = getItem(position);
         viewHolder.orderNumber.setText(getContext().getResources().getString(R.string.order_number, order.getFBDNumber()));
@@ -67,11 +74,21 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         viewHolder.orderTo.setText(getContext().getResources().getString(R.string.order_to, order.getOrderTo()));
         viewHolder.phone1.setText(getContext().getResources().getString(R.string.phone1, order.getPhone1()));
         viewHolder.phone2.setText(getContext().getResources().getString(R.string.phone1, order.getPhone2()));
+        viewHolder.infoButton.setOnClickListener(new InfoClickListener(order));
         return row;
-
     }
 
-    public Bitmap decodeToBitmap(byte[] decodedByte) {
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
+    class InfoClickListener implements View.OnClickListener {
+        private final Order order;
+
+        public InfoClickListener(Order order) {
+            this.order = order;
+        }
+
+        @Override
+        public void onClick(View v) {
+            PreferenceUtil.saveSelectedOrder(context, order);
+            ((Activity) context).showDialog(1);
+        }
     }
 }

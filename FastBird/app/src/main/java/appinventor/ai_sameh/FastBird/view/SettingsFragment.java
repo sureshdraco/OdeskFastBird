@@ -65,7 +65,7 @@ public class SettingsFragment extends Fragment {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Crouton.showText(getActivity(), String.valueOf(volleyError.networkResponse.statusCode), Style.ALERT);
+                Crouton.showText(getActivity(), "Failed", Style.ALERT);
             }
         });
     }

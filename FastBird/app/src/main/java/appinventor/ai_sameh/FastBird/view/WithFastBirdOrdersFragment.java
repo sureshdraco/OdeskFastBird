@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
@@ -19,12 +24,12 @@ import appinventor.ai_sameh.FastBird.api.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.Order;
 import appinventor.ai_sameh.FastBird.api.ProgressOrderList;
 import appinventor.ai_sameh.FastBird.model.Card;
+import appinventor.ai_sameh.FastBird.util.NotificationItem;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 
 public class WithFastBirdOrdersFragment extends Fragment {
-
 
     private TextView text;
     private ListView ordersListView;
@@ -33,7 +38,6 @@ public class WithFastBirdOrdersFragment extends Fragment {
 
     public WithFastBirdOrdersFragment() {
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,14 +67,27 @@ public class WithFastBirdOrdersFragment extends Fragment {
     }
 
     private void getFastBirdOrders(String email, String password) {
+        final String cachedOrders = PreferenceUtil.getFastBirdPendingOrders(getActivity());
+        Type listType = new TypeToken<ArrayList<Order>>() {
+        }.getType();
+        ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getFastBirdPendingOrders(getActivity()), listType);
+        for (Order order : cachedOrderList) {
+            orderArrayAdapter.add(order);
+        }
+        orderArrayAdapter.notifyDataSetChanged();
         ApiRequests.getFastBirdPendingOrders(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
             @Override
             public void onResponse(ProgressOrderList progressOrderList) {
                 if (getActivity() != null) {
-                    for (Order order : progressOrderList.getData().getOrderList()) {
-                        orderArrayAdapter.add(order);
+                    String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
+                    if(!networkOrders.equals(cachedOrders)) {
+                        PreferenceUtil.saveFastBirdPendingOrders(getActivity(), networkOrders);
+                        orderArrayAdapter.clear();
+                        for (Order order : progressOrderList.getData().getOrderList()) {
+                            orderArrayAdapter.add(order);
+                        }
+                        orderArrayAdapter.notifyDataSetChanged();
                     }
-                    orderArrayAdapter.notifyDataSetChanged();
                 }
             }
         }, new Response.ErrorListener() {
@@ -84,14 +101,27 @@ public class WithFastBirdOrdersFragment extends Fragment {
 
 
     private void getMyOrders(String email, String password) {
+        final String cachedOrders = PreferenceUtil.getMyPendingOrders(getActivity());
+        Type listType = new TypeToken<ArrayList<Order>>() {
+        }.getType();
+        ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getMyPendingOrders(getActivity()), listType);
+        for (Order order : cachedOrderList) {
+            orderArrayAdapter.add(order);
+        }
+        orderArrayAdapter.notifyDataSetChanged();
         ApiRequests.getMyOrders(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
             @Override
             public void onResponse(ProgressOrderList progressOrderList) {
                 if (getActivity() != null) {
-                    for (Order order : progressOrderList.getData().getOrderList()) {
-                        orderArrayAdapter.add(order);
+                    String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
+                    if(!networkOrders.equals(cachedOrders)) {
+                        PreferenceUtil.saveMyPendingOrders(getActivity(), networkOrders);
+                        orderArrayAdapter.clear();
+                        for (Order order : progressOrderList.getData().getOrderList()) {
+                            orderArrayAdapter.add(order);
+                        }
+                        orderArrayAdapter.notifyDataSetChanged();
                     }
-                    orderArrayAdapter.notifyDataSetChanged();
                 }
             }
         }, new Response.ErrorListener() {

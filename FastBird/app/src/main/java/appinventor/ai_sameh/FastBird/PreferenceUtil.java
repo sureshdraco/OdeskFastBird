@@ -9,6 +9,9 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
+import appinventor.ai_sameh.FastBird.api.Order;
 import appinventor.ai_sameh.FastBird.view.MainActivity;
 
 /**
@@ -33,11 +36,16 @@ public class PreferenceUtil {
     private static final String NOTIFICATION_LIST = "notificationList";
     public static final String NOTIFICATIONS_UPDATED_BROADCAST = "notificationsUpdated";
     private static final String NOTIFICATION_COUNT = "notificationCount";
+    private static final String FAST_BIRD_PENDING_ORDERS = "fastBirdPendingOrders";
+    private static final String MY_PENDING_ORDERS = "myPendingOrders";
+    private static final String SELECTED_ORDER = "selectedOrder";
 
     // Preference backend access.
     private static SharedPreferences.Editor prefEditor;
 
     public static void saveUserLoggedIn(Context context, boolean loggedIn) {
+        saveMyPendingOrders(context, "");
+        saveFastBirdPendingOrders(context, "");
         getPrefEditor(context).putBoolean(LOGGED_IN, loggedIn).commit();
     }
 
@@ -175,7 +183,6 @@ public class PreferenceUtil {
         editor.commit();
     }
 
-
     /**
      * @return Application's version code from the {@code PackageManager}.
      */
@@ -198,6 +205,22 @@ public class PreferenceUtil {
         getPrefEditor(context).putString(getNotificationName(context), notificationsLsit).commit();
     }
 
+    public static String getFastBirdPendingOrders(Context context) {
+        return getPref(context).getString(FAST_BIRD_PENDING_ORDERS, "[]");
+    }
+
+    public static void saveFastBirdPendingOrders(Context context, String fastBirdPendingOrders) {
+        getPrefEditor(context).putString(FAST_BIRD_PENDING_ORDERS, fastBirdPendingOrders).commit();
+    }
+
+    public static String getMyPendingOrders(Context context) {
+        return getPref(context).getString(MY_PENDING_ORDERS, "[]");
+    }
+
+    public static void saveMyPendingOrders(Context context, String myPendingOrders) {
+        getPrefEditor(context).putString(MY_PENDING_ORDERS, myPendingOrders).commit();
+    }
+
     private static String getNotificationName(Context context) {
         return getPref(context).getString(EMAIL, "") + NOTIFICATION_LIST;
     }
@@ -210,5 +233,13 @@ public class PreferenceUtil {
 
     public static void resetNotificationCount(Context context) {
         getPrefEditor(context).putInt(NOTIFICATION_COUNT, 0).commit();
+    }
+
+    public static String getSelectedOrder(Context context) {
+        return getPref(context).getString(SELECTED_ORDER, "");
+    }
+
+    public static void saveSelectedOrder(Context context, Order order) {
+        getPrefEditor(context).putString(SELECTED_ORDER, new Gson().toJson(order)).commit();
     }
 }

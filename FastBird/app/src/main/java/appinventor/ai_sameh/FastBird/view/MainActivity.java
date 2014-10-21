@@ -1,5 +1,6 @@
 package appinventor.ai_sameh.FastBird.view;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,7 +9,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -109,10 +109,10 @@ public class MainActivity extends FragmentActivity {
 
     private void handleIntent(Intent intent) {
         try {
-            if(intent.getExtras().getBoolean("notifications", false)) {
+            if (intent.getExtras().getBoolean("notifications", false)) {
                 mTabHost.setCurrentTabByTag("Notifications");
             }
-        }catch (Exception ignored) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -208,6 +208,36 @@ public class MainActivity extends FragmentActivity {
                 Toast.makeText(getApplicationContext(), String.valueOf(volleyError.networkResponse.statusCode), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
+
+        switch (id) {
+            case 1:
+                dialog = OrderInfoDialog.showOrderDetail(this);
+                break;
+        }
+        return dialog;
+    }
+
+    @Override
+    protected void onPrepareDialog(int id, Dialog dialog) {
+        super.onPrepareDialog(id, dialog);
+
+        switch (id) {
+            case 1:
+                String selectedOrder = PreferenceUtil.getSelectedOrder(this);
+                if (!TextUtils.isEmpty(selectedOrder)) {
+                    ((TextView) dialog.findViewById(R.id.detailContent)).setText(selectedOrder);
+                } else {
+                    dialog.dismiss();
+                }
+
+                break;
+        }
+
     }
 
 }
