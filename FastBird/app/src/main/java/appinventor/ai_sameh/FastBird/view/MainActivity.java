@@ -1,15 +1,11 @@
 package appinventor.ai_sameh.FastBird.view;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTabHost;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -23,15 +19,8 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import org.apache.commons.collections4.queue.CircularFifoQueue;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
@@ -39,7 +28,6 @@ import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.RegisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.RegisterDeviceResponse;
-import appinventor.ai_sameh.FastBird.util.NotificationItem;
 import appinventor.ai_sameh.FastBird.util.NotificationUtil;
 
 public class MainActivity extends FragmentActivity {
@@ -93,7 +81,7 @@ public class MainActivity extends FragmentActivity {
         b = new Bundle();
         b.putString("key", "Custom");
         mTabHost.addTab(mTabHost.newTabSpec("custom").setIndicator("Custom"),
-                Fragment3.class, b);
+                OrdersTabWithFastBirdOrdersFragment.class, b);
         // setContentView(mTabHost);
         updateBalance();
         findViewById(R.id.withdrawBtn).setOnClickListener(new View.OnClickListener() {

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import appinventor.ai_sameh.FastBird.R;
 
 
-public class Fragment3 extends Fragment1 { 
+public class OrdersTabWithFastBirdOrdersFragment extends WithFastBirdOrdersFragment {
  
  
 	private FragmentTabHost mTabHost;
@@ -17,7 +17,6 @@ public class Fragment3 extends Fragment1 {
  
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub 
 		super.onCreate(savedInstanceState);
 	} 
  
@@ -30,18 +29,16 @@ public class Fragment3 extends Fragment1 {
 		mTabHost = new FragmentTabHost(getActivity());
 		mTabHost.setup(getActivity(), getChildFragmentManager(),
 				R.id.menu_settings);
- 
-
 
 		Bundle b = new Bundle();
-		b.putString("key", "Simple");
-		mTabHost.addTab(mTabHost.newTabSpec("simple").setIndicator("Simple"),
-				Fragment1.class, b);
+		b.putString("key", "With Fast Bird");
+		mTabHost.addTab(mTabHost.newTabSpec("with_fast_bird").setIndicator("With Fast Bird"),
+				WithFastBirdOrdersFragment.class, b);
 		// 
 		b = new Bundle();
-		b.putString("key", "Contacts");
-		mTabHost.addTab(mTabHost.newTabSpec("contacts")
-				.setIndicator("Contacts"), NotificationFragment.class, b);
+		b.putString("key", "With Me");
+		mTabHost.addTab(mTabHost.newTabSpec("with_me")
+				.setIndicator("With Me"), NotificationFragment.class, b);
 		return mTabHost;
 	} 
 } 
