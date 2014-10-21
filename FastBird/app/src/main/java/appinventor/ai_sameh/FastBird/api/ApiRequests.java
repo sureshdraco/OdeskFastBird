@@ -1,12 +1,9 @@
 package appinventor.ai_sameh.FastBird.api;
 
-import android.app.DownloadManager;
 import android.content.Context;
 
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 
 import appinventor.ai_sameh.FastBird.volley.GsonRequest;
 import appinventor.ai_sameh.FastBird.volley.VolleyClient;
@@ -19,6 +16,8 @@ public class ApiRequests {
     private static final String LOGIN_API_URL = "Clients.svc/ValidateLogin";
     private static final String REGISTER_DEVICE_API_URL = "Clients.svc/AddDevice";
     private static final String UNREGISTER_DEVICE_API_URL = "Clients.svc/RemoveDevice";
+    private static final String FAST_BIRD_PENDING_ORDERS = "NOrder.svc/ListInProgressOrders";
+    private static final String ME_PENDING_ORDERS = "NOrder.svc/ListPendingOrders";
     private static final String USER_INFO_API_URL = "Clients.svc/GetMyInformation";
 
     public static void login(Context context, String email, String password, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
@@ -37,4 +36,11 @@ public class ApiRequests {
         VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<RegisterDeviceResponse>(Request.Method.POST, API_BASE_URL + UNREGISTER_DEVICE_API_URL, unregisterDeviceRequest, RegisterDeviceResponse.class, null, listener, errorListener));
     }
 
+    public static void getFastBirdPendingOrders(Context context, LoginRequest loginRequest, Response.Listener<ProgressOrderList> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<ProgressOrderList>(Request.Method.POST, API_BASE_URL + FAST_BIRD_PENDING_ORDERS, loginRequest, ProgressOrderList.class, null, listener, errorListener));
+    }
+
+    public static void getMyOrders(Context context, LoginRequest loginRequest, Response.Listener<ProgressOrderList> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<ProgressOrderList>(Request.Method.POST, API_BASE_URL + ME_PENDING_ORDERS, loginRequest, ProgressOrderList.class, null, listener, errorListener));
+    }
 }

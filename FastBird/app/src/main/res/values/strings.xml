@@ -7,6 +7,9 @@
     <string name="action_settings">Settings</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="name">Name</string>
-    <string name="balance">Balance : %1$s</string>
-
+    <string name="balance">Balance: %1$s</string>
+    <string name="order_number">Order: %1$s</string>
+    <string name="order_to">To: %1$s</string>
+    <string name="phone1">Phone 1: %1$s</string>
+    <string name="phone2">Phone 2: %1$s</string>
 </resources>

@@ -1,6 +1,7 @@
 package appinventor.ai_sameh.FastBird.view;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.view.ViewGroup;
 import appinventor.ai_sameh.FastBird.R;
 
 
-public class OrdersTabWithFastBirdOrdersFragment extends WithFastBirdOrdersFragment {
+public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
  
  
 	private FragmentTabHost mTabHost;
@@ -38,7 +39,7 @@ public class OrdersTabWithFastBirdOrdersFragment extends WithFastBirdOrdersFragm
 		b = new Bundle();
 		b.putString("key", "With Me");
 		mTabHost.addTab(mTabHost.newTabSpec("with_me")
-				.setIndicator("With Me"), NotificationFragment.class, b);
+				.setIndicator("With Me"), WithFastBirdOrdersFragment.class, b);
 		return mTabHost;
 	} 
 } 

@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
+    android:padding="15dp"
     android:descendantFocusability="beforeDescendants">
 
     <LinearLayout
@@ -19,16 +17,60 @@
         android:descendantFocusability="afterDescendants">
 
         <TextView
-            android:id="@+id/line1"
+            android:id="@+id/orderNumber"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text line 1"/>
+            android:text="@string/order_number" />
 
         <TextView
-            android:id="@+id/line2"
+            android:paddingTop="5dp"
+            android:id="@+id/orderTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Text line 2"/>
+            android:text="@string/order_to" />
+
+        <TextView
+            android:paddingTop="5dp"
+            android:id="@+id/phone1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone1" />
+
+        <TextView
+            android:paddingTop="5dp"
+            android:id="@+id/phone2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone1" />
+
+        <TextView
+            android:paddingTop="5dp"
+            android:id="@+id/orderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shipment Delivered" />
+
+        <LinearLayout
+            android:paddingTop="5dp"
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_weight="2"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_weight="1"
+                android:text="Comments"
+                android:id="@+id/btnComment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:text="Info"
+                android:layout_weight="1"
+                android:id="@+id/btnInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
 
     </LinearLayout>
 </FrameLayout>
