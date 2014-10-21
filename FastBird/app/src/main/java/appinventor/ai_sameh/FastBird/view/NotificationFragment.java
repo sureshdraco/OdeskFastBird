@@ -38,7 +38,7 @@ public class NotificationFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.notifications_fragment, container, false);
     }
-    
+
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
