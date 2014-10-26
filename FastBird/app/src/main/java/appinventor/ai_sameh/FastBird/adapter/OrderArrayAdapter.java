@@ -2,8 +2,6 @@ package appinventor.ai_sameh.FastBird.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +14,9 @@ import java.util.List;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
-import appinventor.ai_sameh.FastBird.api.Order;
-import appinventor.ai_sameh.FastBird.model.Card;
+import appinventor.ai_sameh.FastBird.api.model.Order;
 
 public class OrderArrayAdapter extends ArrayAdapter<Order> {
-    private static final String TAG = "CardArrayAdapter";
     private List<Order> orderList = new ArrayList<Order>();
     private Context context;
 

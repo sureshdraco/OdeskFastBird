@@ -1,11 +1,9 @@
-package appinventor.ai_sameh.FastBird.api;
-
-import java.util.ArrayList;
+package appinventor.ai_sameh.FastBird.api.response;
 
 /**
  * Created by suresh on 12/10/14.
  */
-public class ProgressOrderList {
+public class LoginResponse {
 
     private d d;
 
@@ -15,11 +13,6 @@ public class ProgressOrderList {
 
     public class d {
         private String Error;
-        private ArrayList<Order> Orders;
-
-        public ArrayList<Order> getOrderList() {
-            return Orders;
-        }
 
         public String getError() {
             return Error;

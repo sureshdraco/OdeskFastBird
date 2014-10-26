@@ -12,4 +12,8 @@
     <string name="order_to">To: %1$s</string>
     <string name="phone1">Phone 1: %1$s</string>
     <string name="phone2">Phone 2: %1$s</string>
+    <string name="total_amount">Total Amount: %1$s</string>
+    <string name="date">Date: %1$s</string>
+    <string name="id">Id: %1$s</string>
+    <string name="fbd_number">FBDNumber: %1$s</string>
 </resources>

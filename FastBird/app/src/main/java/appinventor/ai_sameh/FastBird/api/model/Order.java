@@ -1,4 +1,4 @@
-package appinventor.ai_sameh.FastBird.api;
+package appinventor.ai_sameh.FastBird.api.model;
 
 /**
  * Created by suresh on 21/10/14.

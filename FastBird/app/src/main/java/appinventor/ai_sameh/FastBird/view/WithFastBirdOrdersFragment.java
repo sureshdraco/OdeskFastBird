@@ -20,11 +20,9 @@ import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.adapter.OrderArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
-import appinventor.ai_sameh.FastBird.api.LoginRequest;
-import appinventor.ai_sameh.FastBird.api.Order;
-import appinventor.ai_sameh.FastBird.api.ProgressOrderList;
-import appinventor.ai_sameh.FastBird.model.Card;
-import appinventor.ai_sameh.FastBird.util.NotificationItem;
+import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
+import appinventor.ai_sameh.FastBird.api.model.Order;
+import appinventor.ai_sameh.FastBird.api.model.ProgressOrderList;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -71,6 +69,9 @@ public class WithFastBirdOrdersFragment extends Fragment {
         Type listType = new TypeToken<ArrayList<Order>>() {
         }.getType();
         ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getFastBirdPendingOrders(getActivity()), listType);
+        if(cachedOrderList == null) {
+            cachedOrderList = new ArrayList<Order>();
+        }
         for (Order order : cachedOrderList) {
             orderArrayAdapter.add(order);
         }
@@ -99,12 +100,14 @@ public class WithFastBirdOrdersFragment extends Fragment {
         });
     }
 
-
     private void getMyOrders(String email, String password) {
         final String cachedOrders = PreferenceUtil.getMyPendingOrders(getActivity());
         Type listType = new TypeToken<ArrayList<Order>>() {
         }.getType();
         ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getMyPendingOrders(getActivity()), listType);
+        if(cachedOrderList == null) {
+            cachedOrderList = new ArrayList<Order>();
+        }
         for (Order order : cachedOrderList) {
             orderArrayAdapter.add(order);
         }

@@ -1,7 +1,6 @@
 package appinventor.ai_sameh.FastBird.view;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,9 +21,9 @@ import appinventor.ai_sameh.FastBird.FastBirdApplication;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
-import appinventor.ai_sameh.FastBird.api.RegisterDeviceResponse;
-import appinventor.ai_sameh.FastBird.api.UnregisterDeviceRequest;
-import appinventor.ai_sameh.FastBird.api.UserInfoResponse;
+import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
+import appinventor.ai_sameh.FastBird.api.request.UnregisterDeviceRequest;
+import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 

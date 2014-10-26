@@ -25,9 +25,11 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
+import appinventor.ai_sameh.FastBird.adapter.CashArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
-import appinventor.ai_sameh.FastBird.api.RegisterDeviceRequest;
-import appinventor.ai_sameh.FastBird.api.RegisterDeviceResponse;
+import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
+import appinventor.ai_sameh.FastBird.api.request.RegisterDeviceRequest;
+import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
 import appinventor.ai_sameh.FastBird.util.NotificationUtil;
 
 public class MainActivity extends FragmentActivity {
@@ -70,18 +72,28 @@ public class MainActivity extends FragmentActivity {
         mTabHost.setup(this, getSupportFragmentManager(), R.id.realtabcontent);
 
         Bundle b = new Bundle();
-        b.putString("key", "Settings");
-        mTabHost.addTab(mTabHost.newTabSpec("Settings").setIndicator("Settings"),
-                SettingsFragment.class, b);
+        b.putString("key", "Orders");
+        mTabHost.addTab(mTabHost.newTabSpec("orders").setIndicator("Orders"),
+                OrdersTabWithFastBirdOrdersFragment.class, b);
         //
         b = new Bundle();
         b.putString("key", "Notifications");
         mTabHost.addTab(mTabHost.newTabSpec("Notifications")
                 .setIndicator("Notifications"), NotificationFragment.class, b);
         b = new Bundle();
-        b.putString("key", "Custom");
-        mTabHost.addTab(mTabHost.newTabSpec("custom").setIndicator("Custom"),
-                OrdersTabWithFastBirdOrdersFragment.class, b);
+        b.putString("key", "+");
+        mTabHost.addTab(mTabHost.newTabSpec("+")
+                .setIndicator("+"), CreateOrderFragment.class, b);
+        b = new Bundle();
+        b.putString("key", "$$");
+        mTabHost.addTab(mTabHost.newTabSpec("$$").setIndicator("$$"),
+                MoneyTabFragment.class, b);
+
+        b = new Bundle();
+        b.putString("key", "Profile");
+        mTabHost.addTab(mTabHost.newTabSpec("Profile").setIndicator("Profile"),
+                SettingsFragment.class, b);
+
         // setContentView(mTabHost);
         updateBalance();
         findViewById(R.id.withdrawBtn).setOnClickListener(new View.OnClickListener() {
@@ -218,6 +230,13 @@ public class MainActivity extends FragmentActivity {
             case 1:
                 dialog = OrderInfoDialog.showOrderDetail(this);
                 break;
+            case CashArrayAdapter.DIALOG_CASH_IN_WAY:
+            case CashArrayAdapter.DIALOG_CASH_HISTORY:
+                dialog = CashDialog.showCashDialog(this);
+                break;
+            case ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER:
+                dialog = new ActivityProgressIndicator(this, R.style.TransparentDialog);
+                break;
         }
         return dialog;
     }
@@ -231,6 +250,36 @@ public class MainActivity extends FragmentActivity {
                 String selectedOrder = PreferenceUtil.getSelectedOrder(this);
                 if (!TextUtils.isEmpty(selectedOrder)) {
                     ((TextView) dialog.findViewById(R.id.detailContent)).setText(selectedOrder);
+                } else {
+                    dialog.dismiss();
+                }
+
+                break;
+            case CashArrayAdapter.DIALOG_CASH_IN_WAY:
+                String selectedCashInWay = PreferenceUtil.getSelectedCashInWay(this);
+                if (!TextUtils.isEmpty(selectedCashInWay)) {
+                    MRBTransactions transactions = new Gson().fromJson(PreferenceUtil.getSelectedCashInWay(this), MRBTransactions.class);
+                    ((TextView) dialog.findViewById(R.id.id)).setText(getResources().getString(R.string.id, transactions.getId()));
+                    ((TextView) dialog.findViewById(R.id.date)).setText(getResources().getString(R.string.date, transactions.getDate()));
+                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getId()));
+                    if (transactions.getDetails() != null && transactions.getDetails().size() > 0) {
+                        ((TextView) dialog.findViewById(R.id.detailContent)).setText(transactions.getDetails().toString());
+                    }
+                } else {
+                    dialog.dismiss();
+                }
+
+                break;
+            case CashArrayAdapter.DIALOG_CASH_HISTORY:
+                String selectedCashHistory = PreferenceUtil.getSelectedCashHistory(this);
+                if (!TextUtils.isEmpty(selectedCashHistory)) {
+                    MRBTransactions transactions = new Gson().fromJson(PreferenceUtil.getSelectedCashHistory(this), MRBTransactions.class);
+                    ((TextView) dialog.findViewById(R.id.id)).setText(getResources().getString(R.string.id, transactions.getId()));
+                    ((TextView) dialog.findViewById(R.id.date)).setText(getResources().getString(R.string.date, transactions.getDate()));
+                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getId()));
+                    if (transactions.getDetails() != null && transactions.getDetails().size() > 0) {
+                        ((TextView) dialog.findViewById(R.id.detailContent)).setText(transactions.getDetails().toString());
+                    }
                 } else {
                     dialog.dismiss();
                 }

@@ -4,27 +4,15 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.CursorLoader;
 import android.content.Intent;
-import android.content.Loader;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build.VERSION;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,16 +20,11 @@ import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
-import appinventor.ai_sameh.FastBird.api.LoginResponse;
-import appinventor.ai_sameh.FastBird.api.UserInfoResponse;
+import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -159,7 +142,7 @@ public class LoginActivity extends Activity {
                 public void onErrorResponse(VolleyError volleyError) {
                     Log.e(TAG, volleyError.toString());
                     showProgress(false);
-                    Crouton.showText(LoginActivity.this, String.valueOf(volleyError.networkResponse.statusCode), Style.ALERT);
+                    Crouton.showText(LoginActivity.this, "Failed to login!", Style.ALERT);
                 }
             });
         }

@@ -1,0 +1,30 @@
+package appinventor.ai_sameh.FastBird.api.response;
+
+import java.util.ArrayList;
+
+import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
+
+/**
+ * Created by suresh on 12/10/14.
+ */
+public class CashOnTheWayListResponse {
+
+    private d d;
+
+    public d getData() {
+        return d;
+    }
+
+    public class d {
+        private String Error;
+        private ArrayList<appinventor.ai_sameh.FastBird.api.model.MRBTransactions> MRBTransactions;
+
+        public ArrayList<MRBTransactions> getMRBTransactions() {
+            return MRBTransactions;
+        }
+
+        public String getError() {
+            return Error;
+        }
+    }
+}
