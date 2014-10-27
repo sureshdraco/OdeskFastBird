@@ -12,7 +12,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pickup Address"
+            android:text="Pickup Address (*)"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -26,12 +26,14 @@
                 android:text="Pickup Address" />
 
             <Spinner
+                android:imeOptions="actionNext"
                 android:id="@+id/pickupAddress"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Delivery Address"
@@ -45,15 +47,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Address Title" />
+                android:text="Address Title (*)" />
 
             <EditText
-                android:id="@+id/addressTitle"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:id="@+id/addressTitle" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -61,15 +66,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Contact Name" />
+                android:text="Contact Name (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/contactName"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -77,15 +85,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Phone1" />
+                android:text="Phone1 (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/phone1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -96,12 +107,15 @@
                 android:text="Phone2" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/phone2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -109,15 +123,18 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Flat No." />
+                android:text="Flat No. (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/flatNo"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -125,9 +142,11 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Building No." />
+                android:text="Building No. (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/buildingNo"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -135,31 +154,37 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Road" />
+                android:text="Road (*)" />
 
             <EditText
                 android:id="@+id/road"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Block No." />
+                android:text="Block No. (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/blockNo"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -168,6 +193,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -176,6 +202,7 @@
                 android:text="Location" />
 
             <Spinner
+                android:imeOptions="actionNext"
                 android:id="@+id/location"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -184,6 +211,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -192,12 +220,15 @@
                 android:text="Note" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/note"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -205,15 +236,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delivery Time" />
+                android:text="Delivery Time (*)" />
 
             <Spinner
+                android:imeOptions="actionNext"
                 android:id="@+id/deliveryTime"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -221,24 +254,29 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Money Delivery Type" />
+                android:text="Money Delivery Type (*)" />
 
             <Spinner
+                android:imeOptions="actionNext"
                 android:id="@+id/moneyDeliveryType"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Length" />
+                android:text="Length (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/length"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -246,15 +284,18 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Weight" />
+                android:text="Weight (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/weight"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -262,15 +303,18 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Height" />
+                android:text="Height (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/height"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -278,24 +322,28 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Width" />
+                android:text="Width (*)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/width"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Package Details"
+            android:text="Package Details (*)"
             android:textStyle="bold" />
 
         <LinearLayout
@@ -306,9 +354,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Package Type" />
+                android:text="Package Type (*)" />
 
             <Spinner
+                android:imeOptions="actionNext"
                 android:id="@+id/packageType"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -316,15 +365,17 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Service Type" />
+                android:text="Service Type (*)" />
 
             <Spinner
+                android:imeOptions="actionNext"
                 android:id="@+id/serviceType"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -332,15 +383,19 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sub Total" />
+                android:text="Sub Total (*)" />
 
             <EditText
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/subTotal"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -348,6 +403,7 @@
 
         <LinearLayout
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
@@ -357,6 +413,9 @@
                 android:text="Discount" />
 
             <EditText
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/discount"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
@@ -365,6 +424,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
+            android:layout_marginTop="8dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -373,18 +433,23 @@
                 android:text="Total" />
 
             <EditText
+                android:enabled="false"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/total"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <TextView
+            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Money Collection"
             android:textStyle="bold" />
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -395,19 +460,22 @@
                 android:text="Collection Amount (Shipment Price + Delivery Charge)" />
 
             <EditText
+                android:imeOptions="actionNext"
+                android:singleLine="true"
                 android:id="@+id/collectionAmount"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-
         <TextView
+            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Payment Details"
+            android:text="Payment Details (*)"
             android:textStyle="bold" />
 
         <LinearLayout
+            android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -418,12 +486,14 @@
                 android:text="Payment Method" />
 
             <Spinner
+                android:imeOptions="actionNext"
                 android:id="@+id/paymentMethod"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
         <Button
+            android:layout_gravity="center"
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

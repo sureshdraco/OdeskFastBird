@@ -3,12 +3,11 @@ package appinventor.ai_sameh.FastBird.api.request;
 /**
  * Created by suresh on 12/10/14.
  */
-public class UnregisterDeviceRequest {
-    private String username, password, deviceid;
+public class UnregisterDeviceRequest extends LoginRequest{
+    private String deviceid;
 
-    public UnregisterDeviceRequest(String deviceId, String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.deviceid = deviceId;
+    public UnregisterDeviceRequest(String username, String password, String deviceid) {
+        super(username, password);
+        this.deviceid = deviceid;
     }
 }

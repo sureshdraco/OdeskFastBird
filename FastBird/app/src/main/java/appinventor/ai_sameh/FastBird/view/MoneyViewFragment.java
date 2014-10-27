@@ -19,7 +19,10 @@ import java.util.ArrayList;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.adapter.CashArrayAdapter;
+import appinventor.ai_sameh.FastBird.adapter.CashInProgressArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
+import appinventor.ai_sameh.FastBird.api.model.Order;
+import appinventor.ai_sameh.FastBird.api.response.CashOnProgressResponse;
 import appinventor.ai_sameh.FastBird.api.response.CashOnTheWayListResponse;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
@@ -32,6 +35,7 @@ public class MoneyViewFragment extends Fragment {
     private TextView text;
     private ListView ordersListView;
     private CashArrayAdapter cashArrayAdapter;
+    private CashInProgressArrayAdapter cashInProgressArrayAdapter;
 
 
     public MoneyViewFragment() {
@@ -56,9 +60,9 @@ public class MoneyViewFragment extends Fragment {
         if (getArguments() != null) {
             String tab = getArguments().getString("key");
             if (tab.equals("In - progress")) {
-//                CashInProgressArrayAdapter cashInProgressArrayAdapter = new CashInProgressArrayAdapter(getActivity(), R.layout.cash_card_item);
-//                ordersListView.setAdapter(cashArrayAdapter);
-//                getCashOnMyWay(email, password);
+                cashInProgressArrayAdapter = new CashInProgressArrayAdapter(getActivity(), R.layout.cash_card_item);
+                ordersListView.setAdapter(cashInProgressArrayAdapter);
+                getCashInProgress(email, password);
             } else if (tab.equals("In the Way")) {
                 cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, true);
                 ordersListView.setAdapter(cashArrayAdapter);
@@ -132,6 +136,37 @@ public class MoneyViewFragment extends Fragment {
                             cashArrayAdapter.add(transactions);
                         }
                         cashArrayAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (getActivity() != null)
+                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+            }
+        });
+    }
+
+
+    private void getCashInProgress(String email, String password) {
+
+        for (Order order : PreferenceUtil.getProgressOrders(getActivity())) {
+            cashInProgressArrayAdapter.add(order);
+        }
+        cashInProgressArrayAdapter.notifyDataSetChanged();
+        ApiRequests.getMoneyInProgress(getActivity(), new LoginRequest(email, password), new Response.Listener<CashOnProgressResponse>() {
+            @Override
+            public void onResponse(CashOnProgressResponse cashOnTheWayListResponse) {
+                if (getActivity() != null) {
+                    String networkOrders = new Gson().toJson(cashOnTheWayListResponse.getData().getOrders());
+                    if (!networkOrders.equals(new Gson().toJson(PreferenceUtil.getProgressOrders(getActivity())))) {
+                        PreferenceUtil.saveProgressOrders(getActivity(), cashOnTheWayListResponse.getData().getOrders());
+                        cashInProgressArrayAdapter.clear();
+                        for (Order order : cashOnTheWayListResponse.getData().getOrders()) {
+                            cashInProgressArrayAdapter.add(order);
+                        }
+                        cashInProgressArrayAdapter.notifyDataSetChanged();
                     }
                 }
             }

@@ -5,13 +5,12 @@ import android.os.Build;
 /**
  * Created by suresh on 12/10/14.
  */
-public class RegisterDeviceRequest {
-    private String username, password, deviceid, note;
+public class RegisterDeviceRequest extends LoginRequest {
+    private String deviceid, note;
 
-    public RegisterDeviceRequest(String deviceId, String username, String password) {
-        this.username = username;
-        this.password = password;
-        this.deviceid = deviceId;
+    public RegisterDeviceRequest(String username, String password, String deviceid) {
+        super(username, password);
+        this.deviceid = deviceid;
         this.note = getDeviceName();
     }
 

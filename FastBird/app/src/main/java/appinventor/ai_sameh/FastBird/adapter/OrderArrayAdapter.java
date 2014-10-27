@@ -2,6 +2,9 @@ package appinventor.ai_sameh.FastBird.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import java.util.List;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Order;
+import appinventor.ai_sameh.FastBird.view.CommentActivity;
 
 public class OrderArrayAdapter extends ArrayAdapter<Order> {
     private List<Order> orderList = new ArrayList<Order>();
@@ -22,7 +26,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 
     static class OrderViewHolder {
         TextView orderNumber, orderTo, phone1, phone2, orderStatus;
-        Button infoButton;
+        Button infoButton, commentButton;
     }
 
     public OrderArrayAdapter(Context context, int textViewResourceId) {
@@ -60,6 +64,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
             viewHolder.phone1 = (TextView) row.findViewById(R.id.phone1);
             viewHolder.phone2 = (TextView) row.findViewById(R.id.phone2);
             viewHolder.infoButton = (Button) row.findViewById(R.id.btnInfo);
+            viewHolder.commentButton = (Button) row.findViewById(R.id.btnComment);
             row.setTag(viewHolder);
         } else {
             viewHolder = (OrderViewHolder) row.getTag();
@@ -71,6 +76,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         viewHolder.phone1.setText(getContext().getResources().getString(R.string.phone1, order.getPhone1()));
         viewHolder.phone2.setText(getContext().getResources().getString(R.string.phone1, order.getPhone2()));
         viewHolder.infoButton.setOnClickListener(new InfoClickListener(order));
+        viewHolder.commentButton.setOnClickListener(new CommentClickListener(order.getFBDNumber()));
         return row;
     }
 
@@ -85,6 +91,23 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         public void onClick(View v) {
             PreferenceUtil.saveSelectedOrder(context, order);
             ((Activity) context).showDialog(1);
+        }
+    }
+
+    class CommentClickListener implements View.OnClickListener {
+        private final String fbdNumber;
+
+        public CommentClickListener(String fbdNumber) {
+            this.fbdNumber = fbdNumber;
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(context, CommentActivity.class);
+            intent.putExtra("fbdNumber", fbdNumber);
+            context.startActivity(intent);
+            ((Activity) context).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+
         }
     }
 }

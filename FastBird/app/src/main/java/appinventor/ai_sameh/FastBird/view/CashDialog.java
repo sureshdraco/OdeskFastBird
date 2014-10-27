@@ -25,4 +25,20 @@ public class CashDialog {
         });
         return dialog;
     }
+
+    public static CustomDialog showCashInProgressDialog(final Context mContext) {
+
+        final CustomDialog dialog = new CustomDialog(mContext);
+        dialog.setCancelable(true);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.order_detail);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
+        dialog.findViewById(R.id.closeBtn).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        return dialog;
+    }
 }

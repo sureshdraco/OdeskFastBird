@@ -1,5 +1,6 @@
 package appinventor.ai_sameh.FastBird.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +11,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
+import appinventor.ai_sameh.FastBird.api.model.Order;
 
-public class CashInProgressArrayAdapter extends ArrayAdapter<MRBTransactions> {
-    private List<MRBTransactions> transactionsArrayList = new ArrayList<MRBTransactions>();
+public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
+    public static final int DIALOG_CASH_IN_PROGRESS = 4;
+    private List<Order> orderArrayList = new ArrayList<Order>();
     private Context context;
 
     static class CashViewHolder {
@@ -27,19 +31,19 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<MRBTransactions> {
     }
 
     @Override
-    public void add(MRBTransactions transaction) {
-        transactionsArrayList.add(transaction);
-        super.add(transaction);
+    public void add(Order order) {
+        orderArrayList.add(order);
+        super.add(order);
     }
 
     @Override
     public int getCount() {
-        return this.transactionsArrayList.size();
+        return this.orderArrayList.size();
     }
 
     @Override
-    public MRBTransactions getItem(int index) {
-        return this.transactionsArrayList.get(index);
+    public Order getItem(int index) {
+        return this.orderArrayList.get(index);
     }
 
     @Override
@@ -58,31 +62,27 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<MRBTransactions> {
         } else {
             viewHolder = (CashViewHolder) row.getTag();
         }
-        MRBTransactions transaction = getItem(position);
-//        viewHolder.fbdNumber.setText(getContext().getResources().getString(R.string.fbd_number, transaction.()));
-//        viewHolder.id.setText(getContext().getResources().getString(R.string.id, transaction.getId()));
-//        viewHolder.totalAmount.setText(getContext().getResources().getString(R.string.total_amount, transaction.getTotalAmounts()));
-        row.setOnClickListener(new InfoClickListener(transaction));
+        Order order = getItem(position);
+        viewHolder.fbdNumber.setText(getContext().getResources().getString(R.string.fbd_number, order.getFBDNumber()));
+        viewHolder.collectionAmount.setText(getContext().getResources().getString(R.string.collection_amount, order.getCollectionAmount()));
+        viewHolder.netTotal.setText(getContext().getResources().getString(R.string.total_amount, order.getNetTotal()));
+        viewHolder.serviceType.setText(getContext().getResources().getString(R.string.service_type, order.getServiceType()));
+        row.setOnClickListener(new InfoClickListener(order));
         return row;
     }
 
 
     class InfoClickListener implements View.OnClickListener {
-        private final MRBTransactions transaction;
+        private final Order order;
 
-        public InfoClickListener(MRBTransactions transaction) {
-            this.transaction = transaction;
+        public InfoClickListener(Order order) {
+            this.order = order;
         }
 
         @Override
         public void onClick(View v) {
-//            if(cashInWay) {
-//                PreferenceUtil.saveSelectedCashInWay(context, transaction);
-//                ((Activity) context).showDialog(DIALOG_CASH_IN_WAY);
-//            } else {
-//                PreferenceUtil.saveSelectedCashHistory(context, transaction);
-//                ((Activity) context).showDialog(DIALOG_CASH_HISTORY);
-//            }
+                PreferenceUtil.saveSelectedCashInProgress(context, order);
+                ((Activity) context).showDialog(DIALOG_CASH_IN_PROGRESS);
         }
     }
 }

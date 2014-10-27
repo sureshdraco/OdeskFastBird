@@ -4,29 +4,29 @@ package appinventor.ai_sameh.FastBird.api.request;
  * Created by suresh on 12/10/14.
  */
 public class CreateOrderRequest extends LoginRequest {
-    String pickupAddress, contactName, phone1, phone2, flatNo, buildingNo, blockNo, road, location, note, packageType, serviceType, weight, length, height, width, deliveryTime, moneyDeliveryType, collectionAmount, paymentMethod;
+    String pickupaddress, contactname, phone1, phone2, flatNo, buildingno, blockno, road, location, note, packagetype, servicetype, weight, length, height, width, deliverytime, moneydeliverytype, collectionamount, paymentmethod;
 
-    public CreateOrderRequest(String username, String password, String pickupAddress, String contactName, String phone1, String phone2, String flatNo, String buildingNo, String blockNo, String road, String location, String note, String packageType, String serviceType, String weight, String length, String height, String width, String deliveryTime, String moneyDeliveryType, String collectionAmount, String paymentMethod) {
+    public CreateOrderRequest(String username, String password, String pickupaddress, String contactname, String phone1, String phone2, String flatNo, String buildingno, String blockno, String road, String location, String note, String packagetype, String servicetype, String weight, String length, String height, String width, String deliverytime, String moneydeliverytype, String collectionamount, String paymentmethod) {
         super(username, password);
-        this.pickupAddress = pickupAddress;
-        this.contactName = contactName;
+        this.pickupaddress = pickupaddress;
+        this.contactname = contactname;
         this.phone1 = phone1;
         this.phone2 = phone2;
         this.flatNo = flatNo;
-        this.buildingNo = buildingNo;
-        this.blockNo = blockNo;
+        this.buildingno = buildingno;
+        this.blockno = blockno;
         this.road = road;
         this.location = location;
         this.note = note;
-        this.packageType = packageType;
-        this.serviceType = serviceType;
+        this.packagetype = packagetype;
+        this.servicetype = servicetype;
         this.weight = weight;
         this.length = length;
         this.height = height;
         this.width = width;
-        this.deliveryTime = deliveryTime;
-        this.moneyDeliveryType = moneyDeliveryType;
-        this.collectionAmount = collectionAmount;
-        this.paymentMethod = paymentMethod;
+        this.deliverytime = deliverytime;
+        this.moneydeliverytype = moneydeliverytype;
+        this.collectionamount = collectionamount;
+        this.paymentmethod = paymentmethod;
     }
 }

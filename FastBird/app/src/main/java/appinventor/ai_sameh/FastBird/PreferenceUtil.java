@@ -47,13 +47,15 @@ public class PreferenceUtil {
     private static final String CASH_ON_MY_WAY = "cashOnMyWay";
     private static final String CASH_HISTORY = "cashHistory";
     private static final String SELECTED_CASH_IN_WAY = "selectedCashInWay";
-    private static final String SELECTED_CASH_IN_PROGRESS = "sekectedCashInProgress";
+    private static final String SELECTED_CASH_IN_PROGRESS = "selectedCashInProgress";
     private static final String SELECTED_CASH_HISTORY = "selectedCashHistory";
     private static final String PREF_MY_PICK_ADDRESS = "myPickAddress";
-    private static final String PREF_SERVICE_TYPE = "serviceTypes";
     private static final String PREF_DELIVERY_TIME = "deliveryTime";
     private static final String PREF_DELIVERY_TYPE = "delivertType";
     private static final String PREF_LOCATIONS = "location";
+    private static final String PREF_PACKAGE_TYPES = "packageTypes";
+    private static final String PREF_SERVICE_TYPE = "serviceTypes";
+    private static final String PREF_ORDER_IN_PROGRESS = "orderInProgress";
 
     // Preference backend access.
     private static SharedPreferences.Editor prefEditor;
@@ -286,12 +288,13 @@ public class PreferenceUtil {
         getPrefEditor(context).putString(SELECTED_CASH_IN_WAY, new Gson().toJson(transactions)).commit();
     }
 
-    public static String getSelectedCashInProgress(Context context) {
-        return getPref(context).getString(SELECTED_CASH_IN_PROGRESS, "");
+    public static Order getSelectedCashInProgress(Context context) {
+        String orderString = getPref(context).getString(SELECTED_CASH_IN_PROGRESS, "");
+        return new Gson().fromJson(orderString, Order.class);
     }
 
-    public static void saveSelectedCashInProgress(Context context, MRBTransactions transactions) {
-        getPrefEditor(context).putString(SELECTED_CASH_IN_PROGRESS, new Gson().toJson(transactions)).commit();
+    public static void saveSelectedCashInProgress(Context context, Order order) {
+        getPrefEditor(context).putString(SELECTED_CASH_IN_PROGRESS, new Gson().toJson(order)).commit();
     }
 
     public static String getSelectedCashHistory(Context context) {
@@ -312,19 +315,6 @@ public class PreferenceUtil {
 
     public static void savePickupAddresses(Context context, ArrayList<Address> addresses) {
         getPrefEditor(context).putString(PREF_MY_PICK_ADDRESS, new Gson().toJson(addresses)).commit();
-    }
-
-
-    public static ArrayList<DataDescription> getServiceTypes(Context context) {
-        String json = getPref(context).getString(PREF_SERVICE_TYPE, "[]");
-        Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<DataDescription>>() {
-        }.getType();
-        return gson.fromJson(json, listType);
-    }
-
-    public static void saveServiceType(Context context, ArrayList<DataDescription> serviceTypes) {
-        getPrefEditor(context).putString(PREF_SERVICE_TYPE, new Gson().toJson(serviceTypes)).commit();
     }
 
     public static ArrayList<DeliveryTime> getDeliveryTime(Context context) {
@@ -363,4 +353,41 @@ public class PreferenceUtil {
     public static void saveLocations(Context context, ArrayList<DataDescription> locations) {
         getPrefEditor(context).putString(PREF_LOCATIONS, new Gson().toJson(locations)).commit();
     }
+
+    public static ArrayList<DataDescription> getPackageTypes(Context context) {
+        String json = getPref(context).getString(PREF_PACKAGE_TYPES, "[]");
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<DataDescription>>() {
+        }.getType();
+        return gson.fromJson(json, listType);
+    }
+
+    public static void savePackageTypes(Context context, ArrayList<DataDescription> locations) {
+        getPrefEditor(context).putString(PREF_PACKAGE_TYPES, new Gson().toJson(locations)).commit();
+    }
+
+    public static ArrayList<DataDescription> getServiceTypes(Context context) {
+        String json = getPref(context).getString(PREF_SERVICE_TYPE, "[]");
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<DataDescription>>() {
+        }.getType();
+        return gson.fromJson(json, listType);
+    }
+
+    public static void saveServiceTypes(Context context, ArrayList<DataDescription> serviceTypes) {
+        getPrefEditor(context).putString(PREF_SERVICE_TYPE, new Gson().toJson(serviceTypes)).commit();
+    }
+
+    public static ArrayList<Order> getProgressOrders(Context context) {
+        String json = getPref(context).getString(PREF_ORDER_IN_PROGRESS, "[]");
+        Gson gson = new Gson();
+        Type listType = new TypeToken<ArrayList<Order>>() {
+        }.getType();
+        return gson.fromJson(json, listType);
+    }
+
+    public static void saveProgressOrders(Context context, ArrayList<Order> serviceTypes) {
+        getPrefEditor(context).putString(PREF_ORDER_IN_PROGRESS, new Gson().toJson(serviceTypes)).commit();
+    }
+
 }

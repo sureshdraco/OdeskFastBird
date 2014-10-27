@@ -26,11 +26,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.adapter.CashArrayAdapter;
+import appinventor.ai_sameh.FastBird.adapter.CashInProgressArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
+import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.api.request.RegisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
+import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
 import appinventor.ai_sameh.FastBird.util.NotificationUtil;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends FragmentActivity {
 
@@ -95,7 +100,6 @@ public class MainActivity extends FragmentActivity {
                 SettingsFragment.class, b);
 
         // setContentView(mTabHost);
-        updateBalance();
         findViewById(R.id.withdrawBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +111,20 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void updateBalance() {
+        ApiRequests.getUserInformation(this, PreferenceUtil.getEmail(this), PreferenceUtil.getPassword(this), new Response.Listener<UserInfoResponse>() {
+            @Override
+            public void onResponse(UserInfoResponse userInfoResponse) {
+                updateBalanceField();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+            }
+        });
+        updateBalanceField();
+    }
+
+    private void updateBalanceField() {
         String balanceStr = PreferenceUtil.getCredits(this);
         balance.setText(getString(R.string.balance, balanceStr));
     }
@@ -205,7 +223,7 @@ public class MainActivity extends FragmentActivity {
     private void sendRegistrationIdToBackend(String regid) {
         String email = PreferenceUtil.getEmail(getApplicationContext());
         String password = PreferenceUtil.getPassword(getApplicationContext());
-        ApiRequests.registerDevice(getApplicationContext(), new RegisterDeviceRequest(regid, email, password), new Response.Listener<RegisterDeviceResponse>() {
+        ApiRequests.registerDevice(getApplicationContext(), new RegisterDeviceRequest(email, password, regid), new Response.Listener<RegisterDeviceResponse>() {
             @Override
             public void onResponse(RegisterDeviceResponse registerDeviceResponse) {
                 if (TextUtils.isEmpty(registerDeviceResponse.getData().getError())) {
@@ -233,6 +251,9 @@ public class MainActivity extends FragmentActivity {
             case CashArrayAdapter.DIALOG_CASH_IN_WAY:
             case CashArrayAdapter.DIALOG_CASH_HISTORY:
                 dialog = CashDialog.showCashDialog(this);
+                break;
+            case CashInProgressArrayAdapter.DIALOG_CASH_IN_PROGRESS:
+                dialog = CashDialog.showCashInProgressDialog(this);
                 break;
             case ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER:
                 dialog = new ActivityProgressIndicator(this, R.style.TransparentDialog);
@@ -280,6 +301,15 @@ public class MainActivity extends FragmentActivity {
                     if (transactions.getDetails() != null && transactions.getDetails().size() > 0) {
                         ((TextView) dialog.findViewById(R.id.detailContent)).setText(transactions.getDetails().toString());
                     }
+                } else {
+                    dialog.dismiss();
+                }
+
+                break;
+            case CashInProgressArrayAdapter.DIALOG_CASH_IN_PROGRESS:
+                Order selectedOrder1 = PreferenceUtil.getSelectedCashInProgress(this);
+                if (selectedOrder1 != null) {
+                        ((TextView) dialog.findViewById(R.id.detailContent)).setText(selectedOrder1.toString());
                 } else {
                     dialog.dismiss();
                 }

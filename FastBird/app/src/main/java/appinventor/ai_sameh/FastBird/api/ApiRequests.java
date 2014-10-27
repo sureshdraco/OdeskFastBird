@@ -6,18 +6,26 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 
 import appinventor.ai_sameh.FastBird.api.model.ProgressOrderList;
+import appinventor.ai_sameh.FastBird.api.request.CommentListRequest;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
+import appinventor.ai_sameh.FastBird.api.request.InsertCommentRequest;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.request.RegisterDeviceRequest;
+import appinventor.ai_sameh.FastBird.api.request.ServiceTypePriceRequest;
+import appinventor.ai_sameh.FastBird.api.request.ServiceTypeRequest;
 import appinventor.ai_sameh.FastBird.api.request.UnregisterDeviceRequest;
+import appinventor.ai_sameh.FastBird.api.response.CashOnProgressResponse;
 import appinventor.ai_sameh.FastBird.api.response.CashOnTheWayListResponse;
+import appinventor.ai_sameh.FastBird.api.response.CommentListResponse;
 import appinventor.ai_sameh.FastBird.api.response.CreateOrderResponse;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTimeResponse;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTypeResponse;
 import appinventor.ai_sameh.FastBird.api.response.LocationResponse;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import appinventor.ai_sameh.FastBird.api.response.MyAddressResponse;
+import appinventor.ai_sameh.FastBird.api.response.PackageTypeResponse;
 import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
+import appinventor.ai_sameh.FastBird.api.response.ServiceTypePriceResponse;
 import appinventor.ai_sameh.FastBird.api.response.ServiceTypeResponse;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
 import appinventor.ai_sameh.FastBird.volley.GsonRequest;
@@ -38,6 +46,9 @@ public class ApiRequests {
     private static final String CREATE_ORDER = "NOrder.svc/Create";
     private static final String MY_PICK_ADDRRESS = "Clients.svc/ListMyAddresses";
     private static final String DELIVERY_TIME = "Masters.svc/ListDeliveryTimes";
+    private static final String PACKAGE_TYPES = "Masters.svc/ListPackageTypes";
+    private static final String COMMENT_LIST = "NOrder.svc/ListOrderComments";
+    private static final String INSERT_COMMENT = "NOrder.svc/InsertOrderComment";
     private static final String SERVICE_TYPE = "Masters.svc/ListServiceTypes";
     private static final String LOCATIONS = "Masters.svc/ListLocations";
     private static final String DELIVERY_TYPE = "Masters.svc/ListMoneyDeliveryTypes";
@@ -76,8 +87,8 @@ public class ApiRequests {
         VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<CashOnTheWayListResponse>(Request.Method.POST, API_BASE_URL + MONEY_HISTORY, loginRequest, CashOnTheWayListResponse.class, null, listener, errorListener));
     }
 
-    public static void getMoneyInProgress(Context context, LoginRequest loginRequest, Response.Listener<CashOnTheWayListResponse> listener, Response.ErrorListener errorListener) {
-        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<CashOnTheWayListResponse>(Request.Method.POST, API_BASE_URL + IN_PROGRESS_MONEY, loginRequest, CashOnTheWayListResponse.class, null, listener, errorListener));
+    public static void getMoneyInProgress(Context context, LoginRequest loginRequest, Response.Listener<CashOnProgressResponse> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<CashOnProgressResponse>(Request.Method.POST, API_BASE_URL + IN_PROGRESS_MONEY, loginRequest, CashOnProgressResponse.class, null, listener, errorListener));
     }
 
     public static void createOrder(Context context, CreateOrderRequest createOrderRequest, Response.Listener<CreateOrderResponse> listener, Response.ErrorListener errorListener) {
@@ -96,11 +107,27 @@ public class ApiRequests {
         VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<DeliveryTypeResponse>(Request.Method.POST, API_BASE_URL + DELIVERY_TYPE, deliveryTypeRequest, DeliveryTypeResponse.class, null, listener, errorListener));
     }
 
-    public static void getServiceType(Context context, LoginRequest serviceTypeRequest, Response.Listener<ServiceTypeResponse> listener, Response.ErrorListener errorListener) {
+    public static void getServiceType(Context context, ServiceTypeRequest serviceTypeRequest, Response.Listener<ServiceTypeResponse> listener, Response.ErrorListener errorListener) {
         VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<ServiceTypeResponse>(Request.Method.POST, API_BASE_URL + SERVICE_TYPE, serviceTypeRequest, ServiceTypeResponse.class, null, listener, errorListener));
+    }
+
+    public static void getServiceTypePrice(Context context, ServiceTypePriceRequest serviceTypePriceRequest, Response.Listener<ServiceTypePriceResponse> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<ServiceTypePriceResponse>(Request.Method.POST, API_BASE_URL + SERVICE_TYPE, serviceTypePriceRequest, ServiceTypePriceResponse.class, null, listener, errorListener));
     }
 
     public static void getLocations(Context context, LoginRequest serviceTypeRequest, Response.Listener<LocationResponse> listener, Response.ErrorListener errorListener) {
         VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<LocationResponse>(Request.Method.POST, API_BASE_URL + LOCATIONS, serviceTypeRequest, LocationResponse.class, null, listener, errorListener));
+    }
+
+    public static void getPackageTypes(Context context, LoginRequest packageTypeRequest, Response.Listener<PackageTypeResponse> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<PackageTypeResponse>(Request.Method.POST, API_BASE_URL + PACKAGE_TYPES, packageTypeRequest, PackageTypeResponse.class, null, listener, errorListener));
+    }
+
+    public static void getComments(Context context, CommentListRequest commentListRequest, Response.Listener<CommentListResponse> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<CommentListResponse>(Request.Method.POST, API_BASE_URL + COMMENT_LIST, commentListRequest, CommentListResponse.class, null, listener, errorListener));
+    }
+
+    public static void insertComment(Context context, InsertCommentRequest commentListRequest, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + INSERT_COMMENT, commentListRequest, LoginResponse.class, null, listener, errorListener));
     }
 }

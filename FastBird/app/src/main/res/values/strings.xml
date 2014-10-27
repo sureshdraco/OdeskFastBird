@@ -13,7 +13,10 @@
     <string name="phone1">Phone 1: %1$s</string>
     <string name="phone2">Phone 2: %1$s</string>
     <string name="total_amount">Total Amount: %1$s</string>
+    <string name="service_type">Service Type: %1$s</string>
     <string name="date">Date: %1$s</string>
     <string name="id">Id: %1$s</string>
+    <string name="collection_amount">Collection Amount: %1$s</string>
     <string name="fbd_number">FBDNumber: %1$s</string>
+    <string name="error_required">Required</string>
 </resources>

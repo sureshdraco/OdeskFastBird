@@ -3,7 +3,7 @@ package appinventor.ai_sameh.FastBird.api.request;
 /**
  * Created by suresh on 12/10/14.
  */
-public class LoginRequest {
+public class LoginRequest extends TokenRequest {
     private String username, password;
 
     public LoginRequest(String username, String password) {
