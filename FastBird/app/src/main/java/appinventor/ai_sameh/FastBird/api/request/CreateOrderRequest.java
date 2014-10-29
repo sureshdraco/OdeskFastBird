@@ -29,4 +29,84 @@ public class CreateOrderRequest extends LoginRequest {
         this.collectionamount = collectionamount;
         this.paymentmethod = paymentmethod;
     }
+
+    public String getServicetype() {
+        return servicetype;
+    }
+
+    public String getMoneydeliverytype() {
+        return moneydeliverytype;
+    }
+
+    public String getDeliverytime() {
+        return deliverytime;
+    }
+
+    public String getBlockno() {
+        return blockno;
+    }
+
+    public String getPickupaddress() {
+        return pickupaddress;
+    }
+
+    public String getContactname() {
+        return contactname;
+    }
+
+    public String getPhone1() {
+        return phone1;
+    }
+
+    public String getPhone2() {
+        return phone2;
+    }
+
+    public String getFlatNo() {
+        return flatNo;
+    }
+
+    public String getBuildingno() {
+        return buildingno;
+    }
+
+    public String getRoad() {
+        return road;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public String getPackagetype() {
+        return packagetype;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public String getLength() {
+        return length;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public String getWidth() {
+        return width;
+    }
+
+    public String getCollectionamount() {
+        return collectionamount;
+    }
+
+    public String getPaymentmethod() {
+        return paymentmethod;
+    }
 }

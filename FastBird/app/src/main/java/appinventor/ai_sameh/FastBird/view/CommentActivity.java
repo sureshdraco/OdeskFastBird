@@ -127,6 +127,12 @@ public class CommentActivity extends Activity {
                     commentArrayAdapter.add(comment);
                 }
                 commentArrayAdapter.notifyDataSetChanged();
+                commentListView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        commentListView.setSelection(commentArrayAdapter.getCount() - 1);
+                    }
+                });
             }
         }, new Response.ErrorListener() {
             @Override

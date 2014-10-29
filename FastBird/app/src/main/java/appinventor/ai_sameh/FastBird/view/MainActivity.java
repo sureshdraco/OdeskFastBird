@@ -115,6 +115,7 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onResponse(UserInfoResponse userInfoResponse) {
                 updateBalanceField();
+                PreferenceUtil.saveDiscountPrice(getApplicationContext(), userInfoResponse.getData().getDiscountPercent());
             }
         }, new Response.ErrorListener() {
             @Override

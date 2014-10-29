@@ -50,10 +50,12 @@ public class ApiRequests {
     private static final String COMMENT_LIST = "NOrder.svc/ListOrderComments";
     private static final String INSERT_COMMENT = "NOrder.svc/InsertOrderComment";
     private static final String SERVICE_TYPE = "Masters.svc/ListServiceTypes";
+    private static final String SERVICE_TYPE_PRICE = "Masters.svc/GetServiceTypePrice";
     private static final String LOCATIONS = "Masters.svc/ListLocations";
     private static final String DELIVERY_TYPE = "Masters.svc/ListMoneyDeliveryTypes";
     private static final String MONEY_HISTORY = "MoneyCollection.svc/GetCashHistory";
     private static final String USER_INFO_API_URL = "Clients.svc/GetMyInformation";
+    private static final String CHANGE_PASSWORD = "Clients.svc/ChangePassword";
 
     public static void login(Context context, String email, String password, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
         VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + LOGIN_API_URL, new LoginRequest(email, password), LoginResponse.class, null, listener, errorListener));
@@ -112,7 +114,7 @@ public class ApiRequests {
     }
 
     public static void getServiceTypePrice(Context context, ServiceTypePriceRequest serviceTypePriceRequest, Response.Listener<ServiceTypePriceResponse> listener, Response.ErrorListener errorListener) {
-        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<ServiceTypePriceResponse>(Request.Method.POST, API_BASE_URL + SERVICE_TYPE, serviceTypePriceRequest, ServiceTypePriceResponse.class, null, listener, errorListener));
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<ServiceTypePriceResponse>(Request.Method.POST, API_BASE_URL + SERVICE_TYPE_PRICE, serviceTypePriceRequest, ServiceTypePriceResponse.class, null, listener, errorListener));
     }
 
     public static void getLocations(Context context, LoginRequest serviceTypeRequest, Response.Listener<LocationResponse> listener, Response.ErrorListener errorListener) {
@@ -129,5 +131,9 @@ public class ApiRequests {
 
     public static void insertComment(Context context, InsertCommentRequest commentListRequest, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
         VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + INSERT_COMMENT, commentListRequest, LoginResponse.class, null, listener, errorListener));
+    }
+
+    public static void changePassword(Context context, ChangePasswordRequest changePasswordRequest, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
+        VolleyClient.getInstance(context).getRequestQueue().add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + CHANGE_PASSWORD, changePasswordRequest, LoginResponse.class, null, listener, errorListener));
     }
 }

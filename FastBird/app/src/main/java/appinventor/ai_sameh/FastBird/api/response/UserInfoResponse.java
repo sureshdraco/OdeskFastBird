@@ -13,7 +13,7 @@ public class UserInfoResponse {
 
     public class d {
         private String Error;
-        private String BankAccountName, BankAccountNo, BankName, CPR, CRNo, ClientId, CompanyName, Country, CountryId, Credits, Email, FaxNo, FirstName, LastName, Mobile, Phone1, Phone2;
+        private String BankAccountName, BankAccountNo, BankName, CPR, CRNo, ClientId, CompanyName, Country, CountryId, Credits, Email, FaxNo, FirstName, LastName, Mobile, Phone1, Phone2, DiscountPercent;
 
         public String getError() {
             return Error;
@@ -87,5 +87,8 @@ public class UserInfoResponse {
             return Phone2;
         }
 
+        public String getDiscountPercent() {
+            return DiscountPercent;
+        }
     }
 }

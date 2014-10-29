@@ -13,4 +13,8 @@ public class DataDescription {
     public String getId() {
         return Id;
     }
+
+    public String getPrice() {
+        return Price;
+    }
 }

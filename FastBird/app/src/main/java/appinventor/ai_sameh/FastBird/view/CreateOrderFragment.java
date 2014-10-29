@@ -1,5 +1,6 @@
 package appinventor.ai_sameh.FastBird.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
@@ -331,6 +332,12 @@ public class CreateOrderFragment extends Fragment {
         return !cacheString.equals(networkString);
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Crouton.showText(getActivity(), "Order Created", Style.INFO);
+    }
+
     private void initView() {
         addressTitle = (EditText) getActivity().findViewById(R.id.addressTitle);
         collectionAmount = (EditText) getActivity().findViewById(R.id.collectionAmount);
@@ -397,72 +404,60 @@ public class CreateOrderFragment extends Fragment {
                 } catch (Exception ex) {
 
                 }
-                String subTotalString = subTotal.getText().toString();
-                String discountString = discount.getText().toString();
-                String totalString = total.getText().toString();
-                if(TextUtils.isEmpty(addressTitleString)) {
+                if (TextUtils.isEmpty(addressTitleString)) {
                     addressTitle.setError(getActivity().getString(R.string.error_required));
                     addressTitle.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(contactNameString)) {
+                if (TextUtils.isEmpty(contactNameString)) {
                     contactName.setError(getActivity().getString(R.string.error_required));
                     contactName.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(phone1String)) {
+                if (TextUtils.isEmpty(phone1String)) {
                     phone1.setError(getActivity().getString(R.string.error_required));
                     phone1.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(buildingNoString)) {
+                if (TextUtils.isEmpty(buildingNoString)) {
                     buildingNo.setError(getActivity().getString(R.string.error_required));
                     buildingNo.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(roadString)) {
+                if (TextUtils.isEmpty(roadString)) {
                     road.setError(getActivity().getString(R.string.error_required));
                     road.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(blockNoString)) {
+                if (TextUtils.isEmpty(blockNoString)) {
                     blockNo.setError(getActivity().getString(R.string.error_required));
                     blockNo.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(lengthString)) {
+                if (TextUtils.isEmpty(lengthString)) {
                     length.setError(getActivity().getString(R.string.error_required));
                     length.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(weightString)) {
+                if (TextUtils.isEmpty(weightString)) {
                     weight.setError(getActivity().getString(R.string.error_required));
                     weight.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(heightString)) {
+                if (TextUtils.isEmpty(heightString)) {
                     height.setError(getActivity().getString(R.string.error_required));
                     height.requestFocus();
                     return;
                 }
-                if(TextUtils.isEmpty(widthString)) {
+                if (TextUtils.isEmpty(widthString)) {
                     width.setError(getActivity().getString(R.string.error_required));
                     width.requestFocus();
                     return;
                 }
 
                 CreateOrderRequest createOrderRequest = new CreateOrderRequest(username, password, pickupAddress, contactNameString, phone1String, phone2String, flatNoString, buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString, heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString);
-                ApiRequests.createOrder(getActivity(), createOrderRequest, new Response.Listener<CreateOrderResponse>() {
-                    @Override
-                    public void onResponse(CreateOrderResponse createOrderResponse) {
-                        Log.d(TAG, createOrderResponse.toString());
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError volleyError) {
-                        Crouton.showText(getActivity(), "Failed to create!", Style.ALERT);
-                    }
-                });
+                PreferenceUtil.savePendingCreateOrderRequest(getActivity(), createOrderRequest);
+                getActivity().startActivityForResult(new Intent(getActivity(), CreateOrderConfirmationActivity.class), 1);
             }
         });
         pickupAddressSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

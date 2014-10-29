@@ -381,92 +381,6 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sub Total (*)" />
-
-            <EditText
-                android:enabled="false"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:id="@+id/subTotal"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Discount" />
-
-            <EditText
-                android:enabled="false"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:id="@+id/discount"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_marginTop="8dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Total" />
-
-            <EditText
-                android:enabled="false"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:id="@+id/total"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Money Collection"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Collection Amount (Shipment Price + Delivery Charge)" />
-
-            <EditText
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:id="@+id/collectionAmount"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
         <TextView
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
@@ -497,6 +411,6 @@
             android:id="@+id/submitButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Submit" />
+            android:text="Get Price" />
     </LinearLayout>
 </ScrollView>

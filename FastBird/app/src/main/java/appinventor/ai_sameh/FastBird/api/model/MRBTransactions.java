@@ -24,4 +24,14 @@ public class MRBTransactions {
     public ArrayList<MoneyDetail> getDetails() {
         return Details;
     }
+
+    @Override
+    public String toString() {
+        return "MRBTransactions{" +
+                "Date='" + Date + '\'' +
+                ", Id='" + Id + '\'' +
+                ", TotalAmounts='" + TotalAmounts + '\'' +
+                ", Details=" + Details +
+                '}';
+    }
 }

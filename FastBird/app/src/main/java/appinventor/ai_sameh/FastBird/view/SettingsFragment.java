@@ -1,6 +1,8 @@
 package appinventor.ai_sameh.FastBird.view;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -21,6 +24,8 @@ import appinventor.ai_sameh.FastBird.FastBirdApplication;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
+import appinventor.ai_sameh.FastBird.api.ChangePasswordRequest;
+import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
 import appinventor.ai_sameh.FastBird.api.request.UnregisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
@@ -80,6 +85,7 @@ public class SettingsFragment extends Fragment {
         PreferenceUtil.saveLastName(getActivity(), userInfoResponse.getData().getLastName());
         PreferenceUtil.saveBankName(getActivity(), userInfoResponse.getData().getBankName());
         PreferenceUtil.saveCredits(getActivity(), userInfoResponse.getData().getCredits());
+        PreferenceUtil.saveDiscountPrice(getActivity(), userInfoResponse.getData().getDiscountPercent());
         ((MainActivity) getActivity()).updateBalance();
     }
 
@@ -91,6 +97,67 @@ public class SettingsFragment extends Fragment {
         email = (TextView) getActivity().findViewById(R.id.email);
         bankName = (TextView) getActivity().findViewById(R.id.bankName);
         credits = (TextView) getActivity().findViewById(R.id.credits);
+        getActivity().findViewById(R.id.changePassword).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater li = LayoutInflater.from(getActivity());
+                View promptsView = li.inflate(R.layout.change_password_dialog, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        getActivity());
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText currentPassword = (EditText) promptsView
+                        .findViewById(R.id.currentPassword);
+                final EditText password = (EditText) promptsView
+                        .findViewById(R.id.password);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(true)
+                        .setPositiveButton("OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(final DialogInterface dialog, int id) {
+                                        String user = PreferenceUtil.getEmail(getActivity());
+                                        getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                                        ApiRequests.changePassword(getActivity(), new ChangePasswordRequest(user, currentPassword.getText().toString(), password.getText().toString()), new Response.Listener<LoginResponse>() {
+                                            @Override
+                                            public void onResponse(LoginResponse loginResponse) {
+                                                getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                                                if (loginResponse.getData().getError() == null) {
+                                                    Crouton.showText(getActivity(), "Password Changed", Style.INFO);
+                                                    PreferenceUtil.savePassword(getActivity(), password.getText().toString());
+                                                } else {
+                                                    Crouton.showText(getActivity(), "Failed", Style.ALERT);
+                                                }
+                                                dialog.dismiss();
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError volleyError) {
+                                                getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                                                Crouton.showText(getActivity(), "Failed", Style.ALERT);
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+            }
+        });
         View logout = getActivity().findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,7 +165,7 @@ public class SettingsFragment extends Fragment {
                 String email = PreferenceUtil.getEmail(getActivity());
                 String password = PreferenceUtil.getPassword(getActivity());
                 if (!TextUtils.isEmpty(PreferenceUtil.getRegistrationId(getActivity()))) {
-                    ApiRequests.unregisterDevice(getActivity(), new UnregisterDeviceRequest(PreferenceUtil.getRegistrationId(getActivity()), email, password), new Response.Listener<RegisterDeviceResponse>() {
+                    ApiRequests.unregisterDevice(getActivity(), new UnregisterDeviceRequest(email, password, PreferenceUtil.getRegistrationId(getActivity())), new Response.Listener<RegisterDeviceResponse>() {
                         @Override
                         public void onResponse(RegisterDeviceResponse registerDeviceResponse) {
                             unregisterFromGcm();

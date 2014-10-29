@@ -6,8 +6,8 @@ package appinventor.ai_sameh.FastBird.api.request;
 public class InsertCommentRequest extends CommentListRequest {
     private String comment;
 
-    public InsertCommentRequest(String username, String password, String fbdNumber, String comment) {
-        super(username, password, fbdNumber);
+    public InsertCommentRequest(String username, String password, String fbdnumber, String comment) {
+        super(username, password, fbdnumber);
         this.comment = comment;
     }
 }

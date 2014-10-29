@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -17,6 +18,7 @@ import appinventor.ai_sameh.FastBird.api.model.DataDescription;
 import appinventor.ai_sameh.FastBird.api.model.DeliveryTime;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
 import appinventor.ai_sameh.FastBird.api.model.Order;
+import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
 import appinventor.ai_sameh.FastBird.view.MainActivity;
 
 /**
@@ -56,6 +58,8 @@ public class PreferenceUtil {
     private static final String PREF_PACKAGE_TYPES = "packageTypes";
     private static final String PREF_SERVICE_TYPE = "serviceTypes";
     private static final String PREF_ORDER_IN_PROGRESS = "orderInProgress";
+    private static final String PENDING_CREATE_ORDER_REQUEST = "pendingCreateOrderRequest";
+    private static final String DISCOUNT_PRICE = "discountPrice";
 
     // Preference backend access.
     private static SharedPreferences.Editor prefEditor;
@@ -86,12 +90,15 @@ public class PreferenceUtil {
     public static String getEmail(Context context) {
         return getPref(context).getString(EMAIL, "");
     }
+
     public static String getFirstName(Context context) {
         return getPref(context).getString(FIRST_NAME, "");
     }
+
     public static String getLastName(Context context) {
         return getPref(context).getString(LAST_NAME, "");
     }
+
     public static String getCountry(Context context) {
         return getPref(context).getString(COUNTRY, "");
     }
@@ -124,11 +131,13 @@ public class PreferenceUtil {
         getPrefEditor(context).putString(COUNTRY, email).commit();
     }
 
-
     public static void saveCredits(Context context, String credits) {
         getPrefEditor(context).putString(CREDITS, credits).commit();
     }
 
+    public static void saveDiscountPrice(Context context, String credits) {
+        getPrefEditor(context).putString(DISCOUNT_PRICE, credits).commit();
+    }
 
     public static void saveBankName(Context context, String bankName) {
         getPrefEditor(context).putString(BANK_NAME, bankName).commit();
@@ -144,6 +153,10 @@ public class PreferenceUtil {
 
     public static String getCredits(Context context) {
         return getPref(context).getString(CREDITS, "");
+    }
+
+    public static String getDiscountPrice(Context context) {
+        return getPref(context).getString(DISCOUNT_PRICE, "");
     }
 
 
@@ -390,4 +403,12 @@ public class PreferenceUtil {
         getPrefEditor(context).putString(PREF_ORDER_IN_PROGRESS, new Gson().toJson(serviceTypes)).commit();
     }
 
+    public static CreateOrderRequest getPendingCreateOrderRequest(Context context) {
+        String createOrderRequest = getPref(context).getString(PENDING_CREATE_ORDER_REQUEST, "");
+        return new Gson().fromJson(createOrderRequest, CreateOrderRequest.class);
+    }
+
+    public static void savePendingCreateOrderRequest(Context context, CreateOrderRequest createOrderRequest) {
+        getPrefEditor(context).putString(PENDING_CREATE_ORDER_REQUEST, new Gson().toJson(createOrderRequest)).commit();
+    }
 }
