@@ -19,4 +19,7 @@
     <string name="collection_amount">Collection Amount: %1$s</string>
     <string name="fbd_number">FBDNumber: %1$s</string>
     <string name="error_required">Required</string>
+    <string name="withdraw_money_mrbtotal">MRBTotal: %1$s</string>
+    <string name="withdraw_money_checque_price">Cheque Price: %1$s</string>
+    <string name="withdraw_money_net_total">Net Total: %1$s</string>
 </resources>

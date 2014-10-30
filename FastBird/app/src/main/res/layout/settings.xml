@@ -162,6 +162,14 @@
                 android:text="Change Password" />
 
         </LinearLayout>
+
+        <Button
+            android:layout_marginTop="25dp"
+            android:id="@+id/withdrawBtn"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Withdraw" />
     </LinearLayout>
 
     <TextView

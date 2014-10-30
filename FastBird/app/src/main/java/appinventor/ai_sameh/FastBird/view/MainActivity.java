@@ -100,14 +100,6 @@ public class MainActivity extends FragmentActivity {
                 SettingsFragment.class, b);
 
         // setContentView(mTabHost);
-        findViewById(R.id.withdrawBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "not implemented", Toast.LENGTH_SHORT).show();
-                NotificationUtil.cacheNotification(getApplicationContext(), "FastBird", "this is test content");
-                NotificationUtil.sendNotification(MainActivity.this, "FastBird", "This is test content, delivered");
-            }
-        });
     }
 
     public void updateBalance() {
