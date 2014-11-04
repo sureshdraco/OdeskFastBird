@@ -143,6 +143,8 @@ public class WithFastBirdOrdersFragment extends Fragment {
     }
 
     private void getHistoryOrders(String email, String password) {
+        orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, false);
+        ordersListView.setAdapter(orderArrayAdapter);
         final String cachedOrders = PreferenceUtil.getMyHistoryOrders(getActivity());
         Type listType = new TypeToken<ArrayList<Order>>() {
         }.getType();
