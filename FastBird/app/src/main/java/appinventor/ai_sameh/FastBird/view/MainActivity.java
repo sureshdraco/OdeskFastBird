@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTabHost;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,9 +27,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.adapter.CashArrayAdapter;
+import appinventor.ai_sameh.FastBird.adapter.CashDetailListArrayAdapter;
 import appinventor.ai_sameh.FastBird.adapter.CashInProgressArrayAdapter;
+import appinventor.ai_sameh.FastBird.adapter.OrderArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
+import appinventor.ai_sameh.FastBird.api.model.MoneyDetail;
 import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.api.request.RegisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
@@ -106,8 +110,7 @@ public class MainActivity extends FragmentActivity {
         ApiRequests.getUserInformation(this, PreferenceUtil.getEmail(this), PreferenceUtil.getPassword(this), new Response.Listener<UserInfoResponse>() {
             @Override
             public void onResponse(UserInfoResponse userInfoResponse) {
-                updateBalanceField();
-                PreferenceUtil.saveDiscountPrice(getApplicationContext(), userInfoResponse.getData().getDiscountPercent());
+                cacheResponse(userInfoResponse);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -117,8 +120,23 @@ public class MainActivity extends FragmentActivity {
         updateBalanceField();
     }
 
-    private void updateBalanceField() {
-        String balanceStr = PreferenceUtil.getCredits(this);
+    private void cacheResponse(UserInfoResponse userInfoResponse) {
+        if (userInfoResponse == null) {
+            Crouton.makeText(this, "Unable to get user information.", Style.ALERT);
+            return;
+        }
+        PreferenceUtil.saveEmail(this, userInfoResponse.getData().getEmail());
+        PreferenceUtil.saveUserInfo(this, userInfoResponse);
+        updateBalanceField();
+    }
+
+    public void updateBalanceField() {
+        String balanceStr = "";
+        try {
+            balanceStr = PreferenceUtil.getUserInfo(this).getData().getCredits();
+        } catch (Exception e) {
+
+        }
         balance.setText(getString(R.string.balance, balanceStr));
     }
 
@@ -238,8 +256,11 @@ public class MainActivity extends FragmentActivity {
         Dialog dialog = null;
 
         switch (id) {
-            case 1:
+            case OrderArrayAdapter.ORDER_INFO_DIALOG:
                 dialog = OrderInfoDialog.showOrderDetail(this);
+                break;
+            case OrderArrayAdapter.ORDER_TRACK_STATUS_DIALOG:
+                dialog = OrderTrackStatusDialog.showOrderTrackStatusDetail(this);
                 break;
             case CashArrayAdapter.DIALOG_CASH_IN_WAY:
             case CashArrayAdapter.DIALOG_CASH_HISTORY:
@@ -260,14 +281,16 @@ public class MainActivity extends FragmentActivity {
         super.onPrepareDialog(id, dialog);
 
         switch (id) {
-            case 1:
+            case OrderArrayAdapter.ORDER_INFO_DIALOG:
                 String selectedOrder = PreferenceUtil.getSelectedOrder(this);
                 if (!TextUtils.isEmpty(selectedOrder)) {
-                    ((TextView) dialog.findViewById(R.id.detailContent)).setText(selectedOrder);
+                    OrderInfoDialog.setupOrderDetailUi(getApplicationContext(), dialog, new Gson().fromJson(selectedOrder, Order.class));
                 } else {
                     dialog.dismiss();
                 }
-
+                break;
+            case OrderArrayAdapter.ORDER_TRACK_STATUS_DIALOG:
+                OrderTrackStatusDialog.setupOrderTrackStatusDetailUi(this, dialog, PreferenceUtil.getSelectedOrderTrackHistory(context));
                 break;
             case CashArrayAdapter.DIALOG_CASH_IN_WAY:
                 String selectedCashInWay = PreferenceUtil.getSelectedCashInWay(this);
@@ -275,9 +298,15 @@ public class MainActivity extends FragmentActivity {
                     MRBTransactions transactions = new Gson().fromJson(PreferenceUtil.getSelectedCashInWay(this), MRBTransactions.class);
                     ((TextView) dialog.findViewById(R.id.id)).setText(getResources().getString(R.string.id, transactions.getId()));
                     ((TextView) dialog.findViewById(R.id.date)).setText(getResources().getString(R.string.date, transactions.getDate()));
-                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getId()));
+                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getTotalAmounts()));
+
                     if (transactions.getDetails() != null && transactions.getDetails().size() > 0) {
-                        ((TextView) dialog.findViewById(R.id.detailContent)).setText(transactions.getDetails().toString());
+                        ListView cashList = (ListView) dialog.findViewById(R.id.moneyDetailList);
+                        CashDetailListArrayAdapter cashDetailListArrayAdapter = new CashDetailListArrayAdapter(context, R.layout.cash_card_detail_item);
+                        for (MoneyDetail moneyDetail : transactions.getDetails()) {
+                            cashDetailListArrayAdapter.add(moneyDetail);
+                        }
+                        cashList.setAdapter(cashDetailListArrayAdapter);
                     }
                 } else {
                     dialog.dismiss();
@@ -290,9 +319,15 @@ public class MainActivity extends FragmentActivity {
                     MRBTransactions transactions = new Gson().fromJson(PreferenceUtil.getSelectedCashHistory(this), MRBTransactions.class);
                     ((TextView) dialog.findViewById(R.id.id)).setText(getResources().getString(R.string.id, transactions.getId()));
                     ((TextView) dialog.findViewById(R.id.date)).setText(getResources().getString(R.string.date, transactions.getDate()));
-                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getId()));
+                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getTotalAmounts()));
+
                     if (transactions.getDetails() != null && transactions.getDetails().size() > 0) {
-                        ((TextView) dialog.findViewById(R.id.detailContent)).setText(transactions.getDetails().toString());
+                        ListView cashList = (ListView) dialog.findViewById(R.id.moneyDetailList);
+                        CashDetailListArrayAdapter cashDetailListArrayAdapter = new CashDetailListArrayAdapter(context, R.layout.cash_card_detail_item);
+                        for (MoneyDetail moneyDetail : transactions.getDetails()) {
+                            cashDetailListArrayAdapter.add(moneyDetail);
+                        }
+                        cashList.setAdapter(cashDetailListArrayAdapter);
                     }
                 } else {
                     dialog.dismiss();
@@ -302,7 +337,7 @@ public class MainActivity extends FragmentActivity {
             case CashInProgressArrayAdapter.DIALOG_CASH_IN_PROGRESS:
                 Order selectedOrder1 = PreferenceUtil.getSelectedCashInProgress(this);
                 if (selectedOrder1 != null) {
-                        ((TextView) dialog.findViewById(R.id.detailContent)).setText(selectedOrder1.toString());
+                    OrderInfoDialog.setupOrderDetailUi(context, dialog, selectedOrder1);
                 } else {
                     dialog.dismiss();
                 }

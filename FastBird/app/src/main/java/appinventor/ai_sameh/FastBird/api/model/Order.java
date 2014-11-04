@@ -4,54 +4,115 @@ package appinventor.ai_sameh.FastBird.api.model;
  * Created by suresh on 21/10/14.
  */
 public class Order {
-    private String FBDNumber, ProgressStatus, phone1, phone2, orderTo, PickupAddressTitle, DeliveryAddressTitle, CollectionAmount, ServiceType;
-    private String MoneyDelivered, NetTotal, MoneyDeliveryType;
+    private String FBDNumber, DeliveryPhone1, DeliveryPhone2, DeliveryContactName, PickupAddressTitle, DeliveryAddressTitle, CollectionAmount;
+    private String ApprovalDate, DeliveryLocation, DeliveryNotes, DeliveryRoad, FastPayCode, FastPayStatus, MoneyDelivered, EPaymentDate,
+            MoneyDeliveryType, NetTotal, OrderDate, ProgressStatus, ProgressStatusDate, ServiceType, Size, Weight, ReferenceNo, DeliveryBlockNo, DeliveryBuildingNo, DeliveryFlatNo;
 
     public String getFBDNumber() {
-        return FBDNumber;
+        return FBDNumber == null ? "" : FBDNumber;
     }
 
     public String getProgressStatus() {
-        return ProgressStatus;
+        return ProgressStatus == null ? "" : ProgressStatus;
     }
 
-    public String getPhone1() {
-        return phone1;
+    public String getDeliveryPhone1() {
+        return DeliveryPhone1 == null ? "" : DeliveryPhone1;
     }
 
-    public String getPhone2() {
-        return phone2;
+    public String getDeliveryPhone2() {
+        return DeliveryPhone2 == null ? "" : DeliveryPhone2;
     }
 
-    public String getOrderTo() {
-        return orderTo;
+    public String getDeliveryContactName() {
+        return DeliveryContactName == null ? "" : DeliveryContactName;
     }
 
     public String getPickupAddressTitle() {
-        return PickupAddressTitle;
+        return PickupAddressTitle == null ? "" : PickupAddressTitle;
     }
 
     public String getDeliveryAddressTitle() {
-        return DeliveryAddressTitle;
+        return DeliveryAddressTitle == null ? "" : DeliveryAddressTitle;
     }
 
     public String getCollectionAmount() {
-        return CollectionAmount;
+        return CollectionAmount == null ? "" : CollectionAmount;
     }
 
     public String getServiceType() {
-        return ServiceType;
+        return ServiceType == null ? "" : ServiceType;
     }
 
     public String getMoneyDelivered() {
-        return MoneyDelivered;
+        return MoneyDelivered == null ? "" : MoneyDelivered;
     }
 
     public String getNetTotal() {
-        return NetTotal;
+        return NetTotal == null ? "" : NetTotal;
     }
 
     public String getMoneyDeliveryType() {
-        return MoneyDeliveryType;
+        return MoneyDeliveryType == null ? "" : MoneyDeliveryType;
+    }
+
+    public String getApprovalDate() {
+        return ApprovalDate == null ? "" : ApprovalDate;
+    }
+
+    public String getDeliveryLocation() {
+        return DeliveryLocation == null ? "" : DeliveryLocation;
+    }
+
+    public String getDeliveryNotes() {
+        return DeliveryNotes == null ? "" : DeliveryNotes;
+    }
+
+    public String getDeliveryRoad() {
+        return DeliveryRoad == null ? "" : DeliveryRoad;
+    }
+
+    public String getFastPayCode() {
+        return FastPayCode == null ? "" : FastPayCode;
+    }
+
+    public String getFastPayStatus() {
+        return FastPayStatus == null ? "" : FastPayStatus;
+    }
+
+    public String getOrderDate() {
+        return OrderDate == null ? "" : OrderDate;
+    }
+
+    public String getProgressStatusDate() {
+        return ProgressStatusDate == null ? "" : ProgressStatusDate;
+    }
+
+    public String getSize() {
+        return Size == null ? "" : Size;
+    }
+
+    public String getWeight() {
+        return Weight == null ? "" : Weight;
+    }
+
+    public String getReferenceNo() {
+        return ReferenceNo == null ? "" : ReferenceNo;
+    }
+
+    public String getDeliveryBlockNo() {
+        return DeliveryBlockNo == null ? "" : DeliveryBlockNo;
+    }
+
+    public String getDeliveryBuildingNo() {
+        return DeliveryBuildingNo == null ? "" : DeliveryBuildingNo;
+    }
+
+    public String getDeliveryFlatNo() {
+        return DeliveryFlatNo == null ? "" : DeliveryFlatNo;
+    }
+
+    public String getEPaymentDate() {
+        return EPaymentDate == null ? "" : EPaymentDate;
     }
 }

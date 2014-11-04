@@ -1,13 +1,17 @@
 package appinventor.ai_sameh.FastBird.view;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,8 +24,10 @@ import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.model.DataDescription;
 import appinventor.ai_sameh.FastBird.api.model.DeliveryTime;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
+import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.request.ServiceTypePriceRequest;
 import appinventor.ai_sameh.FastBird.api.response.CreateOrderResponse;
+import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import appinventor.ai_sameh.FastBird.api.response.ServiceTypePriceResponse;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -50,30 +56,66 @@ public class CreateOrderConfirmationActivity extends Activity {
         total = (EditText) findViewById(R.id.total);
         collectionAmount = (EditText) findViewById(R.id.collectionAmount);
         discount = (EditText) findViewById(R.id.discount);
-        discount.setText(PreferenceUtil.getDiscountPrice(this));
+        discount.setText(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent() + "%");
         float deliveryTimePrice = getDeliverTimePrice(PreferenceUtil.getPendingCreateOrderRequest(getApplicationContext()));
         float deliveryTypePrice = getDeliverTypePrice(PreferenceUtil.getPendingCreateOrderRequest(getApplicationContext()));
         float subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
-        float discountValue = Float.parseFloat(PreferenceUtil.getDiscountPrice(getApplicationContext()));
+        float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
         subTotal.setText(String.valueOf(subtotalValue));
         float totalValue = subtotalValue - (discountValue / 100);
-        total.setText(String.valueOf(totalValue));
+
+        total.setText(String.valueOf(totalValue < 0 ? 0 : totalValue));
         ((Button) findViewById(R.id.submitButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
                 ApiRequests.createOrder(CreateOrderConfirmationActivity.this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
                     @Override
                     public void onResponse(CreateOrderResponse createOrderResponse) {
+                        dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        if (createOrderResponse.getData().getError() != null) {
+                            Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
+                        }
+                        showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
                         Log.d(TAG, createOrderResponse.toString());
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError volleyError) {
+                        dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
                         Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to create!", Style.ALERT);
                     }
                 });
             }
         });
+    }
+
+    private void showCompletedDialog(String fbdNumber, String fastBirdNumber) {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.order_completion_info, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        ((TextView) promptsView.findViewById(R.id.fbdNumber)).setText(getString(R.string.fbd_number, fbdNumber));
+        ((TextView) promptsView.findViewById(R.id.fastBirdNumber)).setText(getString(R.string.fast_bird_number, fastBirdNumber));
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
     }
 
     private void getServiceTypePrice() {

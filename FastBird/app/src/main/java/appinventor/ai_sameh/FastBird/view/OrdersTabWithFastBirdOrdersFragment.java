@@ -40,6 +40,11 @@ public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
 		b.putString("key", "With Me");
 		mTabHost.addTab(mTabHost.newTabSpec("with_me")
 				.setIndicator("With Me"), WithFastBirdOrdersFragment.class, b);
+
+        b = new Bundle();
+        b.putString("key", "History");
+        mTabHost.addTab(mTabHost.newTabSpec("history")
+                .setIndicator("History"), WithFastBirdOrdersFragment.class, b);
 		return mTabHost;
 	} 
 } 

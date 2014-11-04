@@ -21,15 +21,17 @@ import appinventor.ai_sameh.FastBird.api.model.Order;
 public class CommentArrayAdapter extends ArrayAdapter<Comment> {
     private List<Comment> commentList = new ArrayList<Comment>();
     private Context context;
+    private String firstName;
 
     static class CommentViewHolder {
-        TextView commentText;
+        TextView commentText, userName, date;
         ImageView avatar;
     }
 
     public CommentArrayAdapter(Context context, int textViewResourceId) {
         super(context, textViewResourceId);
         this.context = context;
+        firstName = PreferenceUtil.getUserInfo(getContext()).getData().getFirstName();
     }
 
     @Override
@@ -57,6 +59,8 @@ public class CommentArrayAdapter extends ArrayAdapter<Comment> {
             row = inflater.inflate(R.layout.comment_item, parent, false);
             viewHolder = new CommentViewHolder();
             viewHolder.commentText = (TextView) row.findViewById(R.id.commentText);
+            viewHolder.userName = (TextView) row.findViewById(R.id.username);
+            viewHolder.date = (TextView) row.findViewById(R.id.commentDate);
             viewHolder.avatar = (ImageView) row.findViewById(R.id.commentImage);
             row.setTag(viewHolder);
         } else {
@@ -64,10 +68,13 @@ public class CommentArrayAdapter extends ArrayAdapter<Comment> {
         }
         Comment comment = getItem(position);
         viewHolder.commentText.setText(comment.getComment());
+        viewHolder.date.setText(comment.getDate());
         if(comment.getEntryMode() == 1) {
             viewHolder.avatar.setImageResource(R.drawable.user_avatar);
+            viewHolder.userName.setText(firstName);
         } else {
             viewHolder.avatar.setImageResource(R.drawable.admin_avatar);
+            viewHolder.userName.setText("Support");
         }
         return row;
     }

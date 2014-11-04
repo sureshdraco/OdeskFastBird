@@ -20,35 +20,35 @@ public class UserInfoResponse {
         }
 
         public String getBankAccountName() {
-            return BankAccountName;
+            return BankAccountName == null ? "" : BankAccountName;
         }
 
         public String getBankAccountNo() {
-            return BankAccountNo;
+            return BankAccountNo == null ? "" : BankAccountNo;
         }
 
         public String getBankName() {
-            return BankName;
+            return BankName == null ? "" : BankName;
         }
 
         public String getCPR() {
-            return CPR;
+            return CPR == null ? "" : CPR;
         }
 
         public String getCRNo() {
-            return CRNo;
+            return CRNo == null ? "" : CRNo;
         }
 
         public String getClientId() {
-            return ClientId;
+            return ClientId == null ? "" : ClientId;
         }
 
         public String getCompanyName() {
-            return CompanyName;
+            return CompanyName == null ? "" : CompanyName;
         }
 
         public String getCountry() {
-            return Country;
+            return Country == null ? "" : Country;
         }
 
         public String getCountryId() {
@@ -56,39 +56,39 @@ public class UserInfoResponse {
         }
 
         public String getCredits() {
-            return Credits;
+            return Credits == null ? "" : Credits;
         }
 
         public String getEmail() {
-            return Email;
+            return Email == null ? "" : Email;
         }
 
         public String getFaxNo() {
-            return FaxNo;
+            return FaxNo == null ? "" : FaxNo;
         }
 
         public String getFirstName() {
-            return FirstName;
+            return FirstName == null ? "" : FirstName;
         }
 
         public String getLastName() {
-            return LastName;
+            return LastName == null ? "" : LastName;
         }
 
         public String getMobile() {
-            return Mobile;
+            return Mobile == null ? "" : Mobile;
         }
 
         public String getPhone1() {
-            return Phone1;
+            return Phone1 == null ? "" : Phone1;
         }
 
         public String getPhone2() {
-            return Phone2;
+            return Phone2 == null ? "" : Phone2;
         }
 
         public String getDiscountPercent() {
-            return DiscountPercent;
+            return DiscountPercent == null ? "" : DiscountPercent;
         }
     }
 }

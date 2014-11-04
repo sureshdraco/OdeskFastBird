@@ -17,11 +17,14 @@ public class CreateOrderResponse {
     }
 
     public class d {
-        private String Error;
-        private ArrayList<DataDescription> Locations;
+        private String Error, FBDNumber, FastPayCode;
 
-        public ArrayList<DataDescription> getLocations() {
-            return Locations;
+        public String getFBDNumber() {
+            return FBDNumber;
+        }
+
+        public String getFastPayCode() {
+            return FastPayCode;
         }
 
         public String getError() {

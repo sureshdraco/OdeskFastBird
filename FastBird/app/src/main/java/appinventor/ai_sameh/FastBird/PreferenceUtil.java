@@ -19,6 +19,8 @@ import appinventor.ai_sameh.FastBird.api.model.DeliveryTime;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
 import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
+import appinventor.ai_sameh.FastBird.api.response.OrderTrackHistoryResponse;
+import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
 import appinventor.ai_sameh.FastBird.view.MainActivity;
 
 /**
@@ -30,12 +32,6 @@ public class PreferenceUtil {
     private static final String EMAIL = "email";
     private static final String PASSWORD = "password";
     public static final String PREF_STORAGE_LOCATION = "FastbirdClientApp";
-    private static final String FIRST_NAME = "firstName";
-    private static final String LAST_NAME = "lastName";
-    private static final String COUNTRY = "country";
-    private static final String PHONE = "phone";
-    private static final String BANK_NAME = "bankName";
-    private static final String CREDITS = "credits";
     private static final String TAG = PreferenceUtil.class.getSimpleName();
     public static final String EXTRA_MESSAGE = "message";
     public static final String PROPERTY_REG_ID = "registration_id";
@@ -60,6 +56,9 @@ public class PreferenceUtil {
     private static final String PREF_ORDER_IN_PROGRESS = "orderInProgress";
     private static final String PENDING_CREATE_ORDER_REQUEST = "pendingCreateOrderRequest";
     private static final String DISCOUNT_PRICE = "discountPrice";
+    private static final String USER_INFO = "userInfo";
+    private static final String MY_HISTORY_ORDERS = "myHistoryOrders";
+    private static final String SELECTED_ORDER_TRACK_HISTORY = "selectedOrderTrackHistory";
 
     // Preference backend access.
     private static SharedPreferences.Editor prefEditor;
@@ -91,22 +90,6 @@ public class PreferenceUtil {
         return getPref(context).getString(EMAIL, "");
     }
 
-    public static String getFirstName(Context context) {
-        return getPref(context).getString(FIRST_NAME, "");
-    }
-
-    public static String getLastName(Context context) {
-        return getPref(context).getString(LAST_NAME, "");
-    }
-
-    public static String getCountry(Context context) {
-        return getPref(context).getString(COUNTRY, "");
-    }
-
-    public static String getPhone(Context context) {
-        return getPref(context).getString(PHONE, "");
-    }
-
     public static String getPassword(Context context) {
         return getPref(context).getString(PASSWORD, "");
     }
@@ -115,50 +98,13 @@ public class PreferenceUtil {
         getPrefEditor(context).putString(EMAIL, email).commit();
     }
 
-    public static void savePhone(Context context, String email) {
-        getPrefEditor(context).putString(PHONE, email).commit();
-    }
-
-    public static void saveLastName(Context context, String email) {
-        getPrefEditor(context).putString(LAST_NAME, email).commit();
-    }
-
-    public static void saveFirstName(Context context, String email) {
-        getPrefEditor(context).putString(FIRST_NAME, email).commit();
-    }
-
-    public static void saveCountry(Context context, String email) {
-        getPrefEditor(context).putString(COUNTRY, email).commit();
-    }
-
-    public static void saveCredits(Context context, String credits) {
-        getPrefEditor(context).putString(CREDITS, credits).commit();
-    }
-
-    public static void saveDiscountPrice(Context context, String credits) {
-        getPrefEditor(context).putString(DISCOUNT_PRICE, credits).commit();
-    }
-
-    public static void saveBankName(Context context, String bankName) {
-        getPrefEditor(context).putString(BANK_NAME, bankName).commit();
+    public static void saveUserInfo(Context context, UserInfoResponse userInfoResponse) {
+        getPrefEditor(context).putString(USER_INFO, new Gson().toJson(userInfoResponse)).commit();
     }
 
     public static void savePassword(Context context, String password) {
         getPrefEditor(context).putString(PASSWORD, password).commit();
     }
-
-    public static String getBankName(Context context) {
-        return getPref(context).getString(BANK_NAME, "");
-    }
-
-    public static String getCredits(Context context) {
-        return getPref(context).getString(CREDITS, "");
-    }
-
-    public static String getDiscountPrice(Context context) {
-        return getPref(context).getString(DISCOUNT_PRICE, "");
-    }
-
 
     /**
      * Gets the current registration ID for application on GCM service.
@@ -257,6 +203,10 @@ public class PreferenceUtil {
         return getPref(context).getString(CASH_HISTORY, "[]");
     }
 
+    public static UserInfoResponse getUserInfo(Context context) {
+        return new Gson().fromJson(getPref(context).getString(USER_INFO, ""), UserInfoResponse.class);
+    }
+
     public static void saveCashHistory(Context context, String cashHistory) {
         getPrefEditor(context).putString(CASH_HISTORY, cashHistory).commit();
     }
@@ -268,6 +218,16 @@ public class PreferenceUtil {
     public static void saveMyPendingOrders(Context context, String myPendingOrders) {
         getPrefEditor(context).putString(MY_PENDING_ORDERS, myPendingOrders).commit();
     }
+
+
+    public static String getMyHistoryOrders(Context context) {
+        return getPref(context).getString(MY_HISTORY_ORDERS, "[]");
+    }
+
+    public static void saveMyHistoryOrders(Context context, String myHistoryOrders) {
+        getPrefEditor(context).putString(MY_HISTORY_ORDERS, myHistoryOrders).commit();
+    }
+
 
     private static String getNotificationName(Context context) {
         return getPref(context).getString(EMAIL, "") + NOTIFICATION_LIST;
@@ -410,5 +370,14 @@ public class PreferenceUtil {
 
     public static void savePendingCreateOrderRequest(Context context, CreateOrderRequest createOrderRequest) {
         getPrefEditor(context).putString(PENDING_CREATE_ORDER_REQUEST, new Gson().toJson(createOrderRequest)).commit();
+    }
+
+    public static void saveSelectedOrderTrackHistory(Context context, OrderTrackHistoryResponse orderTrackHistoryResponse) {
+        getPrefEditor(context).putString(SELECTED_ORDER_TRACK_HISTORY, new Gson().toJson(orderTrackHistoryResponse)).commit();
+    }
+
+    public static OrderTrackHistoryResponse getSelectedOrderTrackHistory(Context context) {
+        String createOrderRequest = getPref(context).getString(SELECTED_ORDER_TRACK_HISTORY, "");
+        return new Gson().fromJson(createOrderRequest, OrderTrackHistoryResponse.class);
     }
 }

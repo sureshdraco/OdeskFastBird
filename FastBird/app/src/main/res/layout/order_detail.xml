@@ -1,26 +1,203 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/relDropdownContainer"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="10dp"
-    android:background="#ffffff">
+    android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/closeBtn"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/com_facebook_close" />
-
-    <TextView
+    <RelativeLayout
+        android:id="@+id/relDropdownContainer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:padding="10dp"
-        android:textSize="18sp"
-        android:layout_below="@id/closeBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detailContent" />
+        android:background="#ffffff">
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/closeBtn"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/com_facebook_close" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_below="@id/closeBtn">
+
+            <TextView
+                android:text="@string/approval_date"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/approvalDate" />
+
+            <TextView
+                android:text="@string/collection_amount"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/collectionAmount" />
+
+            <TextView
+                android:text="@string/deliverAddressTitle"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryAddressTitle" />
+
+            <TextView
+                android:text="@string/deliverAddressTitle"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryBlockNo" />
+
+
+            <TextView
+                android:text="@string/deliverBlockNo"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryBuildingNo" />
+
+            <TextView
+                android:text="@string/deliverContactName"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryContactName" />
+
+            <TextView
+                android:text="@string/deliveryFlatNo"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryFlatNo" />
+
+            <TextView
+                android:text="@string/deliveryLocation"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryLocation" />
+
+            <TextView
+                android:text="@string/deliveryNotes"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryNotes" />
+
+            <TextView
+                android:text="@string/deliveryPhone1"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryPhone1" />
+
+
+            <TextView
+                android:text="@string/deliveryPhone2"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryPhone2" />
+
+
+            <TextView
+                android:text="@string/deliveryRoad"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/DeliveryRoad" />
+
+            <TextView
+                android:text="@string/paymentDate"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/EPaymentDate" />
+
+            <TextView
+                android:text="@string/fbd_number"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/FBDNumber" />
+
+
+            <TextView
+                android:text="@string/moneyDelivered"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/MoneyDelivered" />
+
+
+            <TextView
+                android:text="@string/moneyDeliveredType"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/MoneyDeliveryType" />
+
+            <TextView
+                android:text="@string/withdraw_money_net_total"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/NetTotal" />
+
+            <TextView
+                android:text="@string/orderDate"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/OrderDate" />
+
+            <TextView
+                android:text="@string/pickupAddressTitle"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/PickupAddressTitle" />
+
+            <TextView
+                android:text="@string/progressStatus"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ProgressStatus" />
+
+            <TextView
+                android:text="@string/progressStatusDate"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ProgressStatusDate" />
+
+            <TextView
+                android:text="@string/service_type"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ServiceType" />
+
+            <TextView
+                android:text="@string/size"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Size" />
+
+            <TextView
+                android:text="@string/weight"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Weight" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</ScrollView>

@@ -96,15 +96,16 @@ public class CommentActivity extends Activity {
                         public void onResponse(LoginResponse commentListResponse) {
                             if (!TextUtils.isEmpty(commentListResponse.getData().getError())) {
                                 dismissDialog();
-                                Crouton.showText(CommentActivity.this, "Unable to get comments", Style.ALERT);
+                                Crouton.showText(CommentActivity.this, commentListResponse.getData().getError(), Style.ALERT);
                             }
+                            commentEditText.setText("");
                             getComments();
                         }
                     }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError volleyError) {
                             dismissDialog();
-                            Crouton.showText(CommentActivity.this, "Unable to get comments", Style.ALERT);
+                            Crouton.showText(CommentActivity.this, "Unable to add comment!", Style.ALERT);
                         }
                     });
                 }
