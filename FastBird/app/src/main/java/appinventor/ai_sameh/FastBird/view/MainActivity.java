@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class MainActivity extends FragmentActivity {
 
+    private static final String NOTIFICATION_TAB = "Notifications";
     String SENDER_ID = "773072195235";
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
@@ -58,7 +60,6 @@ public class MainActivity extends FragmentActivity {
     private TextView balance;
     private int NOTIFICATION_ID = 1;
     private Gson gson;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +89,7 @@ public class MainActivity extends FragmentActivity {
         b = new Bundle();
         b.putString("key", "Notifications");
         mTabHost.addTab(mTabHost.newTabSpec("Notifications")
-                .setIndicator("Notifications"), NotificationFragment.class, b);
+                .setIndicator(NOTIFICATION_TAB), NotificationFragment.class, b);
         b = new Bundle();
         b.putString("key", "+");
         mTabHost.addTab(mTabHost.newTabSpec("+")
@@ -102,6 +103,16 @@ public class MainActivity extends FragmentActivity {
         b.putString("key", "Profile");
         mTabHost.addTab(mTabHost.newTabSpec("Profile").setIndicator("Profile"),
                 SettingsFragment.class, b);
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String tabId) {
+                if (tabId.equals(NOTIFICATION_TAB)) {
+                    findViewById(R.id.clearNotif).setVisibility(View.VISIBLE);
+                } else {
+                    findViewById(R.id.clearNotif).setVisibility(View.GONE);
+                }
+            }
+        });
 
         // setContentView(mTabHost);
     }
@@ -165,9 +176,8 @@ public class MainActivity extends FragmentActivity {
     }
 
     /**
-     * Check the device to make sure it has the Google Play Services APK. If
-     * it doesn't, display a dialog that allows users to download the APK from
-     * the Google Play Store or enable it in the device's system settings.
+     * Check the device to make sure it has the Google Play Services APK. If it doesn't, display a dialog that allows users to download the APK from the Google Play Store or enable
+     * it in the device's system settings.
      */
     private boolean checkPlayServices() {
         int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
@@ -187,8 +197,7 @@ public class MainActivity extends FragmentActivity {
     /**
      * Registers the application with GCM servers asynchronously.
      * <p/>
-     * Stores the registration ID and app versionCode in the application's
-     * shared preferences.
+     * Stores the registration ID and app versionCode in the application's shared preferences.
      */
     private void registerInBackground() {
         new Thread(new Runnable() {
