@@ -22,19 +22,21 @@
         android:layout_height="fill_parent">
 
         <TextView
+            android:textIsSelectable="true"
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/id" />
 
-
         <TextView
+            android:textIsSelectable="true"
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/date" />
 
         <TextView
+            android:textIsSelectable="true"
             android:textSize="15sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,8 +49,8 @@
             android:layout_height="wrap_content"
             android:listSelector="@android:color/transparent"
             android:cacheColorHint="@android:color/transparent"
-            android:divider="@drawable/abc_list_divider_holo_light"
-            android:dividerHeight="2dp" />
+            android:divider="@drawable/abc_list_divider_mtrl_alpha"
+            android:dividerHeight="1dp" />
 
     </LinearLayout>
 </RelativeLayout>

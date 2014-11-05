@@ -25,6 +25,7 @@
             android:layout_below="@id/closeBtn">
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/approval_date"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -32,6 +33,7 @@
                 android:id="@+id/approvalDate" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/collection_amount"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -39,6 +41,7 @@
                 android:id="@+id/collectionAmount" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliverAddressTitle"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -46,6 +49,7 @@
                 android:id="@+id/DeliveryAddressTitle" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliverAddressTitle"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -54,6 +58,7 @@
 
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliverBlockNo"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -61,6 +66,7 @@
                 android:id="@+id/DeliveryBuildingNo" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliverContactName"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -68,6 +74,7 @@
                 android:id="@+id/DeliveryContactName" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliveryFlatNo"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -75,6 +82,7 @@
                 android:id="@+id/DeliveryFlatNo" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliveryLocation"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -82,6 +90,7 @@
                 android:id="@+id/DeliveryLocation" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliveryNotes"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -89,6 +98,7 @@
                 android:id="@+id/DeliveryNotes" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliveryPhone1"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -97,6 +107,7 @@
 
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliveryPhone2"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -105,6 +116,7 @@
 
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/deliveryRoad"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -112,6 +124,7 @@
                 android:id="@+id/DeliveryRoad" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/paymentDate"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -119,6 +132,7 @@
                 android:id="@+id/EPaymentDate" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/fbd_number"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -127,6 +141,7 @@
 
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/moneyDelivered"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -135,6 +150,7 @@
 
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/moneyDeliveredType"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -142,6 +158,7 @@
                 android:id="@+id/MoneyDeliveryType" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/withdraw_money_net_total"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -149,6 +166,7 @@
                 android:id="@+id/NetTotal" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/orderDate"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -156,6 +174,7 @@
                 android:id="@+id/OrderDate" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/pickupAddressTitle"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -163,6 +182,7 @@
                 android:id="@+id/PickupAddressTitle" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/progressStatus"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -170,6 +190,7 @@
                 android:id="@+id/ProgressStatus" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/progressStatusDate"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
@@ -178,6 +199,7 @@
 
             <TextView
                 android:text="@string/service_type"
+                android:textIsSelectable="true"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,12 +207,14 @@
 
             <TextView
                 android:text="@string/size"
+                android:textIsSelectable="true"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/Size" />
 
             <TextView
+                android:textIsSelectable="true"
                 android:text="@string/weight"
                 android:textSize="14sp"
                 android:layout_width="wrap_content"

@@ -14,6 +14,7 @@
         android:layout_height="fill_parent">
 
         <TextView
+            android:textIsSelectable="true"
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,6 +22,7 @@
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
+            android:textIsSelectable="true"
             android:layout_marginTop="15dp"
             android:id="@+id/mrbTotal"
             android:text="@string/withdraw_money_mrbtotal"
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:textIsSelectable="true"
             android:layout_marginTop="15dp"
             android:id="@+id/chequePrice"
             android:text="@string/withdraw_money_checque_price"
@@ -35,6 +38,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:textIsSelectable="true"
             android:layout_marginTop="15dp"
             android:id="@+id/netTotal"
             android:text="@string/withdraw_money_net_total"

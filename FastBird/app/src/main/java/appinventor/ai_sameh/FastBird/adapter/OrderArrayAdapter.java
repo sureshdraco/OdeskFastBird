@@ -40,7 +40,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 
 	static class OrderViewHolder {
 		TextView orderNumber, orderTo, phone1, phone2, orderStatus;
-		Button infoButton, commentButton, trackButton;
+		Button commentButton, trackButton;
 		ImageView shareIcon;
 	}
 
@@ -79,7 +79,6 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 			viewHolder.orderTo = (TextView) row.findViewById(R.id.orderTo);
 			viewHolder.phone1 = (TextView) row.findViewById(R.id.phone1);
 			viewHolder.phone2 = (TextView) row.findViewById(R.id.phone2);
-			viewHolder.infoButton = (Button) row.findViewById(R.id.btnInfo);
 			viewHolder.commentButton = (Button) row.findViewById(R.id.btnComment);
 			viewHolder.trackButton = (Button) row.findViewById(R.id.btnTrackStatus);
 			viewHolder.shareIcon = (ImageView) row.findViewById(R.id.share);
@@ -99,8 +98,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 
 		htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone2(), order.getDeliveryPhone2());
 		viewHolder.phone2.setText(Html.fromHtml(htmlString));
-
-		viewHolder.infoButton.setOnClickListener(new InfoClickListener(order));
+        row.setOnClickListener(new InfoClickListener(order));
 		viewHolder.commentButton.setOnClickListener(new CommentClickListener(order.getFBDNumber()));
 		viewHolder.trackButton.setVisibility(isFastBird ? View.VISIBLE : View.GONE);
 		viewHolder.trackButton.setOnClickListener(new TrackButtonClickListener(order));

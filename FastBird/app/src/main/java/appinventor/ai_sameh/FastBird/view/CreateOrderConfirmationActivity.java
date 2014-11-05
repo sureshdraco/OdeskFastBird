@@ -81,6 +81,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 						if (createOrderResponse.getData().getError() != null) {
 							Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
+							return;
 						}
 						showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
 						Log.d(TAG, createOrderResponse.toString());
