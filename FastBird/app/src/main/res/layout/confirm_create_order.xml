@@ -100,7 +100,15 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+    <CheckBox
+        android:textSize="12sp"
+        android:layout_marginTop="10dp"
+        android:id="@+id/checkboxTerms"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
     <Button
+        android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:id="@+id/submitButton"
         android:layout_width="wrap_content"
