@@ -83,25 +83,25 @@ public class MainActivity extends FragmentActivity {
 
         Bundle b = new Bundle();
         b.putString("key", "Orders");
-        mTabHost.addTab(mTabHost.newTabSpec("orders").setIndicator("", getResources().getDrawable(R.drawable.tab_orders_selector)),
+        mTabHost.addTab(mTabHost.newTabSpec("orders").setIndicator("", getResources().getDrawable(R.drawable.orders_pressed)),
                 OrdersTabWithFastBirdOrdersFragment.class, b);
         //
         b = new Bundle();
         b.putString("key", "Notifications");
         mTabHost.addTab(mTabHost.newTabSpec("Notifications")
-                .setIndicator("", getResources().getDrawable(R.drawable.tab_notification_selector)), NotificationFragment.class, b);
+                .setIndicator("", getResources().getDrawable(R.drawable.notif_none_pressed)), NotificationFragment.class, b);
         b = new Bundle();
         b.putString("key", "+");
         mTabHost.addTab(mTabHost.newTabSpec("+")
-                .setIndicator("", getResources().getDrawable(R.drawable.tab_add_order_selector)), CreateOrderFragment.class, b);
+                .setIndicator("", getResources().getDrawable(R.drawable.add_order_pressed)), CreateOrderFragment.class, b);
         b = new Bundle();
         b.putString("key", "$$");
-        mTabHost.addTab(mTabHost.newTabSpec("$$").setIndicator("", getResources().getDrawable(R.drawable.tab_money_selector)),
+        mTabHost.addTab(mTabHost.newTabSpec("$$").setIndicator("", getResources().getDrawable(R.drawable.money_pressed)),
                 MoneyTabFragment.class, b);
 
         b = new Bundle();
         b.putString("key", "Profile");
-        mTabHost.addTab(mTabHost.newTabSpec("Profile").setIndicator("", getResources().getDrawable(R.drawable.tab_profile_selector)),
+        mTabHost.addTab(mTabHost.newTabSpec("Profile").setIndicator("", getResources().getDrawable(R.drawable.settings_pressed)),
                 SettingsFragment.class, b);
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
