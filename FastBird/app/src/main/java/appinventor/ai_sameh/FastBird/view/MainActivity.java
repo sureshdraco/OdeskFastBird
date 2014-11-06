@@ -83,25 +83,25 @@ public class MainActivity extends FragmentActivity {
 
         Bundle b = new Bundle();
         b.putString("key", "Orders");
-        mTabHost.addTab(mTabHost.newTabSpec("orders").setIndicator("Orders"),
+        mTabHost.addTab(mTabHost.newTabSpec("orders").setIndicator("", getResources().getDrawable(R.drawable.tab_orders_selector)),
                 OrdersTabWithFastBirdOrdersFragment.class, b);
         //
         b = new Bundle();
         b.putString("key", "Notifications");
         mTabHost.addTab(mTabHost.newTabSpec("Notifications")
-                .setIndicator(NOTIFICATION_TAB), NotificationFragment.class, b);
+                .setIndicator("", getResources().getDrawable(R.drawable.tab_notification_selector)), NotificationFragment.class, b);
         b = new Bundle();
         b.putString("key", "+");
         mTabHost.addTab(mTabHost.newTabSpec("+")
-                .setIndicator("+"), CreateOrderFragment.class, b);
+                .setIndicator("", getResources().getDrawable(R.drawable.tab_add_order_selector)), CreateOrderFragment.class, b);
         b = new Bundle();
         b.putString("key", "$$");
-        mTabHost.addTab(mTabHost.newTabSpec("$$").setIndicator("$$"),
+        mTabHost.addTab(mTabHost.newTabSpec("$$").setIndicator("", getResources().getDrawable(R.drawable.tab_money_selector)),
                 MoneyTabFragment.class, b);
 
         b = new Bundle();
         b.putString("key", "Profile");
-        mTabHost.addTab(mTabHost.newTabSpec("Profile").setIndicator("Profile"),
+        mTabHost.addTab(mTabHost.newTabSpec("Profile").setIndicator("", getResources().getDrawable(R.drawable.tab_profile_selector)),
                 SettingsFragment.class, b);
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
