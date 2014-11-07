@@ -4,10 +4,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#e2e4fe">
+    android:background="#E5E5E5">
 
     <ListView
-        android:animateLayoutChanges="true"
         android:id="@+id/order_listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

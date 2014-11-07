@@ -10,9 +10,10 @@
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:background="@drawable/border">
+        android:background="@color/app_orange">
 
         <TextView
+            android:paddingLeft="10dp"
             android:layout_centerVertical="true"
             android:id="@+id/balance"
             android:layout_alignParentLeft="true"

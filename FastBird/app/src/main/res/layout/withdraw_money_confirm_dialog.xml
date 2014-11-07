@@ -45,5 +45,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+
+        <CheckBox
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/checkboxTerms"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 </LinearLayout>

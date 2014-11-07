@@ -97,6 +97,7 @@ public class CommentActivity extends Activity {
                             if (!TextUtils.isEmpty(commentListResponse.getData().getError())) {
                                 dismissDialog();
                                 Crouton.showText(CommentActivity.this, commentListResponse.getData().getError(), Style.ALERT);
+                                return;
                             }
                             commentEditText.setText("");
                             getComments();

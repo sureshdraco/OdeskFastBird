@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:focusable="true"
         android:focusableInTouchMode="true"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:weightSum="4"
@@ -40,10 +40,11 @@
             android:hint="Enter comment" />
 
         <Button
-            android:text="Add"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/send_comment_selector"
             android:layout_weight="1"
             android:id="@+id/addCommentBtn"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content" />
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
     </LinearLayout>
 </RelativeLayout>

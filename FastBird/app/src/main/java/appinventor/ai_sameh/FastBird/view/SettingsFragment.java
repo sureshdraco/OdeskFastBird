@@ -5,11 +5,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -244,7 +248,16 @@ public class SettingsFragment extends Fragment {
         ((TextView) promptsView.findViewById(R.id.mrbTotal)).setText(getString(R.string.withdraw_money_mrbtotal, mrbTotal));
         ((TextView) promptsView.findViewById(R.id.chequePrice)).setText(getString(R.string.withdraw_money_checque_price, chequePrice));
         ((TextView) promptsView.findViewById(R.id.netTotal)).setText(getString(R.string.withdraw_money_net_total, netTotal));
-
+        createButton.setEnabled(false);
+        CheckBox terms = (CheckBox) promptsView.findViewById(R.id.checkboxTerms);
+        terms.setMovementMethod(LinkMovementMethod.getInstance());
+        terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
+        terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                createButton.setEnabled(isChecked);
+            }
+        });
         // set dialog message
         alertDialogBuilder
                 .setCancelable(true)
@@ -283,6 +296,7 @@ public class SettingsFragment extends Fragment {
 
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();
+        
         // show it
         alertDialog.show();
     }

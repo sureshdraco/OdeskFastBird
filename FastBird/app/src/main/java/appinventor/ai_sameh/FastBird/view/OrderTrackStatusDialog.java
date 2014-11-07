@@ -35,20 +35,21 @@ public class OrderTrackStatusDialog {
 	}
 
 	public static void setupOrderTrackStatusDetailUi(final Context context, Dialog dialog, final OrderTrackHistoryResponse orderTrackHistoryResponse) {
-		Resources resources = context.getResources();
+		final Resources resources = context.getResources();
 		((TextView) dialog.findViewById(R.id.currentStatus)).setText(resources.getString(R.string.current_status, orderTrackHistoryResponse.getData().getCurrentStatus()));
 		StringBuilder orderHistory = new StringBuilder();
 		for (TrackStatus trackStatus : orderTrackHistoryResponse.getData().getHistory()) {
 			orderHistory.append(trackStatus.toString());
 			orderHistory.append("\n");
 		}
+		final String shareText = resources.getString(R.string.current_status, orderTrackHistoryResponse.getData().getCurrentStatus()) + orderHistory;
 		((TextView) dialog.findViewById(R.id.detailContent)).setText(orderHistory);
 		(dialog.findViewById(R.id.shareButton)).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent sendIntent = new Intent();
 				sendIntent.setAction(Intent.ACTION_SEND);
-				sendIntent.putExtra(Intent.EXTRA_TEXT, orderTrackHistoryResponse.getData().getCurrentStatus());
+				sendIntent.putExtra(Intent.EXTRA_TEXT, shareText);
 				sendIntent.setType("text/plain");
 				context.startActivity(sendIntent);
 			}
