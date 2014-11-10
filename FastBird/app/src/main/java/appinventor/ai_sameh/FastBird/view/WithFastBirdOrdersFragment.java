@@ -2,9 +2,11 @@ package appinventor.ai_sameh.FastBird.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,176 +31,211 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class WithFastBirdOrdersFragment extends Fragment {
 
-	private TextView text;
-	private ListView ordersListView;
-	private OrderArrayAdapter orderArrayAdapter;
+    private TextView text;
+    private ListView ordersListView;
+    private OrderArrayAdapter orderArrayAdapter;
+    private SwipeRefreshLayout swipeContainer;
 
-	public WithFastBirdOrdersFragment() {
-	}
+    public WithFastBirdOrdersFragment() {
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		initView(view);
-	}
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initView(view);
+    }
 
-	private void initView(View view) {
-		ordersListView = (ListView) view.findViewById(R.id.order_listView);
-		String email = PreferenceUtil.getEmail(getActivity());
-		String password = PreferenceUtil.getPassword(getActivity());
-		if (getArguments() != null) {
-			String tab = getArguments().getString("key");
-			if (tab.equals("With Me")) {
-				getMyOrders(email, password);
-			} else if (tab.equals("History")) {
-				getHistoryOrders(email, password);
-			} else {
-				getFastBirdOrders(email, password);
-			}
-		}
-	}
+    private void initView(View view) {
+        ordersListView = (ListView) view.findViewById(R.id.order_listView);
+        final String email = PreferenceUtil.getEmail(getActivity());
+        final String password = PreferenceUtil.getPassword(getActivity());
+        setupList(email, password);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        ordersListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-	private void getFastBirdOrders(String email, String password) {
-		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, false);
-		ordersListView.setAdapter(orderArrayAdapter);
+            }
 
-		final String cachedOrders = PreferenceUtil.getFastBirdPendingOrders(getActivity());
-		Type listType = new TypeToken<ArrayList<Order>>() {
-		}.getType();
-		ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getFastBirdPendingOrders(getActivity()), listType);
-		if (cachedOrderList == null) {
-			cachedOrderList = new ArrayList<Order>();
-		}
-		for (Order order : cachedOrderList) {
-			orderArrayAdapter.add(order);
-		}
-		orderArrayAdapter.notifyDataSetChanged();
-		ApiRequests.getFastBirdPendingOrders(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
-			@Override
-			public void onResponse(ProgressOrderList progressOrderList) {
-				if (getActivity() != null) {
-					String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
-					if (!networkOrders.equals(cachedOrders)) {
-						PreferenceUtil.saveFastBirdPendingOrders(getActivity(), networkOrders);
-						orderArrayAdapter.clear();
-						for (Order order : progressOrderList.getData().getOrderList()) {
-							orderArrayAdapter.add(order);
-						}
-						orderArrayAdapter.notifyDataSetChanged();
-					}
-				}
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError volleyError) {
-				if (getActivity() != null)
-					Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
-			}
-		});
-	}
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int topRowVerticalPosition =
+                        (ordersListView == null || ordersListView.getChildCount() == 0) ?
+                                0 : ordersListView.getChildAt(0).getTop();
+                swipeContainer.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setupList(email, password);
+            }
+        });
+    }
 
-	private void getMyOrders(String email, String password) {
-		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, true);
-		ordersListView.setAdapter(orderArrayAdapter);
+    private void setupList(String email, String password) {
+        if (getArguments() != null) {
+            String tab = getArguments().getString("key");
+            if (tab.equals("With Me")) {
+                getMyOrders(email, password);
+            } else if (tab.equals("History")) {
+                getHistoryOrders(email, password);
+            } else {
+                getFastBirdOrders(email, password);
+            }
+        }
+    }
 
-		final String cachedOrders = PreferenceUtil.getMyPendingOrders(getActivity());
-		Type listType = new TypeToken<ArrayList<Order>>() {
-		}.getType();
-		ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getMyPendingOrders(getActivity()), listType);
-		if (cachedOrderList == null) {
-			cachedOrderList = new ArrayList<Order>();
-		}
-		for (Order order : cachedOrderList) {
-			orderArrayAdapter.add(order);
-		}
-		orderArrayAdapter.notifyDataSetChanged();
-		ApiRequests.getMyOrders(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
-			@Override
-			public void onResponse(ProgressOrderList progressOrderList) {
-				if (getActivity() != null) {
-					String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
-					if (!networkOrders.equals(cachedOrders)) {
-						PreferenceUtil.saveMyPendingOrders(getActivity(), networkOrders);
-						orderArrayAdapter.clear();
-						for (Order order : progressOrderList.getData().getOrderList()) {
-							orderArrayAdapter.add(order);
-						}
-						orderArrayAdapter.notifyDataSetChanged();
-					}
-				}
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError volleyError) {
-				if (getActivity() != null)
-					Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
-			}
-		});
-	}
+    private void getFastBirdOrders(String email, String password) {
+        orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, false);
+        ordersListView.setAdapter(orderArrayAdapter);
 
-	private void getHistoryOrders(String email, String password) {
-		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, false);
-		ordersListView.setAdapter(orderArrayAdapter);
-		final String cachedOrders = PreferenceUtil.getMyHistoryOrders(getActivity());
-		Type listType = new TypeToken<ArrayList<Order>>() {
-		}.getType();
-		ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getMyHistoryOrders(getActivity()), listType);
-		if (cachedOrderList == null) {
-			cachedOrderList = new ArrayList<Order>();
-		}
-		for (Order order : cachedOrderList) {
-			orderArrayAdapter.add(order);
-		}
-		orderArrayAdapter.notifyDataSetChanged();
-		ApiRequests.getOrderHistory(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
-			@Override
-			public void onResponse(ProgressOrderList progressOrderList) {
-				if (getActivity() != null) {
-					String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
-					if (!networkOrders.equals(cachedOrders)) {
-						PreferenceUtil.saveMyHistoryOrders(getActivity(), networkOrders);
-						orderArrayAdapter.clear();
-						for (Order order : progressOrderList.getData().getOrderList()) {
-							orderArrayAdapter.add(order);
-						}
-						orderArrayAdapter.notifyDataSetChanged();
-					}
-				}
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError volleyError) {
-				if (getActivity() != null)
-					Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
-			}
-		});
-	}
+        final String cachedOrders = PreferenceUtil.getFastBirdPendingOrders(getActivity());
+        Type listType = new TypeToken<ArrayList<Order>>() {
+        }.getType();
+        ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getFastBirdPendingOrders(getActivity()), listType);
+        if (cachedOrderList == null) {
+            cachedOrderList = new ArrayList<Order>();
+        }
+        for (Order order : cachedOrderList) {
+            orderArrayAdapter.add(order);
+        }
+        orderArrayAdapter.notifyDataSetChanged();
+        ApiRequests.getFastBirdPendingOrders(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
+            @Override
+            public void onResponse(ProgressOrderList progressOrderList) {
+                if (getActivity() != null) {
+                    String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
+                    if (!networkOrders.equals(cachedOrders)) {
+                        PreferenceUtil.saveFastBirdPendingOrders(getActivity(), networkOrders);
+                        orderArrayAdapter.clear();
+                        for (Order order : progressOrderList.getData().getOrderList()) {
+                            orderArrayAdapter.add(order);
+                        }
+                        orderArrayAdapter.notifyDataSetChanged();
+                    }
+                    swipeContainer.setRefreshing(false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (getActivity() != null) {
+                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    swipeContainer.setRefreshing(false);
+                }
+            }
+        });
+    }
 
-	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.orders_list_fragment, container, false);
-	}
+    private void getMyOrders(String email, String password) {
+        orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, true);
+        ordersListView.setAdapter(orderArrayAdapter);
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
+        final String cachedOrders = PreferenceUtil.getMyPendingOrders(getActivity());
+        Type listType = new TypeToken<ArrayList<Order>>() {
+        }.getType();
+        ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getMyPendingOrders(getActivity()), listType);
+        if (cachedOrderList == null) {
+            cachedOrderList = new ArrayList<Order>();
+        }
+        for (Order order : cachedOrderList) {
+            orderArrayAdapter.add(order);
+        }
+        orderArrayAdapter.notifyDataSetChanged();
+        ApiRequests.getMyOrders(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
+            @Override
+            public void onResponse(ProgressOrderList progressOrderList) {
+                if (getActivity() != null) {
+                    String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
+                    if (!networkOrders.equals(cachedOrders)) {
+                        PreferenceUtil.saveMyPendingOrders(getActivity(), networkOrders);
+                        orderArrayAdapter.clear();
+                        for (Order order : progressOrderList.getData().getOrderList()) {
+                            orderArrayAdapter.add(order);
+                        }
+                        orderArrayAdapter.notifyDataSetChanged();
+                    }
+                    swipeContainer.setRefreshing(false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (getActivity() != null) {
+                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    swipeContainer.setRefreshing(false);
+                }
+            }
+        });
+    }
 
-		try {
-			Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
-			childFragmentManager.setAccessible(true);
-			childFragmentManager.set(this, null);
+    private void getHistoryOrders(String email, String password) {
+        orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, false);
+        ordersListView.setAdapter(orderArrayAdapter);
+        final String cachedOrders = PreferenceUtil.getMyHistoryOrders(getActivity());
+        Type listType = new TypeToken<ArrayList<Order>>() {
+        }.getType();
+        ArrayList<Order> cachedOrderList = new Gson().fromJson(PreferenceUtil.getMyHistoryOrders(getActivity()), listType);
+        if (cachedOrderList == null) {
+            cachedOrderList = new ArrayList<Order>();
+        }
+        for (Order order : cachedOrderList) {
+            orderArrayAdapter.add(order);
+        }
+        orderArrayAdapter.notifyDataSetChanged();
+        ApiRequests.getOrderHistory(getActivity(), new LoginRequest(email, password), new Response.Listener<ProgressOrderList>() {
+            @Override
+            public void onResponse(ProgressOrderList progressOrderList) {
+                if (getActivity() != null) {
+                    String networkOrders = new Gson().toJson(progressOrderList.getData().getOrderList());
+                    if (!networkOrders.equals(cachedOrders)) {
+                        PreferenceUtil.saveMyHistoryOrders(getActivity(), networkOrders);
+                        orderArrayAdapter.clear();
+                        for (Order order : progressOrderList.getData().getOrderList()) {
+                            orderArrayAdapter.add(order);
+                        }
+                        orderArrayAdapter.notifyDataSetChanged();
+                    }
+                    swipeContainer.setRefreshing(false);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                if (getActivity() != null) {
+                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    swipeContainer.setRefreshing(false);
+                }
+            }
+        });
+    }
 
-		} catch (NoSuchFieldException e) {
-			throw new RuntimeException(e);
-		} catch (IllegalAccessException e) {
-			throw new RuntimeException(e);
-		}
-	}
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.orders_list_fragment, container, false);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        try {
+            Field childFragmentManager = Fragment.class.getDeclaredField("mChildFragmentManager");
+            childFragmentManager.setAccessible(true);
+            childFragmentManager.set(this, null);
+
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

@@ -2,9 +2,11 @@ package appinventor.ai_sameh.FastBird.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,8 +37,11 @@ public class MoneyViewFragment extends Fragment {
 	private ListView ordersListView;
 	private CashArrayAdapter cashArrayAdapter;
 	private CashInProgressArrayAdapter cashInProgressArrayAdapter;
+    private SwipeRefreshLayout swipeContainer;
+    private String password;
+    private String email;
 
-	public MoneyViewFragment() {
+    public MoneyViewFragment() {
 	}
 
 	@Override
@@ -53,27 +58,52 @@ public class MoneyViewFragment extends Fragment {
 	private void initView(View view) {
 		ordersListView = (ListView) view.findViewById(R.id.order_listView);
 
-		String email = PreferenceUtil.getEmail(getActivity());
-		String password = PreferenceUtil.getPassword(getActivity());
-		if (getArguments() != null) {
-			String tab = getArguments().getString("key");
-			if (tab.equals("In - Progress")) {
-				cashInProgressArrayAdapter = new CashInProgressArrayAdapter(getActivity(), R.layout.cash_card_item);
-				ordersListView.setAdapter(cashInProgressArrayAdapter);
-				getCashInProgress(email, password);
-			} else if (tab.equals("In the Way")) {
-				cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, true);
-				ordersListView.setAdapter(cashArrayAdapter);
-				getCashOnMyWay(email, password);
-			} else {
-				cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, false);
-				ordersListView.setAdapter(cashArrayAdapter);
-				getCashHistory(email, password);
-			}
-		}
+		email = PreferenceUtil.getEmail(getActivity());
+		password = PreferenceUtil.getPassword(getActivity());
+        setupList(email, password);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
+        ordersListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                int topRowVerticalPosition =
+                        (ordersListView == null || ordersListView.getChildCount() == 0) ?
+                                0 : ordersListView.getChildAt(0).getTop();
+                swipeContainer.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                setupList(email, password);
+            }
+        });
 	}
 
-	private void getCashOnMyWay(String email, String password) {
+    private void setupList(String email, String password) {
+        if (getArguments() != null) {
+            String tab = getArguments().getString("key");
+            if (tab.equals("In - Progress")) {
+                cashInProgressArrayAdapter = new CashInProgressArrayAdapter(getActivity(), R.layout.cash_card_item);
+                ordersListView.setAdapter(cashInProgressArrayAdapter);
+                getCashInProgress(email, password);
+            } else if (tab.equals("In the Way")) {
+                cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, true);
+                ordersListView.setAdapter(cashArrayAdapter);
+                getCashOnMyWay(email, password);
+            } else {
+                cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, false);
+                ordersListView.setAdapter(cashArrayAdapter);
+                getCashHistory(email, password);
+            }
+        }
+    }
+
+    private void getCashOnMyWay(String email, String password) {
 		final String cachedOrders = PreferenceUtil.getCashOnMyWayList(getActivity());
 		Type listType = new TypeToken<ArrayList<MRBTransactions>>() {
 		}.getType();
@@ -98,13 +128,16 @@ public class MoneyViewFragment extends Fragment {
 						}
 						cashArrayAdapter.notifyDataSetChanged();
 					}
+                    swipeContainer.setRefreshing(false);
 				}
 			}
 		}, new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError volleyError) {
-				if (getActivity() != null)
-					Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+				if (getActivity() != null) {
+                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    swipeContainer.setRefreshing(false);
+                }
 			}
 		});
 	}
@@ -134,13 +167,16 @@ public class MoneyViewFragment extends Fragment {
 						}
 						cashArrayAdapter.notifyDataSetChanged();
 					}
-				}
+                    swipeContainer.setRefreshing(false);
+                }
 			}
 		}, new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError volleyError) {
-				if (getActivity() != null)
-					Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+				if (getActivity() != null) {
+                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    swipeContainer.setRefreshing(false);
+                }
 			}
 		});
 	}
@@ -164,13 +200,16 @@ public class MoneyViewFragment extends Fragment {
 						}
 						cashInProgressArrayAdapter.notifyDataSetChanged();
 					}
-				}
+                    swipeContainer.setRefreshing(false);
+                }
 			}
 		}, new Response.ErrorListener() {
 			@Override
 			public void onErrorResponse(VolleyError volleyError) {
-				if (getActivity() != null)
-					Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+				if (getActivity() != null) {
+                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    swipeContainer.setRefreshing(false);
+                }
 			}
 		});
 	}
