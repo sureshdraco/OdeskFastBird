@@ -13,5 +13,5 @@
         android:listSelector="@android:color/transparent"
         android:cacheColorHint="@android:color/transparent"
         android:divider="@null"
-        android:dividerHeight="5dp" />
+        android:dividerHeight="2dp" />
 </LinearLayout>
