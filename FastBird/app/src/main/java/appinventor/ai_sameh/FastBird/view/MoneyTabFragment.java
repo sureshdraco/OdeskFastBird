@@ -1,11 +1,13 @@
 package appinventor.ai_sameh.FastBird.view;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,7 @@ public class MoneyTabFragment extends Fragment {
 		fragments = new ArrayList<Fragment>();
 		MoneyViewFragment cashInProgressFragment = new MoneyViewFragment();
 		Bundle b = new Bundle();
-		b.putString("key", "In - progress");
+		b.putString("key", "In - Progress");
 		cashInProgressFragment.setArguments(b);
 		fragments.add(cashInProgressFragment);
 		MoneyViewFragment cashInTheWayFragment = new MoneyViewFragment();
@@ -66,6 +68,9 @@ public class MoneyTabFragment extends Fragment {
 		viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
 		viewPagerAdapter = new OrderPagerAdapter(getChildFragmentManager());
 		viewPager.setAdapter(viewPagerAdapter);
+		PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.pager_title_strip);
+		pagerTabStrip.setDrawFullUnderline(true);
+		pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.fast_bird_orange));
 	}
 
 	class OrderPagerAdapter extends FragmentPagerAdapter {

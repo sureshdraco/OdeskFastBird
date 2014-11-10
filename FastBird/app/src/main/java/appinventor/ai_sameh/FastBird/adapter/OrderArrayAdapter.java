@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +33,7 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class OrderArrayAdapter extends ArrayAdapter<Order> {
 	public static final int ORDER_INFO_DIALOG = 1;
 	public static final int ORDER_TRACK_STATUS_DIALOG = 5;
-	private boolean isFastBird;
+	private boolean isDrafts;
 	private List<Order> orderList = new ArrayList<Order>();
 	private Context context;
 
@@ -44,10 +43,10 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 		ImageView shareIcon;
 	}
 
-	public OrderArrayAdapter(Context context, int textViewResourceId, boolean isFastBird) {
+	public OrderArrayAdapter(Context context, int textViewResourceId, boolean isDrafts) {
 		super(context, textViewResourceId);
 		this.context = context;
-		this.isFastBird = isFastBird;
+		this.isDrafts = isDrafts;
 	}
 
 	@Override
@@ -98,9 +97,9 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 
 		htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone2(), order.getDeliveryPhone2());
 		viewHolder.phone2.setText(Html.fromHtml(htmlString));
-        row.setOnClickListener(new InfoClickListener(order));
+		row.setOnClickListener(new InfoClickListener(order));
 		viewHolder.commentButton.setOnClickListener(new CommentClickListener(order.getFBDNumber()));
-		viewHolder.trackButton.setVisibility(isFastBird ? View.VISIBLE : View.GONE);
+		viewHolder.trackButton.setVisibility(isDrafts ? View.GONE : View.VISIBLE);
 		viewHolder.trackButton.setOnClickListener(new TrackButtonClickListener(order));
 		viewHolder.shareIcon.setOnClickListener(new ShareButtonClickListener(order));
 		return row;

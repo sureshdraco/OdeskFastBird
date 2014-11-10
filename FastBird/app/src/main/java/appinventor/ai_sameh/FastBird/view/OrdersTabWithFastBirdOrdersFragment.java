@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
 		fragments.add(withFastBirdOrdersFragment);
 		WithFastBirdOrdersFragment withMeFragment = new WithFastBirdOrdersFragment();
 		b = new Bundle();
-		b.putString("key", "Draft");
+		b.putString("key", "With Me");
 		withMeFragment.setArguments(b);
 		fragments.add(withMeFragment);
 		WithFastBirdOrdersFragment orderHistoryFragment = new WithFastBirdOrdersFragment();
@@ -59,7 +60,7 @@ public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
 		fragments.add(orderHistoryFragment);
 		fragmentTitle = new ArrayList<String>();
 		fragmentTitle.add("With Fast Bird");
-		fragmentTitle.add("Draft");
+		fragmentTitle.add("PickUps");
 		fragmentTitle.add("History");
 	}
 
@@ -67,6 +68,9 @@ public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
 		viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
 		viewPagerAdapter = new CashPagerAdapter(getChildFragmentManager());
 		viewPager.setAdapter(viewPagerAdapter);
+		PagerTabStrip pagerTabStrip = (PagerTabStrip) getActivity().findViewById(R.id.pager_title_strip);
+		pagerTabStrip.setDrawFullUnderline(true);
+		pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.fast_bird_orange));
 	}
 
 	class CashPagerAdapter extends FragmentPagerAdapter {

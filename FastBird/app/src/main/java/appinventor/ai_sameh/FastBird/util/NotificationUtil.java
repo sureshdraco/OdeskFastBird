@@ -30,7 +30,7 @@ public class NotificationUtil {
 	private static Gson gson = new Gson();
 
 	public static void cacheNotification(Context context, String title, String message) {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimestampUtil.FAST_BIRD_DATE_FORMAT);
 		Date date = new Date();
 		NotificationItem notificationItem = new NotificationItem(title, simpleDateFormat.format(date), message);
 		Type listType = new TypeToken<ArrayList<NotificationItem>>() {

@@ -70,5 +70,5 @@
     <color name="green">#64C416</color>
     <color name="bonus_green">#90D954</color>
     <color name="green_reduced_alpha">#aa64C416</color>
-
+    <color name="fast_bird_orange">#FEA500</color>
 </resources>

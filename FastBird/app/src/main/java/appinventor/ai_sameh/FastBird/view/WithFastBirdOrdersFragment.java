@@ -64,7 +64,7 @@ public class WithFastBirdOrdersFragment extends Fragment {
 	}
 
 	private void getFastBirdOrders(String email, String password) {
-		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, true);
+		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, false);
 		ordersListView.setAdapter(orderArrayAdapter);
 
 		final String cachedOrders = PreferenceUtil.getFastBirdPendingOrders(getActivity());
@@ -103,7 +103,7 @@ public class WithFastBirdOrdersFragment extends Fragment {
 	}
 
 	private void getMyOrders(String email, String password) {
-		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, false);
+		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, true);
 		ordersListView.setAdapter(orderArrayAdapter);
 
 		final String cachedOrders = PreferenceUtil.getMyPendingOrders(getActivity());
