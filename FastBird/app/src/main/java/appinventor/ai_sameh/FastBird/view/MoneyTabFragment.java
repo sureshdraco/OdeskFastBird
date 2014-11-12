@@ -79,7 +79,7 @@ public class MoneyTabFragment extends Fragment {
             public void onResponse(GetClientMoneyResponse getClientMoneyResponse) {
                 if (getClientMoneyResponse.getData().getError() == null) {
                     PreferenceUtil.saveClientMoney(FastBirdApplication.appContext, getClientMoneyResponse.getData().getMRBTotal());
-                    if (getActivity() != null) {
+                    if (isAdded()) {
                         balanceTextView.setText(getActivity().getResources().getString(R.string.money, PreferenceUtil.getClientMoney(getActivity())));
                         balanceTextView.setVisibility(View.VISIBLE);
                         getActivity().findViewById(R.id.balanceProgress).setVisibility(View.GONE);

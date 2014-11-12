@@ -107,7 +107,7 @@ public class CreateOrderFragment extends Fragment {
             public void onResponse(GetClientCreditResponse getClientCreditResponse) {
                 if (getClientCreditResponse.getData().getError() == null) {
                     PreferenceUtil.saveClientCredits(FastBirdApplication.appContext, getClientCreditResponse.getData().getCredit());
-                    if (getActivity() != null) {
+                    if (isAdded()) {
                         balanceTextView.setText(getActivity().getResources().getString(R.string.credit, PreferenceUtil.getClientCredits(getActivity())));
                         balanceTextView.setVisibility(View.VISIBLE);
                         getActivity().findViewById(R.id.balanceProgress).setVisibility(View.GONE);
