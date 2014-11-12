@@ -67,6 +67,7 @@ public class SettingsFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupTitleBar();
         initView();
         updateUi();
         ApiRequests.getUserInformation(getActivity(), PreferenceUtil.getEmail(getActivity()), PreferenceUtil.getPassword(getActivity()), new Response.Listener<UserInfoResponse>() {
@@ -81,6 +82,12 @@ public class SettingsFragment extends Fragment {
                 Crouton.showText(getActivity(), "Failed", Style.ALERT);
             }
         });
+    }
+
+    private void setupTitleBar() {
+        ((TextView) getActivity().findViewById(R.id.viewTitle)).setText("PROFILE");
+        getActivity().findViewById(R.id.balance).setVisibility(View.GONE);
+        getActivity().findViewById(R.id.balanceProgress).setVisibility(View.GONE);
     }
 
     private void cacheResponse(UserInfoResponse userInfoResponse) {
@@ -230,6 +237,7 @@ public class SettingsFragment extends Fragment {
                     Crouton.showText(getActivity(), getClientMoneyResponse.getData().getError(), Style.ALERT);
                     return;
                 }
+                PreferenceUtil.saveClientMoney(getActivity(), getClientMoneyResponse.getData().getMRBTotal());
                 showConfirmWithdrawDialog(getClientMoneyResponse.getData().getMRBTotal(), getClientMoneyResponse.getData().getChequePrice(), getClientMoneyResponse.getData()
                         .getNetTotal());
             }

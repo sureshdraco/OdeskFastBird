@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,6 +21,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import appinventor.ai_sameh.FastBird.FastBirdApplication;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Address;
@@ -28,10 +30,10 @@ import appinventor.ai_sameh.FastBird.api.model.DataDescription;
 import appinventor.ai_sameh.FastBird.api.model.DeliveryTime;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.request.ServiceTypeRequest;
-import appinventor.ai_sameh.FastBird.api.response.CreateOrderResponse;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTimeResponse;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTypeResponse;
+import appinventor.ai_sameh.FastBird.api.response.GetClientCreditResponse;
 import appinventor.ai_sameh.FastBird.api.response.LocationResponse;
 import appinventor.ai_sameh.FastBird.api.response.MyAddressResponse;
 import appinventor.ai_sameh.FastBird.api.response.PackageTypeResponse;
@@ -57,6 +59,7 @@ public class CreateOrderFragment extends Fragment {
     private Spinner paymentMethodTypeSpinner;
     private EditText addressTitle, collectionAmount, blockNo, buildingNo, contactName, flatNo, weight, height, road, phone1, phone2, length, width, note, subTotal, discount, total;
     private Float collectionAmountFloat = 0f;
+    private TextView balanceTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,6 +70,7 @@ public class CreateOrderFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setupTitleBar();
         gson = new Gson();
         email = PreferenceUtil.getEmail(getActivity());
         password = PreferenceUtil.getPassword(getActivity());
@@ -79,6 +83,42 @@ public class CreateOrderFragment extends Fragment {
         setupPaymentMethod();
         setupServiceType();
         setupTestData();
+    }
+
+    private void setupTitleBar() {
+        ((TextView) getActivity().findViewById(R.id.viewTitle)).setText("New SHIPMENT");
+        setupBalance();
+        balanceTextView = (TextView) getActivity().findViewById(R.id.balance);
+        if (PreferenceUtil.getClientCredits(getActivity()).equals("-")) {
+            getActivity().findViewById(R.id.balanceProgress).setVisibility(View.VISIBLE);
+            balanceTextView.setVisibility(View.GONE);
+        } else {
+            getActivity().findViewById(R.id.balanceProgress).setVisibility(View.GONE);
+            balanceTextView.setText(getActivity().getResources().getString(R.string.credit, PreferenceUtil.getClientCredits(getActivity())));
+            balanceTextView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void setupBalance() {
+        String email = PreferenceUtil.getEmail(getActivity());
+        String password = PreferenceUtil.getPassword(getActivity());
+        ApiRequests.getGetClientCredits(getActivity(), new LoginRequest(email, password), new Response.Listener<GetClientCreditResponse>() {
+            @Override
+            public void onResponse(GetClientCreditResponse getClientCreditResponse) {
+                if (getClientCreditResponse.getData().getError() == null) {
+                    PreferenceUtil.saveClientCredits(FastBirdApplication.appContext, getClientCreditResponse.getData().getCredit());
+                    if (getActivity() != null) {
+                        balanceTextView.setText(getActivity().getResources().getString(R.string.credit, PreferenceUtil.getClientCredits(getActivity())));
+                        balanceTextView.setVisibility(View.VISIBLE);
+                        getActivity().findViewById(R.id.balanceProgress).setVisibility(View.GONE);
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+            }
+        });
     }
 
     private void setupPaymentMethod() {

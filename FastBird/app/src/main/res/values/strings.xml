@@ -38,6 +38,8 @@
     <string name="deliveryRoad">Road: %1$s</string>
     <string name="paymentDate">Payment Date: %1$s</string>
     <string name="moneyDelivered">Money Delivered: %1$s</string>
+    <string name="money">Money: %1$s</string>
+    <string name="credit">Credit: %1$s</string>
     <string name="moneyDeliveredType">Delivery Type: %1$s</string>
     <string name="orderDate">Order Date: %1$s</string>
     <string name="pickupAddressTitle">Pickup Address Title: %1$s</string>

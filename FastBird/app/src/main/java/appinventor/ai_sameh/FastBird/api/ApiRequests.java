@@ -21,6 +21,7 @@ import appinventor.ai_sameh.FastBird.api.response.CommentListResponse;
 import appinventor.ai_sameh.FastBird.api.response.CreateOrderResponse;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTimeResponse;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTypeResponse;
+import appinventor.ai_sameh.FastBird.api.response.GetClientCreditResponse;
 import appinventor.ai_sameh.FastBird.api.response.GetClientMoneyResponse;
 import appinventor.ai_sameh.FastBird.api.response.LocationResponse;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
@@ -62,6 +63,7 @@ public class ApiRequests {
     private static final String CHANGE_PASSWORD = "Clients.svc/ChangePassword";
     private static final String WITHDRAW_CLIENT_MONEY = "Clients.svc/SendMyMoney";
     private static final String GET_CLIENT_MONEY = "Clients.svc/ClientMoney";
+    private static final String GET_CLIENT_CREDITS = "Clients.svc/CheckCredit";
     private static final String GET_ORDER_TRACK_STATUS = "OrderTracking.svc/GetOrderStatus";
 
     public static void login(Context context, String email, String password, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
@@ -231,6 +233,13 @@ public class ApiRequests {
                 .getInstance(context)
                 .getRequestQueue()
                 .add(new GsonRequest<GetClientMoneyResponse>(Request.Method.POST, API_BASE_URL + GET_CLIENT_MONEY, getClientMoneyRequest, GetClientMoneyResponse.class, null, listener, errorListener));
+    }
+
+    public static void getGetClientCredits(Context context, LoginRequest getClientMoneyRequest, Response.Listener<GetClientCreditResponse> listener, Response.ErrorListener errorListener) {
+        VolleyClient
+                .getInstance(context)
+                .getRequestQueue()
+                .add(new GsonRequest<GetClientCreditResponse>(Request.Method.POST, API_BASE_URL + GET_CLIENT_CREDITS, getClientMoneyRequest, GetClientCreditResponse.class, null, listener, errorListener));
     }
 
     public static void withdrawClientMoney(Context context, LoginRequest withdrawMoneyRequest, Response.Listener<LoginResponse> listener,

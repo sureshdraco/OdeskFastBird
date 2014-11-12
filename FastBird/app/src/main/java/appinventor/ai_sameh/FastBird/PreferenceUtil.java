@@ -59,6 +59,8 @@ public class PreferenceUtil {
     private static final String USER_INFO = "userInfo";
     private static final String MY_HISTORY_ORDERS = "myHistoryOrders";
     private static final String SELECTED_ORDER_TRACK_HISTORY = "selectedOrderTrackHistory";
+    private static final String CLIENT_MONEY = "clientMoney";
+    private static final String CLIENT_CREDITS = "clientCredits";
 
     // Preference backend access.
     private static SharedPreferences.Editor prefEditor;
@@ -379,5 +381,22 @@ public class PreferenceUtil {
     public static OrderTrackHistoryResponse getSelectedOrderTrackHistory(Context context) {
         String createOrderRequest = getPref(context).getString(SELECTED_ORDER_TRACK_HISTORY, "");
         return new Gson().fromJson(createOrderRequest, OrderTrackHistoryResponse.class);
+    }
+
+    public static String getClientMoney(Context context) {
+        return getPref(context).getString(CLIENT_MONEY, "-");
+    }
+
+    public static void saveClientMoney(Context context, String clientMoney) {
+        getPrefEditor(context).putString(CLIENT_MONEY, clientMoney).commit();
+    }
+
+
+    public static String getClientCredits(Context context) {
+        return getPref(context).getString(CLIENT_CREDITS, "-");
+    }
+
+    public static void saveClientCredits(Context context, String clientCredits) {
+        getPrefEditor(context).putString(CLIENT_CREDITS, clientCredits).commit();
     }
 }
