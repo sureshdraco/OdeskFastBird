@@ -16,24 +16,11 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent">
 
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_height="wrap_content"
-                    android:text="Email: " />
-
-                <TextView
-                    android:id="@+id/email"
-                    android:textStyle="italic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:text="My Information" />
 
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -41,32 +28,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_height="wrap_content"
-                    android:text="Client ID: " />
-
-                <TextView
-                    android:id="@+id/clientID"
-                    android:textStyle="italic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="18dp"
                     android:layout_height="wrap_content"
                     android:text="First Name: " />
 
                 <TextView
+                    android:textSize="14sp"
                     android:id="@+id/firstName"
                     android:textStyle="italic"
                     android:layout_width="wrap_content"
@@ -80,12 +48,13 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
                     android:layout_height="wrap_content"
                     android:text="Last Name: " />
 
                 <TextView
+                    android:textSize="14sp"
                     android:textStyle="italic"
                     android:id="@+id/lastName"
                     android:layout_width="wrap_content"
@@ -93,6 +62,25 @@
                     android:text="" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CPR: " />
+
+                <TextView
+                    android:textStyle="italic"
+                    android:textSize="14sp"
+                    android:id="@+id/cpr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -101,11 +89,79 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"
+                    android:text="Country: " />
+
+                <TextView
+                    android:textStyle="italic"
+                    android:id="@+id/country"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Company Name: " />
+
+                <TextView
+                    android:textStyle="italic"
+                    android:textSize="14sp"
+                    android:id="@+id/companyName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CRNo: " />
+
+                <TextView
+                    android:textSize="14sp"
+                    android:textStyle="italic"
+                    android:id="@+id/crno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:text="Contact" />
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mobile: " />
 
                 <TextView
+                    android:textSize="14sp"
                     android:textStyle="italic"
                     android:id="@+id/mobile"
                     android:layout_width="wrap_content"
@@ -120,12 +176,13 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"
                     android:text="Phone1: " />
 
                 <TextView
                     android:textStyle="italic"
+                    android:textSize="14sp"
                     android:id="@+id/phone1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -138,19 +195,66 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
                     android:layout_height="wrap_content"
                     android:text="Phone2: " />
 
                 <TextView
                     android:textStyle="italic"
+                    android:textSize="14sp"
                     android:id="@+id/phone2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="" />
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:textSize="14sp"
+                    android:layout_height="wrap_content"
+                    android:text="FaxNo: " />
+
+                <TextView
+                    android:textStyle="italic"
+                    android:textSize="14sp"
+                    android:id="@+id/faxno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Email: " />
+
+                <TextView
+                    android:textSize="14sp"
+                    android:id="@+id/email"
+                    android:textStyle="italic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:text="Bank" />
 
             <LinearLayout
                 android:layout_marginTop="5dp"
@@ -159,13 +263,14 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"
-                    android:text="Country: " />
+                    android:text="Client ID: " />
 
                 <TextView
+                    android:id="@+id/clientID"
+                    android:textSize="14sp"
                     android:textStyle="italic"
-                    android:id="@+id/country"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="" />
@@ -178,13 +283,14 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
                     android:layout_height="wrap_content"
+                    android:textSize="14sp"
                     android:text="Bank Name: " />
 
                 <TextView
                     android:textStyle="italic"
                     android:id="@+id/bankName"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="" />
@@ -198,7 +304,7 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"
                     android:text="Bank Account Name: " />
 
@@ -206,6 +312,7 @@
                     android:textStyle="italic"
                     android:id="@+id/bankAccountName"
                     android:layout_width="wrap_content"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"
                     android:text="" />
             </LinearLayout>
@@ -218,13 +325,14 @@
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
+                    android:textSize="14sp"
                     android:layout_height="wrap_content"
                     android:text="Bank Account No.: " />
 
                 <TextView
                     android:textStyle="italic"
                     android:id="@+id/bankAccountNo"
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="" />
@@ -236,13 +344,14 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
                     android:layout_height="wrap_content"
                     android:text="Credits: " />
 
                 <TextView
                     android:textStyle="italic"
+                    android:textSize="14sp"
                     android:id="@+id/credits"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -255,93 +364,14 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textSize="14sp"
                     android:layout_width="wrap_content"
-                    android:textSize="18dp"
                     android:layout_height="wrap_content"
                     android:text="Discount Percent: " />
 
                 <TextView
                     android:textStyle="italic"
                     android:id="@+id/discount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_height="wrap_content"
-                    android:text="FaxNo: " />
-
-                <TextView
-                    android:textStyle="italic"
-                    android:id="@+id/faxno"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_height="wrap_content"
-                    android:text="Company Name: " />
-
-                <TextView
-                    android:textStyle="italic"
-                    android:id="@+id/companyName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_height="wrap_content"
-                    android:text="CPR: " />
-
-                <TextView
-                    android:textStyle="italic"
-                    android:id="@+id/cpr"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:textSize="18dp"
-                    android:layout_height="wrap_content"
-                    android:text="CRNo: " />
-
-                <TextView
-                    android:textStyle="italic"
-                    android:id="@+id/crno"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="" />
@@ -357,19 +387,29 @@
                     android:gravity="center_horizontal"
                     android:layout_width="fill_parent"
                     android:textStyle="italic"
-                    android:textSize="18dp"
                     android:layout_height="wrap_content"
                     android:text="Change Password" />
 
             </LinearLayout>
 
-            <Button
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_marginTop="25dp"
-                android:id="@+id/withdrawBtn"
-                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Withdraw" />
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/withdrawBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Withdraw" />
+
+                <Button
+                    android:id="@+id/buyCredits"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Buy Credits" />
+            </LinearLayout>
         </LinearLayout>
 
         <TextView

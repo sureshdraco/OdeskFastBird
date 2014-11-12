@@ -59,8 +59,8 @@ public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
 		orderHistoryFragment.setArguments(b);
 		fragments.add(orderHistoryFragment);
 		fragmentTitle = new ArrayList<String>();
-		fragmentTitle.add("With Fast Bird");
-		fragmentTitle.add("PickUps");
+		fragmentTitle.add("Shipments");
+		fragmentTitle.add("Pickup");
 		fragmentTitle.add("History");
 	}
 

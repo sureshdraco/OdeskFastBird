@@ -12,6 +12,7 @@ import android.widget.TextView;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.api.response.CreateOrderResponse;
+import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 
 public class OrderInfoDialog {
 
@@ -35,27 +36,28 @@ public class OrderInfoDialog {
         Resources resources = context.getResources();
         ((TextView) dialog.findViewById(R.id.collectionAmount)).setText(resources.getString(R.string.collection_amount, order.getCollectionAmount()));
         ((TextView) dialog.findViewById(R.id.DeliveryAddressTitle)).setText(resources.getString(R.string.deliverAddressTitle, order.getDeliveryAddressTitle()));
-        ((TextView) dialog.findViewById(R.id.DeliveryContactName)).setText(resources.getString(R.string.deliverContactName, order.getDeliveryContactName()));
         ((TextView) dialog.findViewById(R.id.DeliveryPhone1)).setText(resources.getString(R.string.deliveryPhone1, order.getDeliveryPhone1()));
         ((TextView) dialog.findViewById(R.id.DeliveryPhone2)).setText(resources.getString(R.string.deliveryPhone2, order.getDeliveryPhone2()));
+        ((TextView) dialog.findViewById(R.id.fastPayCode)).setText(resources.getString(R.string.fast_pay_code, order.getFastPayCode()));
+        ((TextView) dialog.findViewById(R.id.paymentResult)).setText(resources.getString(R.string.paymentResult, order.getFastPayStatus()));
         ((TextView) dialog.findViewById(R.id.FBDNumber)).setText(resources.getString(R.string.fbd_number, order.getFBDNumber()));
         ((TextView) dialog.findViewById(R.id.MoneyDelivered)).setText(resources.getString(R.string.moneyDelivered, order.getMoneyDelivered()));
         ((TextView) dialog.findViewById(R.id.MoneyDeliveryType)).setText(resources.getString(R.string.moneyDeliveredType, order.getMoneyDeliveryType()));
         ((TextView) dialog.findViewById(R.id.NetTotal)).setText(resources.getString(R.string.withdraw_money_net_total, order.getNetTotal()));
         ((TextView) dialog.findViewById(R.id.PickupAddressTitle)).setText(resources.getString(R.string.pickupAddressTitle, order.getPickupAddressTitle()));
         ((TextView) dialog.findViewById(R.id.ProgressStatus)).setText(resources.getString(R.string.progressStatus, order.getProgressStatus()));
-        ((TextView) dialog.findViewById(R.id.ServiceType)).setText(resources.getString(R.string.progressStatusDate, order.getServiceType()));
-        ((TextView) dialog.findViewById(R.id.approvalDate)).setText(resources.getString(R.string.approval_date, order.getApprovalDate()));
+        ((TextView) dialog.findViewById(R.id.ServiceType)).setText(resources.getString(R.string.service_type, order.getServiceType()));
+        ((TextView) dialog.findViewById(R.id.approvalDate)).setText(resources.getString(R.string.approval_date, TimestampUtil.getFastBirdDate(order.getApprovalDate())));
         ((TextView) dialog.findViewById(R.id.DeliveryLocation)).setText(resources.getString(R.string.deliveryLocation, order.getDeliveryLocation()));
         ((TextView) dialog.findViewById(R.id.Weight)).setText(resources.getString(R.string.weight, order.getWeight()));
-        ((TextView) dialog.findViewById(R.id.ProgressStatusDate)).setText(resources.getString(R.string.progressStatusDate, order.getProgressStatusDate()));
-        ((TextView) dialog.findViewById(R.id.OrderDate)).setText(resources.getString(R.string.orderDate, order.getOrderDate()));
+        ((TextView) dialog.findViewById(R.id.ProgressStatusDate)).setText(resources.getString(R.string.progressStatusDate, TimestampUtil.getFastBirdDate(order.getProgressStatusDate())));
+        ((TextView) dialog.findViewById(R.id.OrderDate)).setText(resources.getString(R.string.orderDate, TimestampUtil.getFastBirdDate(order.getOrderDate())));
         ((TextView) dialog.findViewById(R.id.DeliveryBlockNo)).setText(resources.getString(R.string.deliverBlockNo, order.getDeliveryBlockNo()));
         ((TextView) dialog.findViewById(R.id.DeliveryBuildingNo)).setText(resources.getString(R.string.deliverBuildingNo, order.getDeliveryBuildingNo()));
         ((TextView) dialog.findViewById(R.id.DeliveryNotes)).setText(resources.getString(R.string.deliveryNotes, order.getDeliveryNotes()));
         ((TextView) dialog.findViewById(R.id.DeliveryFlatNo)).setText(resources.getString(R.string.deliveryFlatNo, order.getDeliveryFlatNo()));
         ((TextView) dialog.findViewById(R.id.DeliveryRoad)).setText(resources.getString(R.string.deliveryRoad, order.getDeliveryRoad()));
-        ((TextView) dialog.findViewById(R.id.EPaymentDate)).setText(resources.getString(R.string.paymentDate, order.getEPaymentDate()));
+        ((TextView) dialog.findViewById(R.id.EPaymentDate)).setText(resources.getString(R.string.paymentDate, TimestampUtil.getFastBirdDate(order.getEPaymentDate())));
         ((TextView) dialog.findViewById(R.id.Size)).setText(resources.getString(R.string.size, order.getSize()));
     }
 }
