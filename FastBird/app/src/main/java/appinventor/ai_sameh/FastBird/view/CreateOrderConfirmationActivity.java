@@ -67,7 +67,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 		float subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
 		float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
 		subTotal.setText(String.valueOf(subtotalValue));
-		float totalValue = subtotalValue - (discountValue / 100);
+		float totalValue = subtotalValue * (discountValue / 100);
 
 		total.setText(String.valueOf(totalValue < 0 ? 0 : totalValue));
 		final Button createButton = (Button) findViewById(R.id.submitButton);
