@@ -15,9 +15,9 @@
     <string name="total_amount">Total Amount: %1$s</string>
     <string name="service_type">Service Type: %1$s</string>
     <string name="date">Date: %1$s</string>
-    <string name="id">Id: %1$s</string>
+    <string name="id">Payment ID: %1$s</string>
     <string name="collection_amount">Collection Amount: %1$s</string>
-    <string name="fbd_number">FBDNumber: %1$s</string>
+    <string name="fbd_number">FBD: %1$s</string>
     <string name="paymentResult">Payment: %1$s</string>
     <string name="fast_pay_code">Fast Pay: %1$s</string>
     <string name="fast_bird_number">Fast Bird Number: %1$s</string>
@@ -48,4 +48,6 @@
     <string name="size">Size: %1$s</string>
     <string name="weight">Weight: %1$s</string>
     <string name="current_status">Current Status: %1$s</string>
+    <string name="collectionAmount">Collection (BD): %1$s</string>
+    <string name="serviceFee">Service Fee: %1$s</string>
 </resources>

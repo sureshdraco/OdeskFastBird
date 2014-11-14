@@ -23,14 +23,14 @@
 
         <TextView
             android:textIsSelectable="true"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/id" />
 
         <TextView
             android:textIsSelectable="true"
-            android:textSize="15sp"
+            android:textSize="14sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/date" />
@@ -41,6 +41,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/totalAmounts" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:text="Statement:"
+            android:textStyle="bold"
+            android:textIsSelectable="true"
+            android:textSize="14sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
 
         <ListView
             android:animateLayoutChanges="true"
