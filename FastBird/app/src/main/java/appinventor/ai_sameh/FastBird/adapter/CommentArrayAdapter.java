@@ -1,12 +1,10 @@
 package appinventor.ai_sameh.FastBird.adapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,7 +14,6 @@ import java.util.List;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Comment;
-import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 
 public class CommentArrayAdapter extends ArrayAdapter<Comment> {
@@ -75,7 +72,7 @@ public class CommentArrayAdapter extends ArrayAdapter<Comment> {
 		}
 		Comment comment = getItem(position);
 		viewHolder.commentText.setText(comment.getComment());
-		viewHolder.date.setText(TimestampUtil.getFastBirdDate(comment.getDate()));
+		viewHolder.date.setText(TimestampUtil.getFastBirdDateString(comment.getDate()));
 		if (comment.getEntryMode() == 1) {
 			viewHolder.avatar.setImageResource(R.drawable.user_avatar);
 			viewHolder.userName.setText(firstName);

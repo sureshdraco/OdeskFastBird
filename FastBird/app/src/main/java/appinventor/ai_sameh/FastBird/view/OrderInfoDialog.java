@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Order;
-import appinventor.ai_sameh.FastBird.api.response.CreateOrderResponse;
 import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 
 public class OrderInfoDialog {
@@ -47,17 +46,17 @@ public class OrderInfoDialog {
         ((TextView) dialog.findViewById(R.id.PickupAddressTitle)).setText(resources.getString(R.string.pickupAddressTitle, order.getPickupAddressTitle()));
         ((TextView) dialog.findViewById(R.id.ProgressStatus)).setText(resources.getString(R.string.progressStatus, order.getProgressStatus()));
         ((TextView) dialog.findViewById(R.id.ServiceType)).setText(resources.getString(R.string.service_type, order.getServiceType()));
-        ((TextView) dialog.findViewById(R.id.approvalDate)).setText(resources.getString(R.string.approval_date, TimestampUtil.getFastBirdDate(order.getApprovalDate())));
+        ((TextView) dialog.findViewById(R.id.approvalDate)).setText(resources.getString(R.string.approval_date, TimestampUtil.getFastBirdDateString(order.getApprovalDate())));
         ((TextView) dialog.findViewById(R.id.DeliveryLocation)).setText(resources.getString(R.string.deliveryLocation, order.getDeliveryLocation()));
         ((TextView) dialog.findViewById(R.id.Weight)).setText(resources.getString(R.string.weight, order.getWeight()));
-        ((TextView) dialog.findViewById(R.id.ProgressStatusDate)).setText(resources.getString(R.string.progressStatusDate, TimestampUtil.getFastBirdDate(order.getProgressStatusDate())));
-        ((TextView) dialog.findViewById(R.id.OrderDate)).setText(resources.getString(R.string.orderDate, TimestampUtil.getFastBirdDate(order.getOrderDate())));
+        ((TextView) dialog.findViewById(R.id.ProgressStatusDate)).setText(resources.getString(R.string.progressStatusDate, TimestampUtil.getFastBirdDateString(order.getProgressStatusDate())));
+        ((TextView) dialog.findViewById(R.id.OrderDate)).setText(resources.getString(R.string.orderDate, TimestampUtil.getFastBirdDateString(order.getOrderDate())));
         ((TextView) dialog.findViewById(R.id.DeliveryBlockNo)).setText(resources.getString(R.string.deliverBlockNo, order.getDeliveryBlockNo()));
         ((TextView) dialog.findViewById(R.id.DeliveryBuildingNo)).setText(resources.getString(R.string.deliverBuildingNo, order.getDeliveryBuildingNo()));
         ((TextView) dialog.findViewById(R.id.DeliveryNotes)).setText(resources.getString(R.string.deliveryNotes, order.getDeliveryNotes()));
         ((TextView) dialog.findViewById(R.id.DeliveryFlatNo)).setText(resources.getString(R.string.deliveryFlatNo, order.getDeliveryFlatNo()));
         ((TextView) dialog.findViewById(R.id.DeliveryRoad)).setText(resources.getString(R.string.deliveryRoad, order.getDeliveryRoad()));
-        ((TextView) dialog.findViewById(R.id.EPaymentDate)).setText(resources.getString(R.string.paymentDate, TimestampUtil.getFastBirdDate(order.getEPaymentDate())));
+        ((TextView) dialog.findViewById(R.id.EPaymentDate)).setText(resources.getString(R.string.paymentDate, TimestampUtil.getFastBirdDateString(order.getEPaymentDate())));
         ((TextView) dialog.findViewById(R.id.Size)).setText(resources.getString(R.string.size, order.getSize()));
     }
 }

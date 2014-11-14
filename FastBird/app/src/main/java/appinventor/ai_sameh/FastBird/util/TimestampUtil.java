@@ -27,13 +27,17 @@ public class TimestampUtil {
 		}
 	}
 
-	public static String getFastBirdDate(String date) {
+	public static String getFastBirdDateString(String date) {
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(FAST_BIRD_DATE_FORMAT);
 		try {
 			return simpleDateFormat.format(ISO8601.toDate(date));
 		} catch (ParseException e) {
 			return "";
 		}
+	}
+
+	public static Date getFastBirdDate(String date) throws ParseException {
+		return ISO8601.toDate(date);
 	}
 
 	public static int getDaysBetween(Date date1, Date date2) {

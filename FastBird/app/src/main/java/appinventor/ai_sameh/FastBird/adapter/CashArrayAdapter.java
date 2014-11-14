@@ -65,7 +65,7 @@ public class CashArrayAdapter extends ArrayAdapter<MRBTransactions> {
 			viewHolder = (CashViewHolder) row.getTag();
 		}
 		MRBTransactions transaction = getItem(position);
-		viewHolder.date.setText(getContext().getResources().getString(R.string.date, TimestampUtil.getFastBirdDate(transaction.getDate())));
+		viewHolder.date.setText(getContext().getResources().getString(R.string.date, TimestampUtil.getFastBirdDateString(transaction.getDate())));
 		viewHolder.id.setText(getContext().getResources().getString(R.string.id, transaction.getId()));
 		viewHolder.totalAmount.setText(getContext().getResources().getString(R.string.total_amount, transaction.getTotalAmounts()));
 		row.setOnClickListener(new InfoClickListener(transaction));

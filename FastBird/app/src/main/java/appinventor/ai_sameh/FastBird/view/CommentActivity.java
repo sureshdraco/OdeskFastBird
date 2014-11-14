@@ -27,6 +27,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
@@ -126,7 +128,9 @@ public class CommentActivity extends Activity {
 					return;
 				}
 				commentArrayAdapter.clear();
-                for (Comment comment : commentListResponse.getData().getComments()) {
+				ArrayList<Comment> sortedComments = commentListResponse.getData().getComments();
+				Collections.sort(sortedComments);
+				for (Comment comment : sortedComments) {
 					commentArrayAdapter.add(comment);
 				}
 				commentArrayAdapter.notifyDataSetChanged();
