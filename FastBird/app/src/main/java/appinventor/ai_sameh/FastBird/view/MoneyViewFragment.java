@@ -135,7 +135,7 @@ public class MoneyViewFragment extends Fragment {
 			@Override
 			public void onErrorResponse(VolleyError volleyError) {
 				if (getActivity() != null) {
-                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    Crouton.showText(getActivity(), getActivity().getString(R.string.no_internet), Style.ALERT);
                     swipeContainer.setRefreshing(false);
                 }
 			}
@@ -174,7 +174,7 @@ public class MoneyViewFragment extends Fragment {
 			@Override
 			public void onErrorResponse(VolleyError volleyError) {
 				if (getActivity() != null) {
-                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    Crouton.showText(getActivity(), getActivity().getString(R.string.no_internet), Style.ALERT);
                     swipeContainer.setRefreshing(false);
                 }
 			}
@@ -207,7 +207,7 @@ public class MoneyViewFragment extends Fragment {
 			@Override
 			public void onErrorResponse(VolleyError volleyError) {
 				if (getActivity() != null) {
-                    Crouton.showText(getActivity(), "Failed to get list", Style.ALERT);
+                    Crouton.showText(getActivity(), getActivity().getString(R.string.no_internet), Style.ALERT);
                     swipeContainer.setRefreshing(false);
                 }
 			}
