@@ -44,6 +44,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 	private EditText subTotal, total, discount, collectionAmount;
 	private CreateOrderRequest createOrderRequest;
 	private float serviceTypePrice;
+	private boolean updateOrder = false;
 
 	public CreateOrderConfirmationActivity() {
 	}
@@ -51,8 +52,11 @@ public class CreateOrderConfirmationActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (getIntent() != null) {
+			updateOrder = getIntent().getBooleanExtra(CreateOrderFragment.UPDATE_ORDER, false);
+		}
 		setContentView(R.layout.confirm_create_order);
-		createOrderRequest = PreferenceUtil.getPendingCreateOrderRequest(this);
+		createOrderRequest = updateOrder ? PreferenceUtil.getPendingUpdateOrderRequest(this) : PreferenceUtil.getPendingCreateOrderRequest(this);
 		getServiceTypePrice();
 	}
 
@@ -62,8 +66,8 @@ public class CreateOrderConfirmationActivity extends Activity {
 		collectionAmount = (EditText) findViewById(R.id.collectionAmount);
 		discount = (EditText) findViewById(R.id.discount);
 		discount.setText(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent() + "%");
-		float deliveryTimePrice = getDeliverTimePrice(PreferenceUtil.getPendingCreateOrderRequest(getApplicationContext()));
-		float deliveryTypePrice = getDeliverTypePrice(PreferenceUtil.getPendingCreateOrderRequest(getApplicationContext()));
+		float deliveryTimePrice = getDeliverTimePrice();
+		float deliveryTypePrice = getDeliverTypePrice();
 		float subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
 		float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
 		subTotal.setText(String.valueOf(subtotalValue));
@@ -75,7 +79,28 @@ public class CreateOrderConfirmationActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-				ApiRequests.createOrder(CreateOrderConfirmationActivity.this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
+				if (updateOrder) {
+					updateOrder();
+				} else {
+					createOrder();
+				}
+			}
+		});
+		createButton.setEnabled(false);
+		CheckBox terms = (CheckBox) findViewById(R.id.checkboxTerms);
+		terms.setMovementMethod(LinkMovementMethod.getInstance());
+		terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
+		terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				createButton.setEnabled(isChecked);
+			}
+		});
+	}
+
+	private void updateOrder() {
+		ApiRequests.updateOrder(this, PreferenceUtil.getPendingUpdateOrderRequest(getApplicationContext()),
+				new Response.Listener<CreateOrderResponse>() {
 					@Override
 					public void onResponse(CreateOrderResponse createOrderResponse) {
 						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
@@ -93,16 +118,25 @@ public class CreateOrderConfirmationActivity extends Activity {
 						Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to create!", Style.ALERT);
 					}
 				});
-			}
-		});
-		createButton.setEnabled(false);
-		CheckBox terms = (CheckBox) findViewById(R.id.checkboxTerms);
-		terms.setMovementMethod(LinkMovementMethod.getInstance());
-		terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
-		terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+	}
+
+	private void createOrder() {
+		ApiRequests.createOrder(this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				createButton.setEnabled(isChecked);
+			public void onResponse(CreateOrderResponse createOrderResponse) {
+				dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+				if (createOrderResponse.getData().getError() != null) {
+					Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
+					return;
+				}
+				showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
+				Log.d(TAG, createOrderResponse.toString());
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError volleyError) {
+				dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+				Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to create!", Style.ALERT);
 			}
 		});
 	}
@@ -177,8 +211,8 @@ public class CreateOrderConfirmationActivity extends Activity {
 		}, 1000);
 	}
 
-	private float getDeliverTimePrice(CreateOrderRequest pendingCreateOrderRequest) {
-		String selectedDeliveryTime = pendingCreateOrderRequest.getDeliverytime();
+	private float getDeliverTimePrice() {
+		String selectedDeliveryTime = createOrderRequest.getDeliverytime();
 		for (DeliveryTime deliveryTime : PreferenceUtil.getDeliveryTime(getApplicationContext())) {
 			if (selectedDeliveryTime.equals(deliveryTime.getId())) {
 				try {
@@ -202,8 +236,8 @@ public class CreateOrderConfirmationActivity extends Activity {
 		return dialog;
 	}
 
-	private float getDeliverTypePrice(CreateOrderRequest pendingCreateOrderRequest) {
-		String selectedDeliveryType = pendingCreateOrderRequest.getMoneydeliverytype();
+	private float getDeliverTypePrice() {
+		String selectedDeliveryType = createOrderRequest.getMoneydeliverytype();
 		for (DeliveryTime deliveryType : PreferenceUtil.getDeliveryType(getApplicationContext())) {
 			if (selectedDeliveryType.equals(deliveryType.getId())) {
 				try {
