@@ -51,4 +51,6 @@
     <string name="collectionAmount">Collection (BD): %1$s</string>
     <string name="serviceFee">Service Fee: %1$s</string>
     <string name="no_internet">Network Error, No Internet Connection</string>
+    <string name="title_activity_update_order">UpdateOrderActivity</string>
+
 </resources>

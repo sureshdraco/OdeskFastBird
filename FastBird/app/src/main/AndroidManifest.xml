@@ -17,59 +17,67 @@
     <permission
         android:name="appinventor.ai_sameh.FastBird.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
+
     <uses-permission android:name="appinventor.ai_sameh.FastBird.permission.C2D_MESSAGE" />
 
     <application
-        android:name=".FastBirdApplication"
+        android:name="appinventor.ai_sameh.FastBird.FastBirdApplication"
         android:allowBackup="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:screenOrientation="portrait"
-            android:name=".view.LoginActivity"
+            android:name="appinventor.ai_sameh.FastBird.view.LoginActivity"
             android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|stateVisible">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:windowSoftInputMode="adjustNothing"
+            android:name="appinventor.ai_sameh.FastBird.view.MainActivity"
             android:exported="true"
+            android:label="@string/title_activity_main"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
-            android:name=".view.MainActivity"
-            android:label="@string/title_activity_main" />
+            android:windowSoftInputMode="adjustNothing" />
         <activity
+            android:name="appinventor.ai_sameh.FastBird.view.CommentActivity"
             android:exported="true"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"
-            android:name=".view.CommentActivity" />
-
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".view.CreateOrderConfirmationActivity" />
-
+            android:name="appinventor.ai_sameh.FastBird.view.CreateOrderConfirmationActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:screenOrientation="portrait"
-            android:name=".view.WebViewActivity" />
+            android:name="appinventor.ai_sameh.FastBird.view.WebViewActivity"
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name="appinventor.ai_sameh.FastBird.receiver.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
                 <category android:name="appinventor.ai_sameh.FastBird" />
             </intent-filter>
         </receiver>
+
         <service
-            android:exported="false"
-            android:name="appinventor.ai_sameh.FastBird.service.GcmIntentService" />
+            android:name="appinventor.ai_sameh.FastBird.service.GcmIntentService"
+            android:exported="false" />
+
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-    </application>
-</manifest>
 
+        <activity
+            android:screenOrientation="portrait"
+            android:name="appinventor.ai_sameh.FastBird.view.UpdateOrderActivity"
+            android:label="@string/title_activity_update_order" />
+    </application>
+
+</manifest>

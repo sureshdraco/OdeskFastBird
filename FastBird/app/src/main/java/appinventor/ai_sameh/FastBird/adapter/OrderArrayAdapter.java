@@ -27,26 +27,29 @@ import appinventor.ai_sameh.FastBird.api.request.OrderTrackStatusRequest;
 import appinventor.ai_sameh.FastBird.api.response.OrderTrackHistoryResponse;
 import appinventor.ai_sameh.FastBird.view.ActivityProgressIndicator;
 import appinventor.ai_sameh.FastBird.view.CommentActivity;
+import appinventor.ai_sameh.FastBird.view.UpdateOrderActivity;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class OrderArrayAdapter extends ArrayAdapter<Order> {
 	public static final int ORDER_INFO_DIALOG = 1;
 	public static final int ORDER_TRACK_STATUS_DIALOG = 5;
+	private final boolean enableEditBtn;
 	private boolean isDrafts;
 	private List<Order> orderList = new ArrayList<Order>();
 	private Context context;
 
 	static class OrderViewHolder {
 		TextView orderNumber, orderTo, phone1, phone2, orderStatus;
-		Button commentButton, trackButton;
+		Button commentButton, trackButton, editButton;
 		ImageView shareIcon;
 	}
 
-	public OrderArrayAdapter(Context context, int textViewResourceId, boolean isDrafts) {
+	public OrderArrayAdapter(Context context, int textViewResourceId, boolean isDrafts, boolean enableEditBtn) {
 		super(context, textViewResourceId);
 		this.context = context;
 		this.isDrafts = isDrafts;
+		this.enableEditBtn = enableEditBtn;
 	}
 
 	@Override
@@ -80,6 +83,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 			viewHolder.phone2 = (TextView) row.findViewById(R.id.phone2);
 			viewHolder.commentButton = (Button) row.findViewById(R.id.btnComment);
 			viewHolder.trackButton = (Button) row.findViewById(R.id.btnTrackStatus);
+			viewHolder.editButton = (Button) row.findViewById(R.id.btnEdit);
 			viewHolder.shareIcon = (ImageView) row.findViewById(R.id.share);
 			viewHolder.phone1.setMovementMethod(LinkMovementMethod.getInstance());
 			viewHolder.phone2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -94,13 +98,14 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 
 		String htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone1(), order.getDeliveryPhone1());
 		viewHolder.phone1.setText(Html.fromHtml(htmlString));
-
 		htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone2(), order.getDeliveryPhone2());
 		viewHolder.phone2.setText(Html.fromHtml(htmlString));
 		row.setOnClickListener(new InfoClickListener(order));
 		viewHolder.commentButton.setOnClickListener(new CommentClickListener(order.getFBDNumber()));
 		viewHolder.trackButton.setVisibility(isDrafts ? View.GONE : View.VISIBLE);
+		viewHolder.editButton.setVisibility(enableEditBtn ? View.VISIBLE : View.GONE);
 		viewHolder.trackButton.setOnClickListener(new TrackButtonClickListener(order));
+		viewHolder.editButton.setOnClickListener(new EditButtonClickListener(order));
 		viewHolder.shareIcon.setOnClickListener(new ShareButtonClickListener(order));
 		return row;
 	}
@@ -190,6 +195,22 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 					Crouton.showText((Activity) context, "Failed to get track status!", Style.ALERT);
 				}
 			});
+		}
+	}
+
+	class EditButtonClickListener implements View.OnClickListener {
+		private final Order order;
+
+		public EditButtonClickListener(Order order) {
+			this.order = order;
+		}
+
+		@Override
+		public void onClick(View v) {
+			PreferenceUtil.saveSelectedOrder(context, order);
+			Intent intent = new Intent(context, UpdateOrderActivity.class);
+			context.startActivity(intent);
+			((Activity) context).overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
 		}
 	}
 }

@@ -117,6 +117,19 @@
                 android:layout_height="wrap_content" />
 
             <Button
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:textColor="@color/Red"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:background="@android:color/transparent"
+                android:text="Edit"
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <Button
                 android:paddingLeft="10dp"
                 android:textStyle="bold"
                 android:textColor="@color/BlueButtonTextColor"

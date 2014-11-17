@@ -110,7 +110,7 @@ public class MoneyTabFragment extends Fragment {
 		cashHistoryFragment.setArguments(b);
 		fragments.add(cashHistoryFragment);
 		fragmentTitle = new ArrayList<String>();
-		fragmentTitle.add("Fast Bird");
+		fragmentTitle.add("Collected Money");
 		fragmentTitle.add("To Bank");
 		fragmentTitle.add("History");
 	}

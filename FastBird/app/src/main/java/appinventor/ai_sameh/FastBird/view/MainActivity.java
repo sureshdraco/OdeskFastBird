@@ -300,9 +300,9 @@ public class MainActivity extends FragmentActivity {
 
 		switch (id) {
 		case OrderArrayAdapter.ORDER_INFO_DIALOG:
-			String selectedOrder = PreferenceUtil.getSelectedOrder(this);
-			if (!TextUtils.isEmpty(selectedOrder)) {
-				OrderInfoDialog.setupOrderDetailUi(getApplicationContext(), dialog, new Gson().fromJson(selectedOrder, Order.class));
+			Order selectedOrder = PreferenceUtil.getSelectedOrder(this);
+			if (selectedOrder != null) {
+				OrderInfoDialog.setupOrderDetailUi(getApplicationContext(), dialog, selectedOrder);
 			} else {
 				dialog.dismiss();
 			}

@@ -32,10 +32,12 @@ import appinventor.ai_sameh.FastBird.api.model.Address;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.model.DataDescription;
 import appinventor.ai_sameh.FastBird.api.model.DeliveryTime;
+import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.request.GetLocationByBlockNoRequest;
 import appinventor.ai_sameh.FastBird.api.request.ServiceTypeRequest;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
+import appinventor.ai_sameh.FastBird.api.request.UpdateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTimeResponse;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTypeResponse;
 import appinventor.ai_sameh.FastBird.api.response.GetClientCreditResponse;
@@ -75,7 +77,15 @@ public class CreateOrderFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setupTitleBar();
+        if (getArguments() != null) {
+            if (getArguments().getBoolean(UPDATE_ORDER)) {
+                this.order = PreferenceUtil.getSelectedOrder(getActivity());
+                this.updateOrder = true;
+            }
+        }
+        if (!updateOrder) {
+            setupTitleBar();
+        }
         gson = new Gson();
         email = PreferenceUtil.getEmail(getActivity());
         password = PreferenceUtil.getPassword(getActivity());
@@ -87,7 +97,8 @@ public class CreateOrderFragment extends Fragment {
         setupPackageTypes();
         setupPaymentMethod();
         setupServiceType();
-        setupTestData();
+        setupUpdateOrderData();
+
     }
 
     private void setupTitleBar() {
@@ -176,6 +187,7 @@ public class CreateOrderFragment extends Fragment {
                 (android.R.layout.simple_spinner_item);
         locationTypeSpinner.setAdapter(dataAdapter);
         locationTypeSpinner.setListSelection(0);
+        locationTypeSpinner.setText(list.get(0));
     }
 
 
@@ -338,12 +350,17 @@ public class CreateOrderFragment extends Fragment {
         if (pickupAddressSpinner.getSelectedItemPosition() == -1) {
             return;
         }
-        if (locationTypeSpinner.getListSelection() == -1) {
+        if (TextUtils.isEmpty(locationTypeSpinner.getText())) {
             return;
         }
         getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
         String pickupLocation = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
-        String deliveryLocation = PreferenceUtil.getLocations(getActivity()).get(locationTypeSpinner.getListSelection()).getId();
+        String deliveryLocation = "";
+        for (DataDescription dataDescription : PreferenceUtil.getLocations(getActivity())) {
+            if (dataDescription.getDescription().equals(locationTypeSpinner.getText().toString())) {
+                deliveryLocation = dataDescription.getId();
+            }
+        }
         ApiRequests.getServiceType(getActivity(), new ServiceTypeRequest(email, password, deliveryLocation, pickupLocation), new Response.Listener<ServiceTypeResponse>() {
             @Override
             public void onResponse(ServiceTypeResponse serviceTypeResponse) {
@@ -398,7 +415,12 @@ public class CreateOrderFragment extends Fragment {
                     ApiRequests.getLocationByBlockNo(getActivity(), new GetLocationByBlockNoRequest(username, password, blockNo.getText().toString()), new Response.Listener<LocationResponse>() {
                         @Override
                         public void onResponse(LocationResponse locationResponse) {
-                            getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+
+                            try {
+                                getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                            } catch (Exception ex) {
+
+                            }
 
                             if (locationResponse.getData().getError() != null || locationResponse.getData().getLocations().isEmpty()) {
                                 return;
@@ -460,13 +482,19 @@ public class CreateOrderFragment extends Fragment {
                 String username = PreferenceUtil.getEmail(getActivity());
                 String password = PreferenceUtil.getPassword(getActivity());
 
-                String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
+                String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getId();
                 String packageTypeString = PreferenceUtil.getPackageTypes(getActivity()).get(packageTypeSpinner.getSelectedItemPosition()).getId();
                 String serviceTypeString = PreferenceUtil.getServiceTypes(getActivity()).get(serviceTypeSpinner.getSelectedItemPosition()).getId();
                 String deliveryTimeString = PreferenceUtil.getDeliveryTime(getActivity()).get(deliveryTimeSpinner.getSelectedItemPosition()).getId();
                 String moneyDeliveryTypeString = PreferenceUtil.getDeliveryType(getActivity()).get(moneyDeliveryTypeSpinner.getSelectedItemPosition()).getId();
                 String paymentMethodTypeString = String.valueOf(paymentMethodTypeSpinner.getSelectedItemPosition());
-                String locationString = (String) PreferenceUtil.getLocations(getActivity()).get(locationTypeSpinner.getListSelection()).getId();
+                String locationString = "";
+                for (DataDescription dataDescription : PreferenceUtil.getLocations(getActivity())) {
+                    if (dataDescription.getDescription().equals(locationTypeSpinner.getText().toString())) {
+                        locationString = dataDescription.getId();
+                    }
+                }
+
 
                 String addressTitleString = addressTitle.getText().toString();
                 String collectionAmountString = String.valueOf(collectionAmountFloat);
@@ -539,9 +567,25 @@ public class CreateOrderFragment extends Fragment {
                     return;
                 }
 
-                CreateOrderRequest createOrderRequest = new CreateOrderRequest(username, password, pickupAddress, contactNameString, phone1String, phone2String, flatNoString, buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString, heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString);
-                PreferenceUtil.savePendingCreateOrderRequest(getActivity(), createOrderRequest);
-                getActivity().startActivityForResult(new Intent(getActivity(), CreateOrderConfirmationActivity.class), 1);
+                if (updateOrder) {
+                    UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(username, password, pickupAddress, contactNameString, phone1String,
+                            phone2String, flatNoString,
+                            buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
+                            heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString, order.getFBDNumber());
+                    PreferenceUtil.savePendingUpdateOrderRequest(getActivity(), updateOrderRequest);
+                    Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
+                    intent.putExtra(CreateOrderFragment.UPDATE_ORDER, true);
+                    getActivity().startActivityForResult(intent, 1);
+                } else {
+                    CreateOrderRequest createOrderRequest = new CreateOrderRequest(username, password, pickupAddress, contactNameString, phone1String, phone2String, flatNoString,
+                            buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
+                            heightString,
+                            widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString);
+                    PreferenceUtil.savePendingCreateOrderRequest(getActivity(), createOrderRequest);
+                    Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
+                    getActivity().startActivityForResult(intent, 1);
+                }
+
             }
         });
         pickupAddressSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -557,35 +601,35 @@ public class CreateOrderFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-        locationTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        locationTypeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 if (previousLocation != position) {
                     setupServiceType();
                 }
                 previousLocation = position;
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
         });
     }
 
-    private void setupTestData() {
-        addressTitle.setText("address");
-        contactName.setText("contact");
-        phone1.setText("phone1");
-        phone2.setText("phone2");
-        flatNo.setText("12");
-        buildingNo.setText("123");
-        road.setText("road23");
-        blockNo.setText("34");
-        note.setText("note 23");
-        length.setText("43");
-        weight.setText("12");
-        width.setText("2");
-        height.setText("4");
+    public static final String UPDATE_ORDER = "updateOrder";
+
+    private Order order;
+    private boolean updateOrder = false;
+
+    private void setupUpdateOrderData() {
+        addressTitle.setText(updateOrder ? order.getDeliveryAddressTitle() : "address");
+        contactName.setText(updateOrder ? order.getDeliveryAddressTitle() : "contact");
+        phone1.setText(updateOrder ? order.getDeliveryPhone1() : "phone1");
+        phone2.setText(updateOrder ? order.getDeliveryPhone2() : "phone2");
+        flatNo.setText(updateOrder ? order.getDeliveryFlatNo() : "12");
+        buildingNo.setText(updateOrder ? order.getDeliveryBuildingNo() : "123");
+        road.setText(updateOrder ? order.getDeliveryRoad() : "road23");
+        blockNo.setText(updateOrder ? order.getDeliveryBlockNo() : "34");
+        note.setText(updateOrder ? order.getDeliveryNotes() : "note 23");
+        length.setText(updateOrder ? order.getLength() : "43");
+        weight.setText(updateOrder ? order.getWeight() : "12");
+        width.setText(updateOrder ? order.getWidth() : "2");
+        height.setText(updateOrder ? order.getHeight() : "4");
     }
 }

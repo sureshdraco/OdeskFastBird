@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -44,6 +45,8 @@ public class CreateOrderConfirmationActivity extends Activity {
 	private EditText subTotal, total, discount, collectionAmount;
 	private CreateOrderRequest createOrderRequest;
 	private float serviceTypePrice;
+	private boolean updateOrder = false;
+	private float subtotalValue;
 
 	public CreateOrderConfirmationActivity() {
 	}
@@ -51,8 +54,11 @@ public class CreateOrderConfirmationActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (getIntent() != null) {
+			updateOrder = getIntent().getBooleanExtra(CreateOrderFragment.UPDATE_ORDER, false);
+		}
 		setContentView(R.layout.confirm_create_order);
-		createOrderRequest = PreferenceUtil.getPendingCreateOrderRequest(this);
+		createOrderRequest = updateOrder ? PreferenceUtil.getPendingUpdateOrderRequest(this) : PreferenceUtil.getPendingCreateOrderRequest(this);
 		getServiceTypePrice();
 	}
 
@@ -62,9 +68,9 @@ public class CreateOrderConfirmationActivity extends Activity {
 		collectionAmount = (EditText) findViewById(R.id.collectionAmount);
 		discount = (EditText) findViewById(R.id.discount);
 		discount.setText(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent() + "%");
-		float deliveryTimePrice = getDeliverTimePrice(PreferenceUtil.getPendingCreateOrderRequest(getApplicationContext()));
-		float deliveryTypePrice = getDeliverTypePrice(PreferenceUtil.getPendingCreateOrderRequest(getApplicationContext()));
-		float subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
+		float deliveryTimePrice = getDeliverTimePrice();
+		float deliveryTypePrice = getDeliverTypePrice();
+		subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
 		float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
 		subTotal.setText(String.valueOf(subtotalValue));
 		float totalValue = subtotalValue * (discountValue / 100);
@@ -74,8 +80,31 @@ public class CreateOrderConfirmationActivity extends Activity {
 		createButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-				ApiRequests.createOrder(CreateOrderConfirmationActivity.this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
+				if (updateOrder) {
+					updateOrder();
+				} else {
+					createOrder();
+				}
+			}
+		});
+		createButton.setEnabled(false);
+		createButton.setText(updateOrder ? "Update Order" : "Create Order");
+		CheckBox terms = (CheckBox) findViewById(R.id.checkboxTerms);
+		terms.setMovementMethod(LinkMovementMethod.getInstance());
+		terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
+		terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				createButton.setEnabled(isChecked);
+			}
+		});
+	}
+
+	private void updateOrder() {
+		if (checkRules()) return;
+		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+		ApiRequests.updateOrder(this, PreferenceUtil.getPendingUpdateOrderRequest(getApplicationContext()),
+				new Response.Listener<CreateOrderResponse>() {
 					@Override
 					public void onResponse(CreateOrderResponse createOrderResponse) {
 						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
@@ -90,19 +119,84 @@ public class CreateOrderConfirmationActivity extends Activity {
 					@Override
 					public void onErrorResponse(VolleyError volleyError) {
 						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-						Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to create!", Style.ALERT);
+						Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to update!", Style.ALERT);
 					}
 				});
+	}
+
+	private boolean checkRules() {
+		if (!PreferenceUtil.getUserInfo(getApplicationContext()).getData().isVIP()) {
+			try {
+				if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientCredits(getApplicationContext()))) {
+					createOrderRequest.setPaymentmethod(String.valueOf(0));
+				} else if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientMoney(getApplicationContext()))) {
+					createOrderRequest.setPaymentmethod(String.valueOf(1));
+				}
+				if (subtotalValue > Float.parseFloat(collectionAmount.getText().toString())) {
+					refillAccount();
+					return true;
+				}
+			} catch (NumberFormatException ex) {
+				Crouton.showText(this, "Failed!", Style.ALERT);
+				return true;
 			}
-		});
-		createButton.setEnabled(false);
-		CheckBox terms = (CheckBox) findViewById(R.id.checkboxTerms);
-		terms.setMovementMethod(LinkMovementMethod.getInstance());
-		terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
-		terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+		}
+		return false;
+	}
+
+	private void refillAccount() {
+		LayoutInflater li = LayoutInflater.from(this);
+		View promptsView = li.inflate(R.layout.low_credit_dialog, null);
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+		// set prompts.xml to alertdialog builder
+		alertDialogBuilder.setView(promptsView);
+
+		// set dialog message
+		alertDialogBuilder
+				.setCancelable(true)
+				.setPositiveButton("Buy credit",
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog, int id) {
+								startActivity(new Intent(CreateOrderConfirmationActivity.this, WebViewActivity.class));
+
+							}
+						})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
+	private void createOrder() {
+		if (checkRules()) return;
+		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+		ApiRequests.createOrder(this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				createButton.setEnabled(isChecked);
+			public void onResponse(CreateOrderResponse createOrderResponse) {
+				dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+				if (createOrderResponse.getData().getError() != null) {
+					Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
+					return;
+				}
+				showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
+				Log.d(TAG, createOrderResponse.toString());
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError volleyError) {
+				dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+				Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to create!", Style.ALERT);
 			}
 		});
 	}
@@ -177,8 +271,8 @@ public class CreateOrderConfirmationActivity extends Activity {
 		}, 1000);
 	}
 
-	private float getDeliverTimePrice(CreateOrderRequest pendingCreateOrderRequest) {
-		String selectedDeliveryTime = pendingCreateOrderRequest.getDeliverytime();
+	private float getDeliverTimePrice() {
+		String selectedDeliveryTime = createOrderRequest.getDeliverytime();
 		for (DeliveryTime deliveryTime : PreferenceUtil.getDeliveryTime(getApplicationContext())) {
 			if (selectedDeliveryTime.equals(deliveryTime.getId())) {
 				try {
@@ -202,8 +296,8 @@ public class CreateOrderConfirmationActivity extends Activity {
 		return dialog;
 	}
 
-	private float getDeliverTypePrice(CreateOrderRequest pendingCreateOrderRequest) {
-		String selectedDeliveryType = pendingCreateOrderRequest.getMoneydeliverytype();
+	private float getDeliverTypePrice() {
+		String selectedDeliveryType = createOrderRequest.getMoneydeliverytype();
 		for (DeliveryTime deliveryType : PreferenceUtil.getDeliveryType(getApplicationContext())) {
 			if (selectedDeliveryType.equals(deliveryType.getId())) {
 				try {
