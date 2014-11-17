@@ -109,4 +109,8 @@ public class CreateOrderRequest extends LoginRequest {
     public String getPaymentmethod() {
         return paymentmethod;
     }
+
+    public void setPaymentmethod(String paymentmethod) {
+        this.paymentmethod = paymentmethod;
+    }
 }

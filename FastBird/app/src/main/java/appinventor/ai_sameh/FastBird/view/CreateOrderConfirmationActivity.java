@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -45,6 +46,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 	private CreateOrderRequest createOrderRequest;
 	private float serviceTypePrice;
 	private boolean updateOrder = false;
+	private float subtotalValue;
 
 	public CreateOrderConfirmationActivity() {
 	}
@@ -68,7 +70,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 		discount.setText(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent() + "%");
 		float deliveryTimePrice = getDeliverTimePrice();
 		float deliveryTypePrice = getDeliverTypePrice();
-		float subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
+		subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
 		float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
 		subTotal.setText(String.valueOf(subtotalValue));
 		float totalValue = subtotalValue * (discountValue / 100);
@@ -78,7 +80,6 @@ public class CreateOrderConfirmationActivity extends Activity {
 		createButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 				if (updateOrder) {
 					updateOrder();
 				} else {
@@ -100,6 +101,8 @@ public class CreateOrderConfirmationActivity extends Activity {
 	}
 
 	private void updateOrder() {
+		if (checkRules()) return;
+		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 		ApiRequests.updateOrder(this, PreferenceUtil.getPendingUpdateOrderRequest(getApplicationContext()),
 				new Response.Listener<CreateOrderResponse>() {
 					@Override
@@ -121,7 +124,63 @@ public class CreateOrderConfirmationActivity extends Activity {
 				});
 	}
 
+	private boolean checkRules() {
+		if (!PreferenceUtil.getUserInfo(getApplicationContext()).getData().isVIP()) {
+			try {
+				if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientCredits(getApplicationContext()))) {
+					createOrderRequest.setPaymentmethod(String.valueOf(0));
+				} else if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientMoney(getApplicationContext()))) {
+					createOrderRequest.setPaymentmethod(String.valueOf(1));
+				}
+				if (subtotalValue > Float.parseFloat(collectionAmount.getText().toString())) {
+					refillAccount();
+					return true;
+				}
+			} catch (NumberFormatException ex) {
+				Crouton.showText(this, "Failed!", Style.ALERT);
+				return true;
+			}
+
+		}
+		return false;
+	}
+
+	private void refillAccount() {
+		LayoutInflater li = LayoutInflater.from(this);
+		View promptsView = li.inflate(R.layout.low_credit_dialog, null);
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+		// set prompts.xml to alertdialog builder
+		alertDialogBuilder.setView(promptsView);
+
+		// set dialog message
+		alertDialogBuilder
+				.setCancelable(true)
+				.setPositiveButton("Buy credit",
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog, int id) {
+								startActivity(new Intent(CreateOrderConfirmationActivity.this, WebViewActivity.class));
+
+							}
+						})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+	}
+
 	private void createOrder() {
+		if (checkRules()) return;
+		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 		ApiRequests.createOrder(this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
 			@Override
 			public void onResponse(CreateOrderResponse createOrderResponse) {
