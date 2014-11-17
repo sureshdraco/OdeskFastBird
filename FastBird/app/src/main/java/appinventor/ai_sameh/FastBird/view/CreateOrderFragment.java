@@ -1,15 +1,19 @@
 package appinventor.ai_sameh.FastBird.view;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -29,6 +33,7 @@ import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.model.DataDescription;
 import appinventor.ai_sameh.FastBird.api.model.DeliveryTime;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
+import appinventor.ai_sameh.FastBird.api.request.GetLocationByBlockNoRequest;
 import appinventor.ai_sameh.FastBird.api.request.ServiceTypeRequest;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTimeResponse;
@@ -52,7 +57,7 @@ public class CreateOrderFragment extends Fragment {
     private Gson gson;
     private Spinner deliveryTimeSpinner;
     private Spinner moneyDeliveryTypeSpinner;
-    private Spinner locationTypeSpinner;
+    private AutoCompleteTextView locationTypeSpinner;
     private int previousPickup = -1;
     private int previousLocation = -1;
     private Spinner packageTypeSpinner;
@@ -168,8 +173,9 @@ public class CreateOrderFragment extends Fragment {
                 (getActivity(), android.R.layout.simple_spinner_item, list);
 
         dataAdapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
+                (android.R.layout.simple_spinner_item);
         locationTypeSpinner.setAdapter(dataAdapter);
+        locationTypeSpinner.setListSelection(0);
     }
 
 
@@ -332,12 +338,12 @@ public class CreateOrderFragment extends Fragment {
         if (pickupAddressSpinner.getSelectedItemPosition() == -1) {
             return;
         }
-        if (locationTypeSpinner.getSelectedItemPosition() == -1) {
+        if (locationTypeSpinner.getListSelection() == -1) {
             return;
         }
         getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
         String pickupLocation = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
-        String deliveryLocation = PreferenceUtil.getLocations(getActivity()).get(locationTypeSpinner.getSelectedItemPosition()).getId();
+        String deliveryLocation = PreferenceUtil.getLocations(getActivity()).get(locationTypeSpinner.getListSelection()).getId();
         ApiRequests.getServiceType(getActivity(), new ServiceTypeRequest(email, password, deliveryLocation, pickupLocation), new Response.Listener<ServiceTypeResponse>() {
             @Override
             public void onResponse(ServiceTypeResponse serviceTypeResponse) {
@@ -382,6 +388,40 @@ public class CreateOrderFragment extends Fragment {
         addressTitle = (EditText) getActivity().findViewById(R.id.addressTitle);
         collectionAmount = (EditText) getActivity().findViewById(R.id.collectionAmount);
         blockNo = (EditText) getActivity().findViewById(R.id.blockNo);
+        blockNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if (!b) {
+                    String username = PreferenceUtil.getEmail(getActivity());
+                    String password = PreferenceUtil.getPassword(getActivity());
+                    getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                    ApiRequests.getLocationByBlockNo(getActivity(), new GetLocationByBlockNoRequest(username, password, blockNo.getText().toString()), new Response.Listener<LocationResponse>() {
+                        @Override
+                        public void onResponse(LocationResponse locationResponse) {
+                            getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+
+                            if (locationResponse.getData().getError() != null || locationResponse.getData().getLocations().isEmpty()) {
+                                return;
+                            }
+                            ArrayList<DataDescription> locationList = locationResponse.getData().getLocations();
+                            DataDescription location = locationResponse.getData().getLocations().get(0);
+                            for (int i = 0; i < locationList.size(); i++) {
+                                if (location.getId().equals(locationList.get(i).getId())) {
+                                    locationTypeSpinner.setSelection(i);
+                                    locationTypeSpinner.setText(location.getDescription());
+                                    break;
+                                }
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError volleyError) {
+                            getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        }
+                    });
+                }
+            }
+        });
         buildingNo = (EditText) getActivity().findViewById(R.id.buildingNo);
         contactName = (EditText) getActivity().findViewById(R.id.contactName);
         road = (EditText) getActivity().findViewById(R.id.road);
@@ -401,7 +441,7 @@ public class CreateOrderFragment extends Fragment {
         pickupAddressSpinner = (Spinner) getActivity().findViewById(R.id.pickupAddress);
         packageTypeSpinner = (Spinner) getActivity().findViewById(R.id.packageType);
         serviceTypeSpinner = (Spinner) getActivity().findViewById(R.id.serviceType);
-        locationTypeSpinner = (Spinner) getActivity().findViewById(R.id.location);
+        locationTypeSpinner = (AutoCompleteTextView) getActivity().findViewById(R.id.location);
         deliveryTimeSpinner = (Spinner) getActivity().findViewById(R.id.deliveryTime);
         moneyDeliveryTypeSpinner = (Spinner) getActivity().findViewById(R.id.moneyDeliveryType);
         paymentMethodTypeSpinner = (Spinner) getActivity().findViewById(R.id.paymentMethod);
@@ -426,7 +466,7 @@ public class CreateOrderFragment extends Fragment {
                 String deliveryTimeString = PreferenceUtil.getDeliveryTime(getActivity()).get(deliveryTimeSpinner.getSelectedItemPosition()).getId();
                 String moneyDeliveryTypeString = PreferenceUtil.getDeliveryType(getActivity()).get(moneyDeliveryTypeSpinner.getSelectedItemPosition()).getId();
                 String paymentMethodTypeString = String.valueOf(paymentMethodTypeSpinner.getSelectedItemPosition());
-                String locationString = (String) PreferenceUtil.getLocations(getActivity()).get(locationTypeSpinner.getSelectedItemPosition()).getId();
+                String locationString = (String) PreferenceUtil.getLocations(getActivity()).get(locationTypeSpinner.getListSelection()).getId();
 
                 String addressTitleString = addressTitle.getText().toString();
                 String collectionAmountString = String.valueOf(collectionAmountFloat);

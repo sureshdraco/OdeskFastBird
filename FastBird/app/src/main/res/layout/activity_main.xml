@@ -16,7 +16,7 @@
             android:paddingLeft="10dp"
             android:textStyle="bold"
             android:layout_alignParentLeft="true"
-            android:textColor="@color/Black"
+            android:textColor="@color/White"
             android:layout_centerVertical="true"
             android:id="@+id/viewTitle"
             android:text="@string/balance"

@@ -4,26 +4,36 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
+import appinventor.ai_sameh.FastBird.adapter.CashArrayAdapter;
+import appinventor.ai_sameh.FastBird.adapter.CashInProgressArrayAdapter;
+import appinventor.ai_sameh.FastBird.adapter.OrderArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
+import appinventor.ai_sameh.FastBird.api.request.ForgetPasswordRequest;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -34,13 +44,6 @@ import de.keyboardsurfer.android.widget.crouton.Style;
  */
 public class LoginActivity extends Activity {
 
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello", "bar@example.com:world"
-    };
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     // UI references.
@@ -85,6 +88,12 @@ public class LoginActivity extends Activity {
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+        findViewById(R.id.forgetPassword).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickForgetPassword(view);
+            }
+        });
     }
 
     /**
@@ -110,6 +119,10 @@ public class LoginActivity extends Activity {
         if (TextUtils.isEmpty(email)) {
             mEmailView.setError(getString(R.string.error_field_required));
             focusView = mEmailView;
+            cancel = true;
+        } else if (TextUtils.isEmpty(password)) {
+            mPasswordView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordView;
             cancel = true;
         } else if (!isEmailValid(email)) {
             mEmailView.setError(getString(R.string.error_invalid_email));
@@ -197,7 +210,83 @@ public class LoginActivity extends Activity {
         }
     }
 
-}
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
 
+        switch (id) {
+            case ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER:
+                dialog = new ActivityProgressIndicator(this, R.style.TransparentDialog);
+                break;
+        }
+        return dialog;
+    }
+
+
+    public void onClickForgetPassword(View view) {
+        // Creating alert Dialog with one Button
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        final View changePasswordDialog = LayoutInflater.from(this).inflate(R.layout.change_password, null);
+        // Setting Dialog Title
+        alertDialog.setTitle("Forget Password");
+        alertDialog.setView(changePasswordDialog);
+        alertDialog.setPositiveButton("Get Password", null);
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Write your code here to execute after dialog
+                        dialog.cancel();
+                    }
+                });
+
+        // Showing Alert Message
+        final AlertDialog alertDialog1 = alertDialog.create();
+        alertDialog1.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                Button b = alertDialog1.getButton(AlertDialog.BUTTON_POSITIVE);
+                b.setOnClickListener(new OnClickListener() {
+                    public void onClick(View view) {
+                        EditText mobileNumber = (EditText) changePasswordDialog.findViewById(R.id.mobileNumber);
+                        EditText cpr = (EditText) changePasswordDialog.findViewById(R.id.cpr);
+                        if (TextUtils.isEmpty(mobileNumber.getText().toString())) {
+                            mobileNumber.requestFocus();
+                            mobileNumber.setError("Required");
+                            return;
+                        }
+                        if (TextUtils.isEmpty(cpr.getText().toString())) {
+                            cpr.requestFocus();
+                            cpr.setError("Required");
+                            return;
+                        }
+                        showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        ApiRequests.forgetPassword(LoginActivity.this, new ForgetPasswordRequest(PreferenceUtil.getEmail(getApplicationContext()), PreferenceUtil.getPassword(getApplicationContext()), cpr.getText().toString(), mobileNumber.getText().toString()), new Response.Listener<LoginResponse>() {
+                            @Override
+                            public void onResponse(LoginResponse loginResponse) {
+                                alertDialog1.dismiss();
+                                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                                if (loginResponse.getData().getError() != null) {
+                                    Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
+                                    return;
+                                }
+                                Crouton.showText(LoginActivity.this, "Success!", Style.INFO);
+
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError volleyError) {
+                                alertDialog1.dismiss();
+                                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                                Crouton.showText(LoginActivity.this, getString(R.string.no_internet), Style.ALERT);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+        alertDialog1.show();
+    }
+
+}
 
 

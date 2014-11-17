@@ -8,6 +8,8 @@ import com.android.volley.Response;
 import appinventor.ai_sameh.FastBird.api.model.ProgressOrderList;
 import appinventor.ai_sameh.FastBird.api.request.CommentListRequest;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
+import appinventor.ai_sameh.FastBird.api.request.ForgetPasswordRequest;
+import appinventor.ai_sameh.FastBird.api.request.GetLocationByBlockNoRequest;
 import appinventor.ai_sameh.FastBird.api.request.InsertCommentRequest;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.request.OrderTrackStatusRequest;
@@ -62,9 +64,11 @@ public class ApiRequests {
     private static final String USER_INFO_API_URL = "Clients.svc/GetMyInformation";
     private static final String CHANGE_PASSWORD = "Clients.svc/ChangePassword";
     private static final String WITHDRAW_CLIENT_MONEY = "Clients.svc/SendMyMoney";
+    private static final String GET_LOCATION_BY_BLOCK = "Masters.svc/GetLocationByBlockNo";
     private static final String GET_CLIENT_MONEY = "Clients.svc/ClientMoney";
     private static final String GET_CLIENT_CREDITS = "Clients.svc/CheckCredit";
     private static final String GET_ORDER_TRACK_STATUS = "OrderTracking.svc/GetOrderStatus";
+    private static final String FORGET_PASSWORD = "Clients.svc/ResetPassword";
 
     public static void login(Context context, String email, String password, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
         VolleyClient
@@ -251,12 +255,31 @@ public class ApiRequests {
                         errorListener));
     }
 
+    public static void getLocationByBlockNo(Context context, GetLocationByBlockNoRequest getLocationByBlockNoRequest, Response.Listener<LocationResponse> listener,
+                                            Response.ErrorListener errorListener) {
+        VolleyClient
+                .getInstance(context)
+                .getRequestQueue()
+                .add(new GsonRequest<LocationResponse>(Request.Method.POST, API_BASE_URL + GET_LOCATION_BY_BLOCK, getLocationByBlockNoRequest, LocationResponse.class, null, listener,
+                        errorListener));
+    }
+
     public static void getOrderTrackStatus(Context context, OrderTrackStatusRequest orderTrackStatusRequest, Response.Listener<OrderTrackHistoryResponse> listener,
                                            Response.ErrorListener errorListener) {
         VolleyClient
                 .getInstance(context)
                 .getRequestQueue()
                 .add(new GsonRequest<OrderTrackHistoryResponse>(Request.Method.POST, API_BASE_URL + GET_ORDER_TRACK_STATUS, orderTrackStatusRequest, OrderTrackHistoryResponse.class, null, listener,
+                        errorListener));
+    }
+
+
+    public static void forgetPassword(Context context, ForgetPasswordRequest forgetPasswordRequest, Response.Listener<LoginResponse> listener,
+                                      Response.ErrorListener errorListener) {
+        VolleyClient
+                .getInstance(context)
+                .getRequestQueue()
+                .add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + FORGET_PASSWORD, forgetPasswordRequest, LoginResponse.class, null, listener,
                         errorListener));
     }
 }
