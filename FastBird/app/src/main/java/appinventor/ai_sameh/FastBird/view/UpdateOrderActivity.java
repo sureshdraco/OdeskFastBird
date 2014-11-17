@@ -1,19 +1,11 @@
 package appinventor.ai_sameh.FastBird.view;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
 
 import appinventor.ai_sameh.FastBird.R;
 
-public class UpdateOrderActivity extends ActionBarActivity {
+public class UpdateOrderActivity extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

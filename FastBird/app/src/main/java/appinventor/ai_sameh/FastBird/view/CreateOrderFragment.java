@@ -521,10 +521,10 @@ public class CreateOrderFragment extends Fragment {
 					return;
 				}
 				if (updateOrder) {
-					UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(order.getFBDNumber(), username, password, pickupAddress, contactNameString, phone1String,
+					UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(username, password, pickupAddress, contactNameString, phone1String,
 							phone2String, flatNoString,
 							buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
-							heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString);
+							heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString, order.getFBDNumber());
 					PreferenceUtil.savePendingUpdateOrderRequest(getActivity(), updateOrderRequest);
 					Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
 					intent.putExtra(CreateOrderFragment.UPDATE_ORDER, true);

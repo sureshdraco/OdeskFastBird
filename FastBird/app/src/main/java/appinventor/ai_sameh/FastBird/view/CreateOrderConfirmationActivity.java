@@ -87,6 +87,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 			}
 		});
 		createButton.setEnabled(false);
+		createButton.setText(updateOrder ? "Update Order" : "Create Order");
 		CheckBox terms = (CheckBox) findViewById(R.id.checkboxTerms);
 		terms.setMovementMethod(LinkMovementMethod.getInstance());
 		terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
