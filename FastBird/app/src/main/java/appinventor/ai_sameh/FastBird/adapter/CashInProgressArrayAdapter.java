@@ -56,7 +56,7 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
             viewHolder = new CashViewHolder();
             viewHolder.name = (TextView) row.findViewById(R.id.name);
             viewHolder.phone = (TextView) row.findViewById(R.id.phone);
-            viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdNumber);
+            viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdnumber);
             viewHolder.collectionAmount = (TextView) row.findViewById(R.id.collectionAmount);
             viewHolder.netTotal = (TextView) row.findViewById(R.id.netTotal);
             viewHolder.serviceType = (TextView) row.findViewById(R.id.serviceType);

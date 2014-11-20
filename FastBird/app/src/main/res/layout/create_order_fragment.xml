@@ -128,7 +128,7 @@
             <EditText
                 android:imeOptions="actionNext"
                 android:singleLine="true"
-                android:id="@+id/flatNo"
+                android:id="@+id/flatno"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

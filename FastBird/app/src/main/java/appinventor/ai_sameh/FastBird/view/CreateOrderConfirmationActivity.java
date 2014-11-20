@@ -210,7 +210,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 		// set prompts.xml to alertdialog builder
 		alertDialogBuilder.setView(promptsView);
 
-		((TextView) promptsView.findViewById(R.id.fbdNumber)).setText(getString(R.string.fbd_number, fbdNumber));
+		((TextView) promptsView.findViewById(R.id.fbdnumber)).setText(getString(R.string.fbd_number, fbdNumber));
 		((TextView) promptsView.findViewById(R.id.fastBirdNumber)).setText(getString(R.string.fast_bird_number, fastBirdNumber));
 
 		// set dialog message

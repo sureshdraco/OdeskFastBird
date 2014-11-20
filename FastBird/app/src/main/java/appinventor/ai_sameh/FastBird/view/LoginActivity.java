@@ -35,258 +35,257 @@ import appinventor.ai_sameh.FastBird.adapter.OrderArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.request.ForgetPasswordRequest;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
+import appinventor.ai_sameh.FastBird.util.Constant;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends Activity {
 
-    private static final String TAG = LoginActivity.class.getSimpleName();
+	private static final String TAG = LoginActivity.class.getSimpleName();
 
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
+	// UI references.
+	private AutoCompleteTextView mEmailView;
+	private EditText mPasswordView;
+	private View mProgressView;
+	private View mLoginFormView;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (PreferenceUtil.getUserLoggedIn(this)) {
-            finish();
-            startActivity(new Intent(this, MainActivity.class));
-            return;
-        }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (PreferenceUtil.getUserLoggedIn(this)) {
+			finish();
+			startActivity(new Intent(this, MainActivity.class));
+			return;
+		}
 
-        setContentView(R.layout.activity_login);
+		setContentView(R.layout.activity_login);
 
-        // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+		// Set up the login form.
+		mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
-        mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+		mPasswordView = (EditText) findViewById(R.id.password);
+		mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+			@Override
+			public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+				if (id == R.id.login || id == EditorInfo.IME_NULL) {
+					attemptLogin();
+					return true;
+				}
+				return false;
+			}
+		});
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
+		Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+		mEmailSignInButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				attemptLogin();
+			}
+		});
 
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
-        findViewById(R.id.forgetPassword).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickForgetPassword(view);
-            }
-        });
-    }
+		mLoginFormView = findViewById(R.id.login_form);
+		mProgressView = findViewById(R.id.login_progress);
+		findViewById(R.id.forgetPassword).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				onClickForgetPassword(view);
+			}
+		});
+		if (Constant.DEBUG) mEmailView.setText("sales@fastbird.org");
+		if (Constant.DEBUG) mPasswordView.setText("123456789");
+	}
 
-    /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
-     */
-    public void attemptLogin() {
+	/**
+	 * Attempts to sign in or register the account specified by the login form. If there are form errors (invalid email, missing fields, etc.), the errors are presented and no
+	 * actual login attempt is made.
+	 */
+	public void attemptLogin() {
 
-        // Reset errors.
-        mEmailView.setError(null);
-        mPasswordView.setError(null);
+		// Reset errors.
+		mEmailView.setError(null);
+		mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
-        final String email = mEmailView.getText().toString();
-        final String password = mPasswordView.getText().toString();
+		// Store values at the time of the login attempt.
+		final String email = mEmailView.getText().toString();
+		final String password = mPasswordView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
+		boolean cancel = false;
+		View focusView = null;
 
+		// Check for a valid email address.
+		if (TextUtils.isEmpty(email)) {
+			mEmailView.setError(getString(R.string.error_field_required));
+			focusView = mEmailView;
+			cancel = true;
+		} else if (TextUtils.isEmpty(password)) {
+			mPasswordView.setError(getString(R.string.error_field_required));
+			focusView = mPasswordView;
+			cancel = true;
+		} else if (!isEmailValid(email)) {
+			mEmailView.setError(getString(R.string.error_invalid_email));
+			focusView = mEmailView;
+			cancel = true;
+		}
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (TextUtils.isEmpty(password)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
+		if (cancel) {
+			// There was an error; don't attempt login and focus the first
+			// form field with an error.
+			focusView.requestFocus();
+		} else {
+			// Show a progress spinner, and kick off a background task to
+			// perform the user login attempt.
+			showProgress(true);
+			// mAuthTask = new UserLoginTask(email, password);
+			// mAuthTask.execute((Void) null);
+			ApiRequests.login(getApplicationContext(), email, password, new Response.Listener<LoginResponse>() {
+				@Override
+				public void onResponse(LoginResponse loginResponse) {
+					if (TextUtils.isEmpty(loginResponse.getData().getError())) {
+						loginUser(email, password);
+					} else {
+						showProgress(false);
+						Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
+					}
+				}
+			}, new Response.ErrorListener() {
+				@Override
+				public void onErrorResponse(VolleyError volleyError) {
+					Log.e(TAG, volleyError.toString());
+					showProgress(false);
+					Crouton.showText(LoginActivity.this, "Failed to login!", Style.ALERT);
+				}
+			});
+		}
+	}
 
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            showProgress(true);
-            //mAuthTask = new UserLoginTask(email, password);
-            //mAuthTask.execute((Void) null);
-            ApiRequests.login(getApplicationContext(), email, password, new Response.Listener<LoginResponse>() {
-                @Override
-                public void onResponse(LoginResponse loginResponse) {
-                    if (TextUtils.isEmpty(loginResponse.getData().getError())) {
-                        loginUser(email, password);
-                    } else {
-                        showProgress(false);
-                        Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
-                    }
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError volleyError) {
-                    Log.e(TAG, volleyError.toString());
-                    showProgress(false);
-                    Crouton.showText(LoginActivity.this, "Failed to login!", Style.ALERT);
-                }
-            });
-        }
-    }
+	private void loginUser(String email, String password) {
+		showProgress(false);
+		finish();
+		startActivity(new Intent(getApplicationContext(), MainActivity.class));
+		PreferenceUtil.saveEmail(getApplicationContext(), email);
+		PreferenceUtil.savePassword(getApplicationContext(), password);
+		PreferenceUtil.saveUserLoggedIn(getApplicationContext(), true);
+	}
 
-    private void loginUser(String email, String password) {
-        showProgress(false);
-        finish();
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        PreferenceUtil.saveEmail(getApplicationContext(), email);
-        PreferenceUtil.savePassword(getApplicationContext(), password);
-        PreferenceUtil.saveUserLoggedIn(getApplicationContext(), true);
-    }
+	private boolean isEmailValid(String email) {
+		return email.contains("@");
+	}
 
-    private boolean isEmailValid(String email) {
-        return email.contains("@");
-    }
+	/**
+	 * Shows the progress UI and hides the login form.
+	 */
+	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
+	public void showProgress(final boolean show) {
+		// On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
+		// for very easy animations. If available, use these APIs to fade-in
+		// the progress spinner.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+			int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
 
-    /**
-     * Shows the progress UI and hides the login form.
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    public void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+			mLoginFormView.animate().setDuration(shortAnimTime).alpha(
+					show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+				}
+			});
 
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                }
-            });
+			mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+			mProgressView.animate().setDuration(shortAnimTime).alpha(
+					show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+				@Override
+				public void onAnimationEnd(Animator animation) {
+					mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+				}
+			});
+		} else {
+			// The ViewPropertyAnimator APIs are not available, so simply show
+			// and hide the relevant UI components.
+			mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+			mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+		}
+	}
 
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-                }
-            });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-        }
-    }
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		Dialog dialog = null;
 
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        Dialog dialog = null;
+		switch (id) {
+		case ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER:
+			dialog = new ActivityProgressIndicator(this, R.style.TransparentDialog);
+			break;
+		}
+		return dialog;
+	}
 
-        switch (id) {
-            case ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER:
-                dialog = new ActivityProgressIndicator(this, R.style.TransparentDialog);
-                break;
-        }
-        return dialog;
-    }
+	public void onClickForgetPassword(View view) {
+		// Creating alert Dialog with one Button
+		final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+		final View changePasswordDialog = LayoutInflater.from(this).inflate(R.layout.change_password, null);
+		// Setting Dialog Title
+		alertDialog.setTitle("Forget Password");
+		alertDialog.setView(changePasswordDialog);
+		alertDialog.setPositiveButton("Get Password", null);
+		alertDialog.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						// Write your code here to execute after dialog
+						dialog.cancel();
+					}
+				});
 
+		// Showing Alert Message
+		final AlertDialog alertDialog1 = alertDialog.create();
+		alertDialog1.setOnShowListener(new DialogInterface.OnShowListener() {
+			@Override
+			public void onShow(DialogInterface dialogInterface) {
+				Button b = alertDialog1.getButton(AlertDialog.BUTTON_POSITIVE);
+				b.setOnClickListener(new OnClickListener() {
+					public void onClick(View view) {
+						EditText mobileNumber = (EditText) changePasswordDialog.findViewById(R.id.mobileNumber);
+						EditText cpr = (EditText) changePasswordDialog.findViewById(R.id.cpr);
+						if (TextUtils.isEmpty(mobileNumber.getText().toString())) {
+							mobileNumber.requestFocus();
+							mobileNumber.setError("Required");
+							return;
+						}
+						if (TextUtils.isEmpty(cpr.getText().toString())) {
+							cpr.requestFocus();
+							cpr.setError("Required");
+							return;
+						}
+						showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+						ApiRequests.forgetPassword(LoginActivity.this,
+								new ForgetPasswordRequest(PreferenceUtil.getEmail(getApplicationContext()), PreferenceUtil.getPassword(getApplicationContext()), cpr.getText()
+										.toString(), mobileNumber.getText().toString()), new Response.Listener<LoginResponse>() {
+									@Override
+									public void onResponse(LoginResponse loginResponse) {
+										alertDialog1.dismiss();
+										dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+										if (loginResponse.getData().getError() != null) {
+											Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
+											return;
+										}
+										Crouton.showText(LoginActivity.this, "Success!", Style.INFO);
 
-    public void onClickForgetPassword(View view) {
-        // Creating alert Dialog with one Button
-        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-        final View changePasswordDialog = LayoutInflater.from(this).inflate(R.layout.change_password, null);
-        // Setting Dialog Title
-        alertDialog.setTitle("Forget Password");
-        alertDialog.setView(changePasswordDialog);
-        alertDialog.setPositiveButton("Get Password", null);
-        alertDialog.setNegativeButton("Cancel",
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Write your code here to execute after dialog
-                        dialog.cancel();
-                    }
-                });
-
-        // Showing Alert Message
-        final AlertDialog alertDialog1 = alertDialog.create();
-        alertDialog1.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                Button b = alertDialog1.getButton(AlertDialog.BUTTON_POSITIVE);
-                b.setOnClickListener(new OnClickListener() {
-                    public void onClick(View view) {
-                        EditText mobileNumber = (EditText) changePasswordDialog.findViewById(R.id.mobileNumber);
-                        EditText cpr = (EditText) changePasswordDialog.findViewById(R.id.cpr);
-                        if (TextUtils.isEmpty(mobileNumber.getText().toString())) {
-                            mobileNumber.requestFocus();
-                            mobileNumber.setError("Required");
-                            return;
-                        }
-                        if (TextUtils.isEmpty(cpr.getText().toString())) {
-                            cpr.requestFocus();
-                            cpr.setError("Required");
-                            return;
-                        }
-                        showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                        ApiRequests.forgetPassword(LoginActivity.this, new ForgetPasswordRequest(PreferenceUtil.getEmail(getApplicationContext()), PreferenceUtil.getPassword(getApplicationContext()), cpr.getText().toString(), mobileNumber.getText().toString()), new Response.Listener<LoginResponse>() {
-                            @Override
-                            public void onResponse(LoginResponse loginResponse) {
-                                alertDialog1.dismiss();
-                                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                                if (loginResponse.getData().getError() != null) {
-                                    Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
-                                    return;
-                                }
-                                Crouton.showText(LoginActivity.this, "Success!", Style.INFO);
-
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError volleyError) {
-                                alertDialog1.dismiss();
-                                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                                Crouton.showText(LoginActivity.this, getString(R.string.no_internet), Style.ALERT);
-                            }
-                        });
-                    }
-                });
-            }
-        });
-        alertDialog1.show();
-    }
+									}
+								}, new Response.ErrorListener() {
+									@Override
+									public void onErrorResponse(VolleyError volleyError) {
+										alertDialog1.dismiss();
+										dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+										Crouton.showText(LoginActivity.this, getString(R.string.no_internet), Style.ALERT);
+									}
+								});
+					}
+				});
+			}
+		});
+		alertDialog1.show();
+	}
 
 }
-
-

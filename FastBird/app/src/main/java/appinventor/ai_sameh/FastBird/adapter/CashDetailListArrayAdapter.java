@@ -58,7 +58,7 @@ public class CashDetailListArrayAdapter extends ArrayAdapter<MoneyDetail> {
 			LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			row = inflater.inflate(R.layout.cash_card_detail_item, parent, false);
 			viewHolder = new OrderViewHolder();
-			viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdNumber);
+			viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdnumber);
 			viewHolder.amount = (TextView) row.findViewById(R.id.amount);
 			viewHolder.collectionAmount = (TextView) row.findViewById(R.id.collectionAmount);
 			viewHolder.serviceFee = (TextView) row.findViewById(R.id.serviceFee);

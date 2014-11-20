@@ -22,7 +22,7 @@
 
         <TextView
             android:layout_marginTop="15dp"
-            android:id="@+id/fbdNumber"
+            android:id="@+id/fbdnumber"
             android:text="@string/fbd_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
