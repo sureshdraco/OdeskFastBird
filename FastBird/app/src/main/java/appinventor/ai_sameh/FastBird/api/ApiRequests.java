@@ -42,35 +42,35 @@ import appinventor.ai_sameh.FastBird.volley.VolleyClient;
  * Created by suresh on 12/10/14.
  */
 public class ApiRequests {
-    public static final String API_BASE_URL = "http://www.fastbird.org/clients/api/";
-    private static final String LOGIN_API_URL = "Clients.svc/ValidateLogin";
-    private static final String REGISTER_DEVICE_API_URL = "Clients.svc/AddDevice";
-    private static final String UNREGISTER_DEVICE_API_URL = "Clients.svc/RemoveDevice";
-    private static final String FAST_BIRD_PENDING_ORDERS = "NOrder.svc/ListInProgressOrders";
-    private static final String ME_PENDING_ORDERS = "NOrder.svc/ListPendingOrders";
-    private static final String ME_HISTORY_ORDERS = "NOrder.svc/ListClosedOrders";
-    private static final String GET_CASH_ON_THE_WAY = "MoneyCollection.svc/GetCashOnTheWay";
-    private static final String IN_PROGRESS_MONEY = "NOrder.svc/ListReturnedMoneyOrders";
-    private static final String CREATE_ORDER = "NOrder.svc/Create";
-    private static final String MY_PICK_ADDRRESS = "Clients.svc/ListMyAddresses";
-    private static final String DELIVERY_TIME = "Masters.svc/ListDeliveryTimes";
-    private static final String PACKAGE_TYPES = "Masters.svc/ListPackageTypes";
-    private static final String COMMENT_LIST = "NOrder.svc/ListOrderComments";
-    private static final String INSERT_COMMENT = "NOrder.svc/InsertOrderComment";
-    private static final String SERVICE_TYPE = "Masters.svc/ListServiceTypes";
-    private static final String SERVICE_TYPE_PRICE = "Masters.svc/GetServiceTypePrice";
-    private static final String LOCATIONS = "Masters.svc/ListLocations";
-    private static final String DELIVERY_TYPE = "Masters.svc/ListMoneyDeliveryTypes";
-    private static final String MONEY_HISTORY = "MoneyCollection.svc/GetCashHistory";
-    private static final String USER_INFO_API_URL = "Clients.svc/GetMyInformation";
-    private static final String CHANGE_PASSWORD = "Clients.svc/ChangePassword";
-    private static final String WITHDRAW_CLIENT_MONEY = "Clients.svc/SendMyMoney";
-    private static final String GET_LOCATION_BY_BLOCK = "Masters.svc/GetLocationByBlockNo";
-    private static final String GET_CLIENT_MONEY = "Clients.svc/ClientMoney";
-    private static final String GET_CLIENT_CREDITS = "Clients.svc/CheckCredit";
-    private static final String GET_ORDER_TRACK_STATUS = "OrderTracking.svc/GetOrderStatus";
-    private static final String UPDATE_ORDER = "NOrder.svc/Update";
-    private static final String FORGET_PASSWORD = "Clients.svc/ResetPassword";
+	public static final String API_BASE_URL = "http://www.fastbird.org/clients/api/";
+	private static final String LOGIN_API_URL = "Clients.svc/ValidateLogin";
+	private static final String REGISTER_DEVICE_API_URL = "Clients.svc/AddDevice";
+	private static final String UNREGISTER_DEVICE_API_URL = "Clients.svc/RemoveDevice";
+	private static final String FAST_BIRD_PENDING_ORDERS = "NOrder.svc/ListInProgressOrders";
+	private static final String ME_PENDING_ORDERS = "NOrder.svc/ListPendingOrders";
+	private static final String ME_HISTORY_ORDERS = "NOrder.svc/ListClosedOrders";
+	private static final String GET_CASH_ON_THE_WAY = "MoneyCollection.svc/GetCashOnTheWay";
+	private static final String IN_PROGRESS_MONEY = "NOrder.svc/ListReturnedMoneyOrders";
+	private static final String CREATE_ORDER = "NOrder.svc/Create";
+	private static final String MY_PICK_ADDRRESS = "Clients.svc/ListMyAddresses";
+	private static final String DELIVERY_TIME = "Masters.svc/ListDeliveryTimes";
+	private static final String PACKAGE_TYPES = "Masters.svc/ListPackageTypes";
+	private static final String COMMENT_LIST = "NOrder.svc/ListOrderComments";
+	private static final String INSERT_COMMENT = "NOrder.svc/InsertOrderComment";
+	private static final String SERVICE_TYPE = "Masters.svc/ListServiceTypes";
+	private static final String SERVICE_TYPE_PRICE = "Masters.svc/GetServiceTypePrice";
+	private static final String LOCATIONS = "Masters.svc/ListLocations";
+	private static final String DELIVERY_TYPE = "Masters.svc/ListMoneyDeliveryTypes";
+	private static final String MONEY_HISTORY = "MoneyCollection.svc/GetCashHistory";
+	private static final String USER_INFO_API_URL = "Clients.svc/GetMyInformation";
+	private static final String CHANGE_PASSWORD = "Clients.svc/ChangePassword";
+	private static final String WITHDRAW_CLIENT_MONEY = "Clients.svc/SendMyMoney";
+	private static final String GET_LOCATION_BY_BLOCK = "Masters.svc/GetLocationByBlockNo";
+	private static final String GET_CLIENT_MONEY = "Clients.svc/ClientMoney";
+	private static final String GET_CLIENT_CREDITS = "Clients.svc/CheckCredit";
+	private static final String GET_ORDER_TRACK_STATUS = "OrderTracking.svc/GetOrderStatus";
+	private static final String UPDATE_ORDER = "NOrder.svc/Update";
+	private static final String FORGET_PASSWORD = "Clients.svc/ResetPassword";
 
 	public static void login(Context context, String email, String password, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
 		VolleyClient
@@ -267,31 +267,33 @@ public class ApiRequests {
 				.add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + WITHDRAW_CLIENT_MONEY, withdrawMoneyRequest, LoginResponse.class, null, listener,
 						errorListener));
 	}
-    public static void getLocationByBlockNo(Context context, GetLocationByBlockNoRequest getLocationByBlockNoRequest, Response.Listener<LocationResponse> listener,
-                                            Response.ErrorListener errorListener) {
-        VolleyClient
-                .getInstance(context)
-                .getRequestQueue()
-                .add(new GsonRequest<LocationResponse>(Request.Method.POST, API_BASE_URL + GET_LOCATION_BY_BLOCK, getLocationByBlockNoRequest, LocationResponse.class, null, listener,
-                        errorListener));
-    }
 
-    public static void getOrderTrackStatus(Context context, OrderTrackStatusRequest orderTrackStatusRequest, Response.Listener<OrderTrackHistoryResponse> listener,
-                                           Response.ErrorListener errorListener) {
-        VolleyClient
-                .getInstance(context)
-                .getRequestQueue()
-                .add(new GsonRequest<OrderTrackHistoryResponse>(Request.Method.POST, API_BASE_URL + GET_ORDER_TRACK_STATUS, orderTrackStatusRequest, OrderTrackHistoryResponse.class, null, listener,
-                        errorListener));
-    }
+	public static void getLocationByBlockNo(Context context, GetLocationByBlockNoRequest getLocationByBlockNoRequest, Response.Listener<LocationResponse> listener,
+			Response.ErrorListener errorListener) {
+		VolleyClient
+				.getInstance(context)
+				.getRequestQueue()
+				.add(new GsonRequest<LocationResponse>(Request.Method.POST, API_BASE_URL + GET_LOCATION_BY_BLOCK, getLocationByBlockNoRequest, LocationResponse.class, null,
+						listener,
+						errorListener));
+	}
 
+	public static void getOrderTrackStatus(Context context, OrderTrackStatusRequest orderTrackStatusRequest, Response.Listener<OrderTrackHistoryResponse> listener,
+			Response.ErrorListener errorListener) {
+		VolleyClient
+				.getInstance(context)
+				.getRequestQueue()
+				.add(new GsonRequest<OrderTrackHistoryResponse>(Request.Method.POST, API_BASE_URL + GET_ORDER_TRACK_STATUS, orderTrackStatusRequest,
+						OrderTrackHistoryResponse.class, null, listener,
+						errorListener));
+	}
 
-    public static void forgetPassword(Context context, ForgetPasswordRequest forgetPasswordRequest, Response.Listener<LoginResponse> listener,
-                                      Response.ErrorListener errorListener) {
-        VolleyClient
-                .getInstance(context)
-                .getRequestQueue()
-                .add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + FORGET_PASSWORD, forgetPasswordRequest, LoginResponse.class, null, listener,
-                        errorListener));
-    }
+	public static void forgetPassword(Context context, ForgetPasswordRequest forgetPasswordRequest, Response.Listener<LoginResponse> listener,
+			Response.ErrorListener errorListener) {
+		VolleyClient
+				.getInstance(context)
+				.getRequestQueue()
+				.add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + FORGET_PASSWORD, forgetPasswordRequest, LoginResponse.class, null, listener,
+						errorListener));
+	}
 }

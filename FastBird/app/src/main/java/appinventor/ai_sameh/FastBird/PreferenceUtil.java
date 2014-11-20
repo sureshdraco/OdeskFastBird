@@ -22,6 +22,7 @@ import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.request.UpdateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.response.OrderTrackHistoryResponse;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
+import appinventor.ai_sameh.FastBird.model.OpenOrder;
 import appinventor.ai_sameh.FastBird.view.MainActivity;
 
 /**
@@ -63,6 +64,7 @@ public class PreferenceUtil {
 	private static final String CLIENT_MONEY = "clientMoney";
 	private static final String CLIENT_CREDITS = "clientCredits";
 	private static final String PENDING_UPDATE_ORDER_REQUEST = "pendingUpdateOrderRequest";
+	private static final String OPEN_ORDER_FROM_NOTIFICATION = "openOrderFromNotif";
 
 	// Preference backend access.
 	private static SharedPreferences.Editor prefEditor;
@@ -403,5 +405,14 @@ public class PreferenceUtil {
 
 	public static void saveClientCredits(Context context, String clientCredits) {
 		getPrefEditor(context).putString(CLIENT_CREDITS, clientCredits).commit();
+	}
+
+	public static void saveOpenOrder(Context context, OpenOrder openOrder) {
+		getPrefEditor(context).putString(OPEN_ORDER_FROM_NOTIFICATION, new Gson().toJson(openOrder)).commit();
+	}
+
+	public static OpenOrder getOpenOrder(Context context) {
+		String createOrderRequest = getPref(context).getString(OPEN_ORDER_FROM_NOTIFICATION, "");
+		return new Gson().fromJson(createOrderRequest, OpenOrder.class);
 	}
 }

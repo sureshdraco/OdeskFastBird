@@ -39,6 +39,7 @@ import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.api.request.RegisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
+import appinventor.ai_sameh.FastBird.model.OpenOrder;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -171,7 +172,12 @@ public class MainActivity extends FragmentActivity {
 	private void handleIntent(Intent intent) {
 		try {
 			if (intent.getExtras().getBoolean("notifications", false)) {
-				mTabHost.setCurrentTabByTag("Notifications");
+				if (PreferenceUtil.getOpenOrder(this) != null) {
+					// goto order
+					mTabHost.setCurrentTabByTag("orders");
+				} else {
+					mTabHost.setCurrentTabByTag("Notifications");
+				}
 			}
 		} catch (Exception ignored) {
 
