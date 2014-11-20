@@ -18,9 +18,9 @@ public class RegisterDeviceRequest extends LoginRequest {
         String manufacturer = Build.MANUFACTURER;
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {
-            return capitalize(model);
+            return capitalize(model) + ": android" + Build.VERSION.RELEASE;
         } else {
-            return capitalize(manufacturer) + " " + model;
+            return capitalize(manufacturer) + " " + model + ": android" + Build.VERSION.RELEASE;
         }
     }
 
