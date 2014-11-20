@@ -6,8 +6,9 @@ package appinventor.ai_sameh.FastBird.api.model;
 public class Order {
 	private String FBDNumber, DeliveryPhone1, DeliveryPhone2, DeliveryContactName, PickupAddressTitle, DeliveryAddressTitle, CollectionAmount;
 	private String ApprovalDate, DeliveryLocation, DeliveryNotes, DeliveryRoad, FastPayCode, FastPayStatus, MoneyDelivered, EPaymentDate,
-			MoneyDeliveryType, NetTotal, OrderDate, ProgressStatus, ProgressStatusDate, ServiceType, Size, Height, Weight, Length, Width, ReferenceNo, DeliveryBlockNo, DeliveryBuildingNo,
-			DeliveryFlatNo;
+			MoneyDeliveryType, NetTotal, OrderDate, ProgressStatus, ProgressStatusDate, ServiceType, Size, Height, Weight, Length, Width, ReferenceNo, DeliveryBlockNo,
+			DeliveryBuildingNo,
+			DeliveryFlatNo, ProgressColorCode;
 
 	public String getFBDNumber() {
 		return FBDNumber == null ? "" : FBDNumber;
@@ -117,15 +118,19 @@ public class Order {
 		return EPaymentDate == null ? "" : EPaymentDate;
 	}
 
-    public String getLength() {
-        return Length;
-    }
+	public String getLength() {
+		return Length;
+	}
 
-    public String getWidth() {
-        return Width;
-    }
+	public String getWidth() {
+		return Width;
+	}
 
-    public String getHeight() {
-        return Height;
-    }
+	public String getHeight() {
+		return Height;
+	}
+
+	public String getProgressColorCode() {
+		return ProgressColorCode;
+	}
 }

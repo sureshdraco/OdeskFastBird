@@ -24,6 +24,21 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
 
+            <TextView
+                android:id="@+id/orderStatus"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:layout_width="fill_parent"
+                android:paddingBottom="3dp"
+                android:layout_height="wrap_content"
+                android:text="Shipment Delivered" />
+
+            <View
+                android:layout_marginTop="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#d9d9d9" />
+
             <ImageView
                 android:visibility="gone"
                 android:id="@+id/share"
@@ -32,24 +47,49 @@
                 android:layout_height="wrap_content"
                 android:src="@android:drawable/ic_menu_share" />
 
-            <TextView
-                android:id="@+id/orderNumber"
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/order_number" />
+                android:layout_height="wrap_content">
 
-            <TextView
-                android:paddingTop="5dp"
-                android:id="@+id/orderTo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/order_to" />
+                <TextView
+                    android:textStyle="bold"
+                    android:paddingTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Order: " />
+
+                <TextView
+                    android:id="@+id/orderNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_number" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textStyle="bold"
+                    android:paddingTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To: " />
+
+                <TextView
+                    android:paddingTop="5dp"
+                    android:id="@+id/orderTo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/order_to" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textStyle="bold"
                     android:paddingTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -69,6 +109,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView
+                    android:textStyle="bold"
                     android:paddingTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -81,13 +122,6 @@
                     android:layout_height="wrap_content"
                     android:text="@string/phone2" />
             </LinearLayout>
-
-            <TextView
-                android:paddingTop="5dp"
-                android:id="@+id/orderStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shipment Delivered" />
         </LinearLayout>
 
         <View

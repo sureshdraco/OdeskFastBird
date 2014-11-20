@@ -3,7 +3,9 @@ package appinventor.ai_sameh.FastBird.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.text.Html;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -107,6 +109,9 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
 		viewHolder.trackButton.setOnClickListener(new TrackButtonClickListener(order));
 		viewHolder.editButton.setOnClickListener(new EditButtonClickListener(order));
 		viewHolder.shareIcon.setOnClickListener(new ShareButtonClickListener(order));
+		if (!TextUtils.isEmpty(order.getProgressColorCode())) {
+			viewHolder.orderStatus.setBackgroundColor(Color.parseColor(order.getProgressColorCode()));
+		}
 		return row;
 	}
 
