@@ -41,272 +41,274 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 
 public class CreateOrderConfirmationActivity extends Activity {
 
-	private static final String TAG = CreateOrderConfirmationActivity.class.getSimpleName();
-	private EditText subTotal, total, discount, collectionAmount;
-	private CreateOrderRequest createOrderRequest;
-	private float serviceTypePrice;
-	private boolean updateOrder = false;
-	private float subtotalValue;
+    private static final String TAG = CreateOrderConfirmationActivity.class.getSimpleName();
+    private EditText subTotal, total, discount, collectionAmount;
+    private CreateOrderRequest createOrderRequest;
+    private float serviceTypePrice;
+    private boolean updateOrder = false;
+    private float subtotalValue;
 
-	public CreateOrderConfirmationActivity() {
-	}
+    public CreateOrderConfirmationActivity() {
+    }
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (getIntent() != null) {
-			updateOrder = getIntent().getBooleanExtra(CreateOrderFragment.UPDATE_ORDER, false);
-		}
-		setContentView(R.layout.confirm_create_order);
-		createOrderRequest = updateOrder ? PreferenceUtil.getPendingUpdateOrderRequest(this) : PreferenceUtil.getPendingCreateOrderRequest(this);
-		getServiceTypePrice();
-	}
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getIntent() != null) {
+            updateOrder = getIntent().getBooleanExtra(CreateOrderFragment.UPDATE_ORDER, false);
+        }
+        setContentView(R.layout.confirm_create_order);
+        createOrderRequest = updateOrder ? PreferenceUtil.getPendingUpdateOrderRequest(this) : PreferenceUtil.getPendingCreateOrderRequest(this);
+        getServiceTypePrice();
+    }
 
-	private void initView() {
-		subTotal = (EditText) findViewById(R.id.subTotal);
-		total = (EditText) findViewById(R.id.total);
-		collectionAmount = (EditText) findViewById(R.id.collectionAmount);
-		discount = (EditText) findViewById(R.id.discount);
-		discount.setText(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent() + "%");
-		float deliveryTimePrice = getDeliverTimePrice();
-		float deliveryTypePrice = getDeliverTypePrice();
-		subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
-		float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
-		subTotal.setText(String.valueOf(subtotalValue));
-		float totalValue = subtotalValue * (discountValue / 100);
+    private void initView() {
+        subTotal = (EditText) findViewById(R.id.subTotal);
+        total = (EditText) findViewById(R.id.total);
+        collectionAmount = (EditText) findViewById(R.id.collectionAmount);
+        discount = (EditText) findViewById(R.id.discount);
+        discount.setText(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent() + "%");
+        float deliveryTimePrice = getDeliverTimePrice();
+        float deliveryTypePrice = getDeliverTypePrice();
+        subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
+        float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
+        subTotal.setText(String.valueOf(subtotalValue));
+        float totalValue = subtotalValue * (discountValue / 100);
 
-		total.setText(String.valueOf(totalValue < 0 ? 0 : totalValue));
-		final Button createButton = (Button) findViewById(R.id.submitButton);
-		createButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (updateOrder) {
-					updateOrder();
-				} else {
-					createOrder();
-				}
-			}
-		});
-		createButton.setEnabled(false);
-		createButton.setText(updateOrder ? "Update Order" : "Create Order");
-		CheckBox terms = (CheckBox) findViewById(R.id.checkboxTerms);
-		terms.setMovementMethod(LinkMovementMethod.getInstance());
-		terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
-		terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				createButton.setEnabled(isChecked);
-			}
-		});
-	}
+        total.setText(String.valueOf(totalValue < 0 ? 0 : totalValue));
+        final Button createButton = (Button) findViewById(R.id.submitButton);
+        createButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (updateOrder) {
+                    updateOrder();
+                } else {
+                    createOrder();
+                }
+            }
+        });
+        createButton.setEnabled(false);
+        createButton.setText(updateOrder ? "Update Order" : "Create Order");
+        CheckBox terms = (CheckBox) findViewById(R.id.checkboxTerms);
+        terms.setMovementMethod(LinkMovementMethod.getInstance());
+        terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
+        terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                createButton.setEnabled(isChecked);
+            }
+        });
+    }
 
-	private void updateOrder() {
-		if (checkRules()) return;
-		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-		ApiRequests.updateOrder(this, PreferenceUtil.getPendingUpdateOrderRequest(getApplicationContext()),
-				new Response.Listener<CreateOrderResponse>() {
-					@Override
-					public void onResponse(CreateOrderResponse createOrderResponse) {
-						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-						if (createOrderResponse.getData().getError() != null) {
-							Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
-							return;
-						}
-						showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
-						Log.d(TAG, createOrderResponse.toString());
-					}
-				}, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError volleyError) {
-						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-						Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to update!", Style.ALERT);
-					}
-				});
-	}
+    private void updateOrder() {
+        if (checkRules()) return;
+        showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+        ApiRequests.updateOrder(this, PreferenceUtil.getPendingUpdateOrderRequest(getApplicationContext()),
+                new Response.Listener<CreateOrderResponse>() {
+                    @Override
+                    public void onResponse(CreateOrderResponse createOrderResponse) {
+                        dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        if (createOrderResponse.getData().getError() != null) {
+                            Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
+                            return;
+                        }
+                        showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
+                        Log.d(TAG, createOrderResponse.toString());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to update!", Style.ALERT);
+                    }
+                });
+    }
 
-	private boolean checkRules() {
-		if (!PreferenceUtil.getUserInfo(getApplicationContext()).getData().isVIP()) {
-			try {
-				if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientCredits(getApplicationContext()))) {
-					createOrderRequest.setPaymentmethod(String.valueOf(0));
-				} else if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientMoney(getApplicationContext()))) {
-					createOrderRequest.setPaymentmethod(String.valueOf(1));
-				}
-				if (subtotalValue > Float.parseFloat(collectionAmount.getText().toString())) {
-					refillAccount();
-					return true;
-				}
-			} catch (NumberFormatException ex) {
-				Crouton.showText(this, "Failed!", Style.ALERT);
-				return true;
-			}
+    private boolean checkRules() {
+        if (!PreferenceUtil.getUserInfo(getApplicationContext()).getData().isVIP()) {
+            try {
+                if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientCredits(getApplicationContext()))) {
+                    createOrderRequest.setPaymentmethod(String.valueOf(0));
+                } else if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientMoney(getApplicationContext()))) {
+                    createOrderRequest.setPaymentmethod(String.valueOf(1));
+                }
+                if (subtotalValue > Float.parseFloat(collectionAmount.getText().toString())) {
+                    refillAccount();
+                    return true;
+                }
+            } catch (NumberFormatException ex) {
+                Crouton.showText(this, "Failed!", Style.ALERT);
+                return true;
+            }
 
-		}
-		return false;
-	}
+        }
+        return false;
+    }
 
-	private void refillAccount() {
-		LayoutInflater li = LayoutInflater.from(this);
-		View promptsView = li.inflate(R.layout.low_credit_dialog, null);
+    private void refillAccount() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.low_credit_dialog, null);
 
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-		// set prompts.xml to alertdialog builder
-		alertDialogBuilder.setView(promptsView);
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+        alertDialogBuilder.setMessage("FBD Credit");
+        ((TextView) promptsView.findViewById(R.id.content)).setText(Html.fromHtml("You have no Fast Bird Credit. <br>You can either pay per shipment or get package of credits.<br><br>*A fair usage policy applies – <a href='http://fastbird.net/terms-condition/'>click me</a>"));
+        ((TextView) promptsView.findViewById(R.id.content)).setMovementMethod(LinkMovementMethod.getInstance());
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(true)
+                .setPositiveButton("Buy credit",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, int id) {
+                                startActivity(new Intent(CreateOrderConfirmationActivity.this, WebViewActivity.class));
 
-		// set dialog message
-		alertDialogBuilder
-				.setCancelable(true)
-				.setPositiveButton("Buy credit",
-						new DialogInterface.OnClickListener() {
-							public void onClick(final DialogInterface dialog, int id) {
-								startActivity(new Intent(CreateOrderConfirmationActivity.this, WebViewActivity.class));
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
 
-							}
-						})
-				.setNegativeButton("Cancel",
-						new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int id) {
-								dialog.cancel();
-							}
-						});
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
 
-		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
 
-		// show it
-		alertDialog.show();
-	}
+    private void createOrder() {
+        if (checkRules()) return;
+        showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+        ApiRequests.createOrder(this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
+            @Override
+            public void onResponse(CreateOrderResponse createOrderResponse) {
+                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                if (createOrderResponse.getData().getError() != null) {
+                    Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
+                    return;
+                }
+                showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
+                Log.d(TAG, createOrderResponse.toString());
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to create!", Style.ALERT);
+            }
+        });
+    }
 
-	private void createOrder() {
-		if (checkRules()) return;
-		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-		ApiRequests.createOrder(this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
-			@Override
-			public void onResponse(CreateOrderResponse createOrderResponse) {
-				dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-				if (createOrderResponse.getData().getError() != null) {
-					Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
-					return;
-				}
-				showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
-				Log.d(TAG, createOrderResponse.toString());
-			}
-		}, new Response.ErrorListener() {
-			@Override
-			public void onErrorResponse(VolleyError volleyError) {
-				dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-				Crouton.showText(CreateOrderConfirmationActivity.this, "Failed to create!", Style.ALERT);
-			}
-		});
-	}
+    private void showCompletedDialog(String fbdNumber, String fastBirdNumber) {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.order_completion_info, null);
 
-	private void showCompletedDialog(String fbdNumber, String fastBirdNumber) {
-		LayoutInflater li = LayoutInflater.from(this);
-		View promptsView = li.inflate(R.layout.order_completion_info, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
 
-		// set prompts.xml to alertdialog builder
-		alertDialogBuilder.setView(promptsView);
+        ((TextView) promptsView.findViewById(R.id.fbdnumber)).setText(getString(R.string.fbd_number, fbdNumber));
+        ((TextView) promptsView.findViewById(R.id.fastBirdNumber)).setText(getString(R.string.fast_bird_number, fastBirdNumber));
 
-		((TextView) promptsView.findViewById(R.id.fbdnumber)).setText(getString(R.string.fbd_number, fbdNumber));
-		((TextView) promptsView.findViewById(R.id.fastBirdNumber)).setText(getString(R.string.fast_bird_number, fastBirdNumber));
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        });
 
-		// set dialog message
-		alertDialogBuilder
-				.setCancelable(false)
-				.setPositiveButton("OK",
-						new DialogInterface.OnClickListener() {
-							public void onClick(final DialogInterface dialog, int id) {
-								finish();
-							}
-						});
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
 
-		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
-		// show it
-		alertDialog.show();
-	}
+    private void getServiceTypePrice() {
+        showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+        String user = PreferenceUtil.getEmail(getApplicationContext());
+        String password = PreferenceUtil.getPassword(getApplicationContext());
+        ApiRequests.getServiceTypePrice(getApplicationContext(),
+                new ServiceTypePriceRequest(user, password, createOrderRequest.getLocation(), createOrderRequest.getPickupaddress(), createOrderRequest.getWeight(),
+                        createOrderRequest.getLength(), createOrderRequest.getHeight(), createOrderRequest.getWidth(), createOrderRequest.getServicetype()),
+                new Response.Listener<ServiceTypePriceResponse>() {
+                    @Override
+                    public void onResponse(ServiceTypePriceResponse serviceTypePriceResponse) {
+                        dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        if (serviceTypePriceResponse.getData().getError() != null) {
+                            unableToGetPrice();
+                        }
+                        try {
+                            serviceTypePrice = Float.parseFloat(serviceTypePriceResponse.getData().getServiceTypePrice());
+                        } catch (Exception ex) {
+                            unableToGetPrice();
+                            return;
+                        }
+                        initView();
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                        dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        unableToGetPrice();
+                    }
+                });
+    }
 
-	private void getServiceTypePrice() {
-		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-		String user = PreferenceUtil.getEmail(getApplicationContext());
-		String password = PreferenceUtil.getPassword(getApplicationContext());
-		ApiRequests.getServiceTypePrice(getApplicationContext(),
-				new ServiceTypePriceRequest(user, password, createOrderRequest.getLocation(), createOrderRequest.getPickupaddress(), createOrderRequest.getWeight(),
-						createOrderRequest.getLength(), createOrderRequest.getHeight(), createOrderRequest.getWidth(), createOrderRequest.getServicetype()),
-				new Response.Listener<ServiceTypePriceResponse>() {
-					@Override
-					public void onResponse(ServiceTypePriceResponse serviceTypePriceResponse) {
-						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-						if (serviceTypePriceResponse.getData().getError() != null) {
-							unableToGetPrice();
-						}
-						try {
-							serviceTypePrice = Float.parseFloat(serviceTypePriceResponse.getData().getServiceTypePrice());
-						} catch (Exception ex) {
-							unableToGetPrice();
-							return;
-						}
-						initView();
-					}
-				}, new Response.ErrorListener() {
-					@Override
-					public void onErrorResponse(VolleyError volleyError) {
-						dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-						unableToGetPrice();
-					}
-				});
-	}
+    private void unableToGetPrice() {
+        Crouton.showText(this, "Unable to get prices!", Style.ALERT);
+        findViewById(R.id.submitButton).setVisibility(View.GONE);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                finish();
+            }
+        }, 1000);
+    }
 
-	private void unableToGetPrice() {
-		Crouton.showText(this, "Unable to get prices!", Style.ALERT);
-		findViewById(R.id.submitButton).setVisibility(View.GONE);
-		new Handler().postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				finish();
-			}
-		}, 1000);
-	}
+    private float getDeliverTimePrice() {
+        String selectedDeliveryTime = createOrderRequest.getDeliverytime();
+        for (DeliveryTime deliveryTime : PreferenceUtil.getDeliveryTime(getApplicationContext())) {
+            if (selectedDeliveryTime.equals(deliveryTime.getId())) {
+                try {
+                    return Float.parseFloat(deliveryTime.getPrice());
+                } catch (Exception ex) {
+                }
+            }
+        }
+        return 0f;
+    }
 
-	private float getDeliverTimePrice() {
-		String selectedDeliveryTime = createOrderRequest.getDeliverytime();
-		for (DeliveryTime deliveryTime : PreferenceUtil.getDeliveryTime(getApplicationContext())) {
-			if (selectedDeliveryTime.equals(deliveryTime.getId())) {
-				try {
-					return Float.parseFloat(deliveryTime.getPrice());
-				} catch (Exception ex) {
-				}
-			}
-		}
-		return 0f;
-	}
+    @Override
+    protected Dialog onCreateDialog(int id) {
+        Dialog dialog = null;
 
-	@Override
-	protected Dialog onCreateDialog(int id) {
-		Dialog dialog = null;
+        switch (id) {
+            case ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER:
+                dialog = new ActivityProgressIndicator(this, R.style.TransparentDialog);
+                break;
+        }
+        return dialog;
+    }
 
-		switch (id) {
-		case ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER:
-			dialog = new ActivityProgressIndicator(this, R.style.TransparentDialog);
-			break;
-		}
-		return dialog;
-	}
-
-	private float getDeliverTypePrice() {
-		String selectedDeliveryType = createOrderRequest.getMoneydeliverytype();
-		for (DeliveryTime deliveryType : PreferenceUtil.getDeliveryType(getApplicationContext())) {
-			if (selectedDeliveryType.equals(deliveryType.getId())) {
-				try {
-					return Float.parseFloat(deliveryType.getPrice());
-				} catch (Exception ex) {
-				}
-			}
-		}
-		return 0f;
-	}
+    private float getDeliverTypePrice() {
+        String selectedDeliveryType = createOrderRequest.getMoneydeliverytype();
+        for (DeliveryTime deliveryType : PreferenceUtil.getDeliveryType(getApplicationContext())) {
+            if (selectedDeliveryType.equals(deliveryType.getId())) {
+                try {
+                    return Float.parseFloat(deliveryType.getPrice());
+                } catch (Exception ex) {
+                }
+            }
+        }
+        return 0f;
+    }
 
 }

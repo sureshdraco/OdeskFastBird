@@ -2,6 +2,8 @@ package appinventor.ai_sameh.FastBird.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
     private Context context;
 
     static class CashViewHolder {
-        TextView name, phone, fbdNumber, collectionAmount, serviceType, netTotal;
+        TextView name, phone, fbdNumber, collectionAmount, serviceType, netTotal, totalBd;
     }
 
     public CashInProgressArrayAdapter(Context context, int textViewResourceId) {
@@ -56,10 +58,12 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
             viewHolder = new CashViewHolder();
             viewHolder.name = (TextView) row.findViewById(R.id.name);
             viewHolder.phone = (TextView) row.findViewById(R.id.phone);
+            viewHolder.phone.setMovementMethod(LinkMovementMethod.getInstance());
             viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdnumber);
             viewHolder.collectionAmount = (TextView) row.findViewById(R.id.collectionAmount);
             viewHolder.netTotal = (TextView) row.findViewById(R.id.netTotal);
             viewHolder.serviceType = (TextView) row.findViewById(R.id.serviceType);
+            viewHolder.totalBd = (TextView) row.findViewById(R.id.total);
             row.setTag(viewHolder);
         } else {
             viewHolder = (CashViewHolder) row.getTag();
@@ -67,10 +71,17 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
         Order order = getItem(position);
         viewHolder.fbdNumber.setText(order.getFBDNumber());
         viewHolder.name.setText(order.getDeliveryAddressTitle());
-        viewHolder.phone.setText(order.getDeliveryPhone1());
+        String htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone1(), order.getDeliveryPhone1());
+        viewHolder.phone.setText(Html.fromHtml(htmlString));
         viewHolder.collectionAmount.setText(order.getCollectionAmount());
         viewHolder.netTotal.setText(order.getNetTotal());
         viewHolder.serviceType.setText(order.getServiceType());
+        try {
+            Float totalBd = Float.parseFloat(order.getCollectionAmount()) - Float.parseFloat(order.getNetTotal());
+            viewHolder.totalBd.setText(context.getResources().getString(R.string.total_bd, String.valueOf(totalBd)));
+        } catch (Exception ex) {
+            viewHolder.totalBd.setText("");
+        }
         row.setOnClickListener(new InfoClickListener(order));
         return row;
     }

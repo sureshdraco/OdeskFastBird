@@ -13,6 +13,7 @@
     <string name="phone1">%1$s</string>
     <string name="phone2">%1$s</string>
     <string name="total_amount">Total Amount: %1$s</string>
+    <string name="total_bd">Total (BD): %1$s</string>
     <string name="service_type">Service Type: %1$s</string>
     <string name="date">Date: %1$s</string>
     <string name="id">Payment ID: %1$s</string>
