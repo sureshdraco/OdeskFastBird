@@ -50,11 +50,11 @@ public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
 		if (PreferenceUtil.getOpenOrder(getActivity()) != null) {
 			OpenOrder openOrder = PreferenceUtil.getOpenOrder(getActivity());
 			if (openOrder.getOrderTab().equals(OpenOrder.NOTIFICATION_EXTRA_ORDER_SHIPMENTS)) {
-				viewPager.setCurrentItem(0);
+				viewPager.setCurrentItem(0, true);
 			} else if (openOrder.getOrderTab().equals(OpenOrder.NOTIFICATION_EXTRA_ORDER_PICKUP)) {
-				viewPager.setCurrentItem(1);
+				viewPager.setCurrentItem(1, true);
 			} else {
-				viewPager.setCurrentItem(2);
+				viewPager.setCurrentItem(2, true);
 			}
 		}
 	}
