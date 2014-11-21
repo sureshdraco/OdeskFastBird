@@ -64,11 +64,19 @@ public class CreateOrderFragment extends Fragment {
 	private int previousPickup = -1;
 	private int previousLocation = -1;
 	private Spinner packageTypeSpinner;
-	private Spinner paymentMethodTypeSpinner;
-	private EditText addressTitle, collectionAmount, blockNo, buildingNo, contactName, flatNo, weight, height, road, phone1, phone2, length, width, note, subTotal, discount,
+	private EditText collectionAmount, blockNo, buildingNo, contactName, flatNo, weight, height, road, phone1, phone2, length, width, note, subTotal, discount,
 			total;
 	private Float collectionAmountFloat = 0f;
 	private TextView balanceTextView;
+	private View weightContainer;
+	private View heightContainer;
+	private View lengthContainer;
+	private View widthContainer;
+	private View moneyDeliveryTypeContainer;
+	private View packageTypeContainer;
+	private boolean isLocal = true;
+	private static final String PACKAGE_TYPE_LOCAL = "ff842bdf-e10a-48ee-9cd4-25417a49a789";
+	private static final String MONEY_DELIVERY_TYPE_LOCAL = "86734c8f-84f0-4652-9e86-43b42e77b5dd";
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -97,10 +105,8 @@ public class CreateOrderFragment extends Fragment {
 		setupDeliveryType();
 		setupLocations();
 		setupPackageTypes();
-		setupPaymentMethod();
 		setupServiceType();
 		setupUpdateOrderData();
-
 	}
 
 	private void setupTitleBar() {
@@ -137,18 +143,6 @@ public class CreateOrderFragment extends Fragment {
 			public void onErrorResponse(VolleyError volleyError) {
 			}
 		});
-	}
-
-	private void setupPaymentMethod() {
-		ArrayList<String> list = new ArrayList<String>();
-		list.add("Credit");
-		list.add("Cash on delivery");
-		ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
-				(getActivity(), android.R.layout.simple_spinner_item, list);
-
-		dataAdapter.setDropDownViewResource
-				(android.R.layout.simple_spinner_dropdown_item);
-		paymentMethodTypeSpinner.setAdapter(dataAdapter);
 	}
 
 	private void setupLocations() {
@@ -190,6 +184,7 @@ public class CreateOrderFragment extends Fragment {
 		locationTypeSpinner.setAdapter(dataAdapter);
 		locationTypeSpinner.setListSelection(0);
 		locationTypeSpinner.setText(list.get(0));
+		setupLocalFields();
 	}
 
 	private void setupPackageTypes() {
@@ -402,7 +397,6 @@ public class CreateOrderFragment extends Fragment {
 	}
 
 	private void initView() {
-		addressTitle = (EditText) getActivity().findViewById(R.id.addressTitle);
 		collectionAmount = (EditText) getActivity().findViewById(R.id.collectionAmount);
 		blockNo = (EditText) getActivity().findViewById(R.id.blockNo);
 		blockNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -432,6 +426,7 @@ public class CreateOrderFragment extends Fragment {
 										if (location.getId().equals(locationList.get(i).getId())) {
 											locationTypeSpinner.setSelection(i);
 											locationTypeSpinner.setText(location.getDescription());
+											setupLocalFields();
 											break;
 										}
 									}
@@ -457,6 +452,13 @@ public class CreateOrderFragment extends Fragment {
 		length = (EditText) getActivity().findViewById(R.id.length);
 		width = (EditText) getActivity().findViewById(R.id.width);
 
+		weightContainer = getActivity().findViewById(R.id.weightContainer);
+		heightContainer = getActivity().findViewById(R.id.heightContainer);
+		lengthContainer = getActivity().findViewById(R.id.lengthContainer);
+		widthContainer = getActivity().findViewById(R.id.widthContainer);
+		moneyDeliveryTypeContainer = getActivity().findViewById(R.id.moneyDeliveryTypeContainer);
+		packageTypeContainer = getActivity().findViewById(R.id.packageTypeContainer);
+
 		note = (EditText) getActivity().findViewById(R.id.note);
 		subTotal = (EditText) getActivity().findViewById(R.id.subTotal);
 		discount = (EditText) getActivity().findViewById(R.id.discount);
@@ -467,7 +469,6 @@ public class CreateOrderFragment extends Fragment {
 		locationTypeSpinner = (AutoCompleteTextView) getActivity().findViewById(R.id.location);
 		deliveryTimeSpinner = (Spinner) getActivity().findViewById(R.id.deliveryTime);
 		moneyDeliveryTypeSpinner = (Spinner) getActivity().findViewById(R.id.moneyDeliveryType);
-		paymentMethodTypeSpinner = (Spinner) getActivity().findViewById(R.id.paymentMethod);
 		submitButton = (Button) getActivity().findViewById(R.id.submitButton);
 		submitButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -484,11 +485,12 @@ public class CreateOrderFragment extends Fragment {
 				String password = PreferenceUtil.getPassword(getActivity());
 
 				String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getId();
-				String packageTypeString = PreferenceUtil.getPackageTypes(getActivity()).get(packageTypeSpinner.getSelectedItemPosition()).getId();
+
+				String packageTypeString = isLocal ? PACKAGE_TYPE_LOCAL : PreferenceUtil.getPackageTypes(getActivity()).get(packageTypeSpinner.getSelectedItemPosition()).getId();
 				String serviceTypeString = PreferenceUtil.getServiceTypes(getActivity()).get(serviceTypeSpinner.getSelectedItemPosition()).getId();
 				String deliveryTimeString = PreferenceUtil.getDeliveryTime(getActivity()).get(deliveryTimeSpinner.getSelectedItemPosition()).getId();
-				String moneyDeliveryTypeString = PreferenceUtil.getDeliveryType(getActivity()).get(moneyDeliveryTypeSpinner.getSelectedItemPosition()).getId();
-				String paymentMethodTypeString = String.valueOf(paymentMethodTypeSpinner.getSelectedItemPosition());
+				String moneyDeliveryTypeString = isLocal ? MONEY_DELIVERY_TYPE_LOCAL : PreferenceUtil.getDeliveryType(getActivity())
+						.get(moneyDeliveryTypeSpinner.getSelectedItemPosition()).getId();
 				String locationString = "";
 				for (DataDescription dataDescription : PreferenceUtil.getLocations(getActivity())) {
 					if (dataDescription.getDescription().equals(locationTypeSpinner.getText().toString())) {
@@ -496,7 +498,6 @@ public class CreateOrderFragment extends Fragment {
 					}
 				}
 
-				String addressTitleString = addressTitle.getText().toString();
 				String collectionAmountString = String.valueOf(collectionAmountFloat);
 				String blockNoString = blockNo.getText().toString();
 				String buildingNoString = buildingNo.getText().toString();
@@ -515,11 +516,6 @@ public class CreateOrderFragment extends Fragment {
 					Log.d(TAG, String.valueOf(price));
 				} catch (Exception ex) {
 
-				}
-				if (TextUtils.isEmpty(addressTitleString)) {
-					addressTitle.setError(getActivity().getString(R.string.error_required));
-					addressTitle.requestFocus();
-					return;
 				}
 				if (TextUtils.isEmpty(contactNameString)) {
 					contactName.setError(getActivity().getString(R.string.error_required));
@@ -571,7 +567,7 @@ public class CreateOrderFragment extends Fragment {
 					UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(username, password, pickupAddress, contactNameString, phone1String,
 							phone2String, flatNoString,
 							buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
-							heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString, order.getFBDNumber());
+							heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0), order.getFBDNumber());
 					PreferenceUtil.savePendingUpdateOrderRequest(getActivity(), updateOrderRequest);
 					Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
 					intent.putExtra(CreateOrderFragment.UPDATE_ORDER, true);
@@ -580,7 +576,7 @@ public class CreateOrderFragment extends Fragment {
 					CreateOrderRequest createOrderRequest = new CreateOrderRequest(username, password, pickupAddress, contactNameString, phone1String, phone2String, flatNoString,
 							buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
 							heightString,
-							widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, paymentMethodTypeString);
+							widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0));
 					PreferenceUtil.savePendingCreateOrderRequest(getActivity(), createOrderRequest);
 					Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
 					getActivity().startActivityForResult(intent, 1);
@@ -606,10 +602,47 @@ public class CreateOrderFragment extends Fragment {
 			public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 				if (previousLocation != position) {
 					setupServiceType();
+					setupLocalFields();
 				}
 				previousLocation = position;
 			}
 		});
+		locationTypeSpinner.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if (!hasFocus) {
+					setupLocalFields();
+				}
+			}
+		});
+	}
+
+	private void setupLocalFields() {
+		if (TextUtils.isEmpty(locationTypeSpinner.getText())) {
+			return;
+		}
+		for (DataDescription location : PreferenceUtil.getLocations(getActivity())) {
+			if (location.getDescription().equals(locationTypeSpinner.getText().toString())) {
+				if (location.isLocal()) {
+					isLocal = true;
+					widthContainer.setVisibility(View.GONE);
+					weightContainer.setVisibility(View.GONE);
+					heightContainer.setVisibility(View.GONE);
+					lengthContainer.setVisibility(View.GONE);
+					moneyDeliveryTypeContainer.setVisibility(View.GONE);
+					packageTypeContainer.setVisibility(View.GONE);
+				} else {
+					isLocal = false;
+					widthContainer.setVisibility(View.VISIBLE);
+					weightContainer.setVisibility(View.VISIBLE);
+					heightContainer.setVisibility(View.VISIBLE);
+					lengthContainer.setVisibility(View.VISIBLE);
+					moneyDeliveryTypeContainer.setVisibility(View.VISIBLE);
+					packageTypeContainer.setVisibility(View.VISIBLE);
+				}
+				break;
+			}
+		}
 	}
 
 	public static final String UPDATE_ORDER = "updateOrder";
@@ -618,7 +651,6 @@ public class CreateOrderFragment extends Fragment {
 	private boolean updateOrder = false;
 
 	private void setupUpdateOrderData() {
-		addressTitle.setText(updateOrder ? order.getDeliveryAddressTitle() : Constant.DEBUG ? "address" : "");
 		contactName.setText(updateOrder ? order.getDeliveryAddressTitle() : Constant.DEBUG ? "contact" : "");
 		phone1.setText(updateOrder ? order.getDeliveryPhone1() : Constant.DEBUG ? "phone1" : "");
 		phone2.setText(updateOrder ? order.getDeliveryPhone2() : Constant.DEBUG ? "phone2" : "");

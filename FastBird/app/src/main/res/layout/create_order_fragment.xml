@@ -40,24 +40,6 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Address Title (*)" />
-
-            <EditText
-                android:imeOptions="actionNext"
-                android:singleLine="true"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/addressTitle" />
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -248,6 +230,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/moneyDeliveryTypeContainer"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
             android:layout_width="fill_parent"
@@ -266,6 +250,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/lengthContainer"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
@@ -285,6 +271,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/weightContainer"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
@@ -304,6 +292,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/heightContainer"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
@@ -323,6 +313,8 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/widthContainer"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
@@ -341,17 +333,20 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <TextView
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Package Details (*)"
-            android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/packageTypeContainer"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Package Details (*)"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -379,31 +374,6 @@
             <Spinner
                 android:imeOptions="actionNext"
                 android:id="@+id/serviceType"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <TextView
-            android:layout_marginTop="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Payment Details (*)"
-            android:textStyle="bold" />
-
-        <LinearLayout
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Payment Method" />
-
-            <Spinner
-                android:imeOptions="actionNext"
-                android:id="@+id/paymentMethod"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content" />
         </LinearLayout>

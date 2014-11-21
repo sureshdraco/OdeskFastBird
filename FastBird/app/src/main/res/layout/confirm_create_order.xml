@@ -74,18 +74,20 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <TextView
-        android:layout_marginTop="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Money Collection"
-        android:textStyle="bold" />
 
     <LinearLayout
+        android:id="@+id/collectionAmountContainer"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Money Collection"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="wrap_content"
