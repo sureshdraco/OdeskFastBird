@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="ga_sessionTimeout">300</integer>
+
+    <!-- Enable automatic Activity measurement -->
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <!-- The screen names that will appear in reports -->
+    <screenName name="appinventor.ai_sameh.FastBird.view.CreateOrderFragment">
+        Create Order
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.UpdateOrderActivity">
+        Update Order
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.CommentActivity">
+        Comments
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.CreateOrderConfirmationActivity">
+        Create Order Confirmation
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.LoginActivity">
+        Login Screen
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.OrdersTabWithFastBirdOrdersFragment">
+        Orders Screen
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.MoneyTabFragment">
+        Money Screen
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.SettingsFragment">
+        Money Screen
+    </screenName>
+    <screenName name="appinventor.ai_sameh.FastBird.view.NotificationFragment">
+        Notification Screen
+    </screenName>
+
+    <!--  The following value should be replaced with correct property id. -->
+    <string name="ga_trackingId">UA-56885681-1</string>
+</resources>
