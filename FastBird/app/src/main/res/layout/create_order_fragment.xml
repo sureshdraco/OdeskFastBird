@@ -381,11 +381,33 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-        <Button
-            android:layout_gravity="center"
-            android:id="@+id/submitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Get Price" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="25dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/White"
+                android:background="@drawable/create_order_button"
+                android:id="@+id/submitButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Get Price" />
+
+            <Button
+                android:layout_marginTop="5dp"
+                android:background="@drawable/clear_order_button"
+                android:textSize="18sp"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textColor="@color/White"
+                android:id="@+id/clearBtn"
+                android:text="Clear" />
+
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
