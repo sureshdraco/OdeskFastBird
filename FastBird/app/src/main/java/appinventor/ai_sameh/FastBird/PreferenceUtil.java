@@ -11,7 +11,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import appinventor.ai_sameh.FastBird.api.model.Address;
 import appinventor.ai_sameh.FastBird.api.model.DataDescription;
@@ -23,6 +26,7 @@ import appinventor.ai_sameh.FastBird.api.request.UpdateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.response.OrderTrackHistoryResponse;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
 import appinventor.ai_sameh.FastBird.model.OpenOrder;
+import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 import appinventor.ai_sameh.FastBird.view.MainActivity;
 
 /**
@@ -188,8 +192,22 @@ public class PreferenceUtil {
 		getPrefEditor(context).putString(getNotificationName(context), notificationsLsit).commit();
 	}
 
-	public static String getFastBirdPendingOrders(Context context) {
-		return getPref(context).getString(FAST_BIRD_PENDING_ORDERS, "[]");
+	public static ArrayList<Order> getFastBirdPendingOrders(Context context) {
+		String orders = getPref(context).getString(FAST_BIRD_PENDING_ORDERS, "[]");
+		Type listType = new TypeToken<ArrayList<Order>>() {
+		}.getType();
+		ArrayList<Order> shipmentOrders = new Gson().fromJson(orders, listType);
+		Collections.sort(shipmentOrders, new Comparator<Order>() {
+			@Override
+			public int compare(Order lhs, Order rhs) {
+				try {
+					return TimestampUtil.getFastBirdDate(lhs.getProgressStatusDate()).compareTo(TimestampUtil.getFastBirdDate(rhs.getProgressStatusDate()));
+				} catch (ParseException e) {
+					return -1;
+				}
+			}
+		});
+		return shipmentOrders;
 	}
 
 	public static void saveFastBirdPendingOrders(Context context, String fastBirdPendingOrders) {
@@ -216,16 +234,45 @@ public class PreferenceUtil {
 		getPrefEditor(context).putString(CASH_HISTORY, cashHistory).commit();
 	}
 
-	public static String getMyPendingOrders(Context context) {
-		return getPref(context).getString(MY_PENDING_ORDERS, "[]");
+	public static ArrayList<Order> getMyPendingOrders(Context context) {
+		String orders = getPref(context).getString(MY_PENDING_ORDERS, "[]");
+		Type listType = new TypeToken<ArrayList<Order>>() {
+		}.getType();
+		ArrayList<Order> myPendingOrder = new Gson().fromJson(orders, listType);
+		Collections.sort(myPendingOrder, new Comparator<Order>() {
+			@Override
+			public int compare(Order lhs, Order rhs) {
+				try {
+					return TimestampUtil.getFastBirdDate(lhs.getOrderDate()).compareTo(TimestampUtil.getFastBirdDate(rhs.getOrderDate()));
+				} catch (ParseException e) {
+					return -1;
+				}
+			}
+		});
+		return myPendingOrder;
 	}
 
 	public static void saveMyPendingOrders(Context context, String myPendingOrders) {
 		getPrefEditor(context).putString(MY_PENDING_ORDERS, myPendingOrders).commit();
 	}
 
-	public static String getMyHistoryOrders(Context context) {
-		return getPref(context).getString(MY_HISTORY_ORDERS, "[]");
+	public static ArrayList<Order> getMyHistoryOrders(Context context) {
+
+		String orders = getPref(context).getString(MY_HISTORY_ORDERS, "[]");
+		Type listType = new TypeToken<ArrayList<Order>>() {
+		}.getType();
+		ArrayList<Order> myPendingOrder = new Gson().fromJson(orders, listType);
+		Collections.sort(myPendingOrder, new Comparator<Order>() {
+			@Override
+			public int compare(Order lhs, Order rhs) {
+				try {
+					return TimestampUtil.getFastBirdDate(lhs.getEPaymentDate()).compareTo(TimestampUtil.getFastBirdDate(rhs.getEPaymentDate()));
+				} catch (ParseException e) {
+					return -1;
+				}
+			}
+		});
+		return myPendingOrder;
 	}
 
 	public static void saveMyHistoryOrders(Context context, String myHistoryOrders) {

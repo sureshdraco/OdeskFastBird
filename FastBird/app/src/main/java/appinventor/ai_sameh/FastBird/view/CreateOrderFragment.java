@@ -77,6 +77,9 @@ public class CreateOrderFragment extends Fragment {
 	private boolean isLocal = true;
 	private static final String PACKAGE_TYPE_LOCAL = "ff842bdf-e10a-48ee-9cd4-25417a49a789";
 	private static final String MONEY_DELIVERY_TYPE_LOCAL = "86734c8f-84f0-4652-9e86-43b42e77b5dd";
+	private TextView roadTextView;
+	private TextView blockNoTextView;
+	private TextView buildNoTextView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -182,8 +185,6 @@ public class CreateOrderFragment extends Fragment {
 		dataAdapter.setDropDownViewResource
 				(android.R.layout.simple_spinner_item);
 		locationTypeSpinner.setAdapter(dataAdapter);
-		locationTypeSpinner.setListSelection(0);
-		locationTypeSpinner.setText(list.get(0));
 		setupLocalFields();
 	}
 
@@ -459,6 +460,10 @@ public class CreateOrderFragment extends Fragment {
 		moneyDeliveryTypeContainer = getActivity().findViewById(R.id.moneyDeliveryTypeContainer);
 		packageTypeContainer = getActivity().findViewById(R.id.packageTypeContainer);
 
+		roadTextView = (TextView) getActivity().findViewById(R.id.roadTextView);
+		blockNoTextView = (TextView) getActivity().findViewById(R.id.blockNoTextView);
+		buildNoTextView = (TextView) getActivity().findViewById(R.id.buildNoTextView);
+
 		note = (EditText) getActivity().findViewById(R.id.note);
 		subTotal = (EditText) getActivity().findViewById(R.id.subTotal);
 		discount = (EditText) getActivity().findViewById(R.id.discount);
@@ -542,22 +547,22 @@ public class CreateOrderFragment extends Fragment {
 					blockNo.requestFocus();
 					return;
 				}
-				if (TextUtils.isEmpty(lengthString)) {
+				if (!isLocal && TextUtils.isEmpty(lengthString)) {
 					length.setError(getActivity().getString(R.string.error_required));
 					length.requestFocus();
 					return;
 				}
-				if (TextUtils.isEmpty(weightString)) {
+				if (!isLocal && TextUtils.isEmpty(weightString)) {
 					weight.setError(getActivity().getString(R.string.error_required));
 					weight.requestFocus();
 					return;
 				}
-				if (TextUtils.isEmpty(heightString)) {
+				if (!isLocal && TextUtils.isEmpty(heightString)) {
 					height.setError(getActivity().getString(R.string.error_required));
 					height.requestFocus();
 					return;
 				}
-				if (TextUtils.isEmpty(widthString)) {
+				if (!isLocal && TextUtils.isEmpty(widthString)) {
 					width.setError(getActivity().getString(R.string.error_required));
 					width.requestFocus();
 					return;
@@ -624,25 +629,45 @@ public class CreateOrderFragment extends Fragment {
 		for (DataDescription location : PreferenceUtil.getLocations(getActivity())) {
 			if (location.getDescription().equals(locationTypeSpinner.getText().toString())) {
 				if (location.isLocal()) {
-					isLocal = true;
-					widthContainer.setVisibility(View.GONE);
-					weightContainer.setVisibility(View.GONE);
-					heightContainer.setVisibility(View.GONE);
-					lengthContainer.setVisibility(View.GONE);
-					moneyDeliveryTypeContainer.setVisibility(View.GONE);
-					packageTypeContainer.setVisibility(View.GONE);
+					handleLocalFields();
 				} else {
-					isLocal = false;
-					widthContainer.setVisibility(View.VISIBLE);
-					weightContainer.setVisibility(View.VISIBLE);
-					heightContainer.setVisibility(View.VISIBLE);
-					lengthContainer.setVisibility(View.VISIBLE);
-					moneyDeliveryTypeContainer.setVisibility(View.VISIBLE);
-					packageTypeContainer.setVisibility(View.VISIBLE);
+					handleInternational();
 				}
 				break;
 			}
 		}
+	}
+
+	private void handleInternational() {
+		isLocal = false;
+		widthContainer.setVisibility(View.VISIBLE);
+		weightContainer.setVisibility(View.VISIBLE);
+		heightContainer.setVisibility(View.VISIBLE);
+		lengthContainer.setVisibility(View.VISIBLE);
+		moneyDeliveryTypeContainer.setVisibility(View.VISIBLE);
+		packageTypeContainer.setVisibility(View.VISIBLE);
+
+		buildNoTextView.setText("Address 1 (*)");
+		roadTextView.setText("Address 2 (*)");
+		blockNoTextView.setText("Address Note (*)");
+	}
+
+	private void handleLocalFields() {
+		isLocal = true;
+		width.setText("0");
+		weight.setText("0");
+		height.setText("0");
+		length.setText("0");
+		widthContainer.setVisibility(View.GONE);
+		weightContainer.setVisibility(View.GONE);
+		heightContainer.setVisibility(View.GONE);
+		lengthContainer.setVisibility(View.GONE);
+		moneyDeliveryTypeContainer.setVisibility(View.GONE);
+		packageTypeContainer.setVisibility(View.GONE);
+
+		buildNoTextView.setText("Building No (*)");
+		roadTextView.setText("Road (*)");
+		blockNoTextView.setText("Block No (*)");
 	}
 
 	public static final String UPDATE_ORDER = "updateOrder";
