@@ -65,7 +65,7 @@ public class NotificationUtil {
                         .setContentTitle(title)
                         .setStyle(new NotificationCompat.BigTextStyle()
                                 .bigText(msg))
-                        .setSmallIcon(R.drawable.app_icon)
+                        .setSmallIcon(R.drawable.notif_icon)
                         .setAutoCancel(true)
                         .setContentText(msg);
         if (icon != null) {
