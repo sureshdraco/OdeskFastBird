@@ -7,12 +7,13 @@ import java.util.Date;
  */
 public class NotificationItem {
     private String notificationMessage;
-    private String date, title;
+    private String date, title, iconFileName;
 
-    public NotificationItem(String title, String date, String notificationMessage) {
+    public NotificationItem(String notificationMessage, String date, String title, String iconFileName) {
         this.notificationMessage = notificationMessage;
         this.date = date;
         this.title = title;
+        this.iconFileName = iconFileName;
     }
 
     public String getTitle() {
@@ -25,5 +26,9 @@ public class NotificationItem {
 
     public String getDate() {
         return date;
+    }
+
+    public String getIconFileName() {
+        return iconFileName;
     }
 }

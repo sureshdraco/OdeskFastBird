@@ -16,6 +16,7 @@ import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HttpClientStack;
 import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.ImageLoader;
 
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -26,6 +27,7 @@ public class VolleyClient {
 	private static VolleyClient mInstance;
 	private RequestQueue mRequestQueue;
 	private static Context mCtx;
+    private ImageLoader imageLoader;
 	private static final String DEFAULT_CACHE_DIR = "volley";
 
 	public static final RetryPolicy NO_RETRY_POLICY = new DefaultRetryPolicy(0, 0, 0);
@@ -33,6 +35,7 @@ public class VolleyClient {
 	private VolleyClient(Context context) {
 		mCtx = context;
 		mRequestQueue = getRequestQueue();
+        imageLoader = new ImageLoader(mRequestQueue, new LruBitmapCache(mCtx));
 	}
 
 	public static synchronized VolleyClient getInstance(Context context) {
@@ -77,4 +80,8 @@ public class VolleyClient {
 		queue.start();
 		return queue;
 	}
+
+    public ImageLoader getImageLoader() {
+        return imageLoader;
+    }
 }

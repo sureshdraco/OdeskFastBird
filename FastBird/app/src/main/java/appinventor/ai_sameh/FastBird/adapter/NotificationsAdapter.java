@@ -1,4 +1,4 @@
-package appinventor.ai_sameh.FastBird.view;
+package appinventor.ai_sameh.FastBird.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,10 +7,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+
 import java.util.List;
 
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.util.NotificationItem;
+import appinventor.ai_sameh.FastBird.volley.VolleyClient;
 
 /**
  * Created by suresh on 18/10/14.
@@ -36,6 +39,7 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
             viewHolder.notificationTitle = (TextView) convertView.findViewById(R.id.notificationTitle);
             viewHolder.notificationContent = (TextView) convertView.findViewById(R.id.notificationContent);
             viewHolder.notificationDate = (TextView) convertView.findViewById(R.id.notificationDate);
+            viewHolder.notifImage = (NetworkImageView) convertView.findViewById(R.id.notifImage);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -45,7 +49,9 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
             NotificationItem menuItem = menuItems.get(position);
             viewHolder.notificationContent.setText(menuItem.getNotificationMessage());
             viewHolder.notificationTitle.setText(menuItem.getTitle());
-            viewHolder.notificationDate.setText(menuItem.getDate().toString());
+            viewHolder.notificationDate.setText(menuItem.getDate());
+            viewHolder.notifImage.setDefaultImageResId(R.drawable.notif_icon);
+            viewHolder.notifImage.setImageUrl(menuItem.getIconFileName(), VolleyClient.getInstance(context).getImageLoader());
         }
 
         return convertView;
@@ -53,5 +59,6 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
 
     static class ViewHolder {
         private TextView notificationTitle, notificationContent, notificationDate;
+        private NetworkImageView notifImage;
     }
 }

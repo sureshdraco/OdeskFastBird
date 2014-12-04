@@ -5,14 +5,21 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,10 +37,10 @@ public class NotificationUtil {
     private static final int NOTIFICATION_ID = 1;
     private static Gson gson = new Gson();
 
-    public static void cacheNotification(Context context, String title, String message) {
+    public static void cacheNotification(Context context, String title, String message, String fileName) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimestampUtil.FAST_BIRD_DATE_FORMAT);
         Date date = new Date();
-        NotificationItem notificationItem = new NotificationItem(title, simpleDateFormat.format(date), message);
+        NotificationItem notificationItem = new NotificationItem(title, simpleDateFormat.format(date), message, fileName);
         Type listType = new TypeToken<ArrayList<NotificationItem>>() {
         }.getType();
         ArrayList<NotificationItem> notificationItemArrayList = gson.fromJson(PreferenceUtil.getNotificationList(context), listType);

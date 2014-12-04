@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -18,6 +19,8 @@ import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
@@ -82,9 +85,8 @@ public class GcmIntentService extends IntentService {
 					@Override
 					public void run() {
 						Bitmap bitmap = getBitmapFromURL(iconUrl);
-
-						NotificationUtil.cacheNotification(getApplicationContext(), title, message);
-
+                       // String fileName = savebitmap(String.valueOf(bitmap.hashCode()), bitmap);
+                        NotificationUtil.cacheNotification(getApplicationContext(), title, message, iconUrl);
 						Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
 						// Post notification of received message.
 						NotificationUtil.sendNotification(getApplicationContext(), title, message, bitmap);
@@ -97,6 +99,26 @@ public class GcmIntentService extends IntentService {
 		}
 		// Release the wake lock provided by the WakefulBroadcastReceiver.
 	}
+
+    private static String savebitmap(String filename, Bitmap bmp) {
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/Fastbird";
+        File dir = new File(file_path);
+        if (!dir.exists())
+            dir.mkdirs();
+        File file = new File(dir, filename + ".png");
+        FileOutputStream fOut = null;
+        try {
+            fOut = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 85, fOut);
+            fOut.flush();
+            fOut.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+        return file.getAbsolutePath();
+    }
 
 	public Bitmap getBitmapFromURL(String strURL) {
 		try {
