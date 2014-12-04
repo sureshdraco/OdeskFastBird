@@ -47,11 +47,11 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
 
         if (viewHolder.notificationContent != null) {
             NotificationItem menuItem = menuItems.get(position);
-            viewHolder.notificationContent.setText(menuItem.getNotificationMessage());
+            viewHolder.notificationContent.setText(menuItem.getFullMessage());
             viewHolder.notificationTitle.setText(menuItem.getTitle());
             viewHolder.notificationDate.setText(menuItem.getDate());
             viewHolder.notifImage.setDefaultImageResId(R.drawable.notif_icon);
-            viewHolder.notifImage.setImageUrl(menuItem.getIconFileName(), VolleyClient.getInstance(context).getImageLoader());
+            viewHolder.notifImage.setImageUrl(menuItem.getImageUrl(), VolleyClient.getInstance(context).getImageLoader());
         }
 
         return convertView;

@@ -42,7 +42,8 @@ public class GcmIntentService extends IntentService {
 	private static final String TAG = GcmIntentService.class.getSimpleName();
 	private static final java.lang.String NOTIFICATION_EXTRA_TITLE = "nottitle";
 	private static final java.lang.String NOTIFICATION_EXTRA_ICON = "noticon";
-	private static final java.lang.String NOTIFICATION_EXTRA_MSG = "notmsg";
+    private static final java.lang.String NOTIFICATION_EXTRA_MSG = "notmsg";
+    private static final java.lang.String NOTIFICATION_EXTRA_FULL_MSG = "message";
 	private static final java.lang.String NOTIFICATION_EXTRA_PAGE = "page";
 	private static final java.lang.String NOTIFICATION_EXTRA_ORDER = "order";
 	private static final java.lang.String NOTIFICATION_EXTRA_ORDER_TAB = "ordertab";
@@ -72,7 +73,8 @@ public class GcmIntentService extends IntentService {
 				// If it's a regular GCM message, do some work.
 			} else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
 				final String title = extras.getString(NOTIFICATION_EXTRA_TITLE, getApplicationContext().getResources().getString(R.string.app_name));
-				final String message = extras.getString(NOTIFICATION_EXTRA_MSG, "");
+                final String message = extras.getString(NOTIFICATION_EXTRA_MSG, "");
+                final String fullMessage = extras.getString(NOTIFICATION_EXTRA_FULL_MSG, "");
 				final String iconUrl = extras.getString(NOTIFICATION_EXTRA_ICON, "");
 
 				final String order = extras.getString(NOTIFICATION_EXTRA_ORDER, "");
@@ -86,7 +88,7 @@ public class GcmIntentService extends IntentService {
 					public void run() {
 						Bitmap bitmap = getBitmapFromURL(iconUrl);
                        // String fileName = savebitmap(String.valueOf(bitmap.hashCode()), bitmap);
-                        NotificationUtil.cacheNotification(getApplicationContext(), title, message, iconUrl);
+                        NotificationUtil.cacheNotification(getApplicationContext(), title, message, iconUrl, fullMessage);
 						Log.i(TAG, "Completed work @ " + SystemClock.elapsedRealtime());
 						// Post notification of received message.
 						NotificationUtil.sendNotification(getApplicationContext(), title, message, bitmap);
