@@ -12,10 +12,20 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
-        android:paddingTop="15dp"
         android:background="@drawable/card_background_selector"
         android:descendantFocusability="afterDescendants">
+
+        <TextView
+            android:paddingTop="7dp"
+            android:id="@+id/orderStatus"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:layout_width="fill_parent"
+            android:paddingBottom="7dp"
+            android:background="@color/fast_bird_orange"
+            android:layout_height="wrap_content"
+            android:textColor="@color/White"
+            android:text="Shipment Delivered" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -23,16 +33,6 @@
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
-
-            <TextView
-                android:id="@+id/orderStatus"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center"
-                android:layout_width="fill_parent"
-                android:paddingBottom="3dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/White"
-                android:text="Shipment Delivered" />
 
             <View
                 android:layout_marginTop="3dp"
@@ -135,42 +135,43 @@
             android:paddingLeft="15dp"
             android:paddingRight="15dp"
             android:paddingTop="5dp"
+            android:paddingBottom="3dp"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <Button
+                android:layout_weight="1"
+                style="@style/DialogButtonStyle"
                 android:textStyle="bold"
-                android:textColor="@color/LightGreen"
                 android:textSize="16sp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:background="@android:color/transparent"
                 android:text="Comments"
                 android:id="@+id/btnComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
+                android:layout_weight="1"
+                style="@style/DialogButtonStyle"
                 android:visibility="gone"
                 android:textStyle="bold"
-                android:textColor="@color/Red"
                 android:textSize="16sp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:background="@android:color/transparent"
                 android:text="Edit"
                 android:id="@+id/btnEdit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <Button
+                android:layout_weight="1"
                 android:paddingLeft="10dp"
+                style="@style/DialogButtonStyle"
                 android:textStyle="bold"
-                android:textColor="@color/BlueButtonTextColor"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:background="@android:color/transparent"
                 android:textSize="16sp"
                 android:text="Track Status"
                 android:id="@+id/btnTrackStatus"

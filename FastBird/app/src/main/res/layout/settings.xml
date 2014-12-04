@@ -22,6 +22,13 @@
                 android:layout_height="wrap_content"
                 android:text="My Information" />
 
+            <View
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/Gray1" />
+
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="fill_parent"
@@ -149,6 +156,13 @@
                 android:layout_height="wrap_content"
                 android:text="Contact" />
 
+            <View
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/Gray1" />
+
             <LinearLayout
                 android:layout_marginTop="5dp"
                 android:layout_width="fill_parent"
@@ -255,6 +269,13 @@
                 android:textStyle="bold"
                 android:layout_height="wrap_content"
                 android:text="Bank" />
+
+            <View
+                android:paddingTop="3dp"
+                android:paddingBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/Gray1"/>
 
             <LinearLayout
                 android:layout_marginTop="5dp"
