@@ -51,7 +51,8 @@ public class ApiRequests {
 	private static final String ME_HISTORY_ORDERS = "NOrder.svc/ListClosedOrders";
 	private static final String GET_CASH_ON_THE_WAY = "MoneyCollection.svc/GetCashOnTheWay";
 	private static final String IN_PROGRESS_MONEY = "NOrder.svc/ListReturnedMoneyOrders";
-	private static final String CREATE_ORDER = "NOrder.svc/Create";
+    private static final String CREATE_ORDER = "NOrder.svc/Create";
+    private static final String DELETE_ORDER = "NOrder.svc/DeclineOrder";
 	private static final String MY_PICK_ADDRRESS = "Clients.svc/ListMyAddresses";
 	private static final String DELIVERY_TIME = "Masters.svc/ListDeliveryTimes";
 	private static final String PACKAGE_TYPES = "Masters.svc/ListPackageTypes";
@@ -296,4 +297,15 @@ public class ApiRequests {
 				.add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + FORGET_PASSWORD, forgetPasswordRequest, LoginResponse.class, null, listener,
 						errorListener));
 	}
+
+    public static void deleteOrder(Context context, OrderTrackStatusRequest orderTrackStatusRequest, Response.Listener<LoginResponse> listener,
+                                           Response.ErrorListener errorListener) {
+        VolleyClient
+                .getInstance(context)
+                .getRequestQueue()
+                .add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + DELETE_ORDER, orderTrackStatusRequest,
+                        LoginResponse.class, null, listener,
+                        errorListener));
+    }
+
 }

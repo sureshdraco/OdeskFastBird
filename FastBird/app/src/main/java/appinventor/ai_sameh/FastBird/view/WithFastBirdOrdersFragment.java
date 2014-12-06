@@ -101,7 +101,7 @@ public class WithFastBirdOrdersFragment extends Fragment {
 		});
 	}
 
-	private void setupList(String email, String password) {
+	public void setupList(String email, String password) {
 		if (getArguments() != null) {
 			String tab = getArguments().getString("key");
 			if (tab.equals("With Me")) {
@@ -160,7 +160,7 @@ public class WithFastBirdOrdersFragment extends Fragment {
 	}
 
 	private void getMyOrders(String email, String password) {
-		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, true, true);
+		orderArrayAdapter = new OrderArrayAdapter(getActivity(), R.layout.orders_card_item, true, true, this);
 		ordersListView.setAdapter(orderArrayAdapter);
 
 		ArrayList<Order> cachedOrderList = PreferenceUtil.getMyPendingOrders(getActivity());

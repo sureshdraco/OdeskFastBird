@@ -39,6 +39,12 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
     }
 
     @Override
+    public void clear() {
+        orderArrayList.clear();
+        super.clear();
+    }
+
+    @Override
     public int getCount() {
         return this.orderArrayList.size();
     }

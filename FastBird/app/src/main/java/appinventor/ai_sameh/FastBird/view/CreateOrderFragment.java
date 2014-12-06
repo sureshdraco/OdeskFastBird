@@ -1,16 +1,17 @@
 package appinventor.ai_sameh.FastBird.view;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -46,6 +47,7 @@ import appinventor.ai_sameh.FastBird.api.response.MyAddressResponse;
 import appinventor.ai_sameh.FastBird.api.response.PackageTypeResponse;
 import appinventor.ai_sameh.FastBird.api.response.ServiceTypeResponse;
 import appinventor.ai_sameh.FastBird.util.Constant;
+import appinventor.ai_sameh.FastBird.util.Keyboard;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -465,7 +467,6 @@ public class CreateOrderFragment extends Fragment {
         roadTextView = (TextView) getActivity().findViewById(R.id.roadTextView);
         blockNoTextView = (TextView) getActivity().findViewById(R.id.blockNoTextView);
         buildNoTextView = (TextView) getActivity().findViewById(R.id.buildNoTextView);
-
         note = (EditText) getActivity().findViewById(R.id.note);
         subTotal = (EditText) getActivity().findViewById(R.id.subTotal);
         discount = (EditText) getActivity().findViewById(R.id.discount);
@@ -511,6 +512,7 @@ public class CreateOrderFragment extends Fragment {
                 String username = PreferenceUtil.getEmail(getActivity());
                 String password = PreferenceUtil.getPassword(getActivity());
 
+                String pickupAddressLocationId = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
                 String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getId();
 
                 String packageTypeString = isLocal ? PACKAGE_TYPE_LOCAL : PreferenceUtil.getPackageTypes(getActivity()).get(packageTypeSpinner.getSelectedItemPosition()).getId();
@@ -594,7 +596,7 @@ public class CreateOrderFragment extends Fragment {
                     UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(username, password, pickupAddress, contactNameString, phone1String,
                             phone2String, flatNoString,
                             buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
-                            heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0), order.getFBDNumber());
+                            heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0), order.getFBDNumber(), pickupAddressLocationId);
                     PreferenceUtil.savePendingUpdateOrderRequest(getActivity(), updateOrderRequest);
                     Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
                     intent.putExtra(CreateOrderFragment.UPDATE_ORDER, true);
@@ -603,7 +605,7 @@ public class CreateOrderFragment extends Fragment {
                     CreateOrderRequest createOrderRequest = new CreateOrderRequest(username, password, pickupAddress, contactNameString, phone1String, phone2String, flatNoString,
                             buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
                             heightString,
-                            widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0));
+                            widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0), pickupAddressLocationId);
                     PreferenceUtil.savePendingCreateOrderRequest(getActivity(), createOrderRequest);
                     Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
                     getActivity().startActivityForResult(intent, 1);
@@ -640,6 +642,32 @@ public class CreateOrderFragment extends Fragment {
                 }
             }
         });
+        note.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_NULL || id == EditorInfo.IME_ACTION_NEXT) {
+                    if (getActivity() != null) {
+                        Keyboard.hideKeyboard(getActivity(), note);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        width.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+                if (id == EditorInfo.IME_NULL || id == EditorInfo.IME_ACTION_NEXT) {
+                    if (getActivity() != null) {
+                        Keyboard.hideKeyboard(getActivity(), width);
+                    }
+                    return true;
+                }
+                return false;
+            }
+        });
+
     }
 
     private void setupLocalFields() {

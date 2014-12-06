@@ -22,18 +22,20 @@ import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.util.OrderDialogUtil;
+import appinventor.ai_sameh.FastBird.view.WithFastBirdOrdersFragment;
 
 public class OrderArrayAdapter extends ArrayAdapter<Order> {
     public static final int ORDER_INFO_DIALOG = 1;
     public static final int ORDER_TRACK_STATUS_DIALOG = 5;
     private final boolean enableEditBtn;
+    private WithFastBirdOrdersFragment withFastBirdOrdersFragment;
     private boolean isDrafts;
     private List<Order> orderList = new ArrayList<Order>();
     private Context context;
 
     static class OrderViewHolder {
         TextView orderNumber, orderTo, phone1, phone2, orderStatus;
-        Button commentButton, trackButton, editButton;
+        Button commentButton, trackButton, editButton, deleteButton;
         ImageView shareIcon;
     }
 
@@ -44,10 +46,24 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         this.enableEditBtn = enableEditBtn;
     }
 
+    public OrderArrayAdapter(Context context, int textViewResourceId, boolean isDrafts, boolean enableEditBtn, WithFastBirdOrdersFragment withFastBirdOrdersFragment) {
+        super(context, textViewResourceId);
+        this.withFastBirdOrdersFragment = withFastBirdOrdersFragment;
+        this.context = context;
+        this.isDrafts = isDrafts;
+        this.enableEditBtn = enableEditBtn;
+    }
+
     @Override
     public void add(Order object) {
         orderList.add(object);
         super.add(object);
+    }
+
+    @Override
+    public void clear() {
+        orderList.clear();
+        super.clear();
     }
 
     @Override
@@ -76,6 +92,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
             viewHolder.commentButton = (Button) row.findViewById(R.id.btnComment);
             viewHolder.trackButton = (Button) row.findViewById(R.id.btnTrackStatus);
             viewHolder.editButton = (Button) row.findViewById(R.id.btnEdit);
+            viewHolder.deleteButton = (Button) row.findViewById(R.id.btnDelete);
             viewHolder.shareIcon = (ImageView) row.findViewById(R.id.share);
             viewHolder.phone1.setMovementMethod(LinkMovementMethod.getInstance());
             viewHolder.phone2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -96,8 +113,10 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         viewHolder.commentButton.setOnClickListener(new CommentClickListener(order.getFBDNumber()));
         viewHolder.trackButton.setVisibility(isDrafts ? View.GONE : View.VISIBLE);
         viewHolder.editButton.setVisibility(enableEditBtn ? View.VISIBLE : View.GONE);
+        viewHolder.deleteButton.setVisibility(enableEditBtn ? View.VISIBLE : View.GONE);
         viewHolder.trackButton.setOnClickListener(new TrackButtonClickListener(order));
         viewHolder.editButton.setOnClickListener(new EditButtonClickListener(order));
+        viewHolder.deleteButton.setOnClickListener(new DeleteButtonClickListener(order, withFastBirdOrdersFragment));
         viewHolder.shareIcon.setOnClickListener(new ShareButtonClickListener(order));
         if (!TextUtils.isEmpty(order.getProgressColorCode())) {
             viewHolder.orderStatus.setBackgroundColor(Color.parseColor(order.getProgressColorCode()));
@@ -182,6 +201,21 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         @Override
         public void onClick(View v) {
             OrderDialogUtil.openOrderUpdate(getContext(), order);
+        }
+    }
+
+    class DeleteButtonClickListener implements View.OnClickListener {
+        private final Order order;
+        private WithFastBirdOrdersFragment withFastBirdOrdersFragment;
+
+        public DeleteButtonClickListener(Order order, WithFastBirdOrdersFragment withFastBirdOrdersFragment) {
+            this.order = order;
+            this.withFastBirdOrdersFragment = withFastBirdOrdersFragment;
+        }
+
+        @Override
+        public void onClick(View v) {
+            OrderDialogUtil.openDeleteConfirm((Activity) context, order, withFastBirdOrdersFragment);
         }
     }
 }

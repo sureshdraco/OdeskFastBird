@@ -5,9 +5,11 @@ package appinventor.ai_sameh.FastBird.api.request;
  */
 public class CreateOrderRequest extends LoginRequest {
     String pickupaddress, contactname, phone1, phone2, flatno, buildingno, blockno, road, location, note, packagetype, servicetype, weight, length, height, width, deliverytime, moneydeliverytype, collectionamount, paymentmethod;
+    String pickupAddressLocationId;
 
-    public CreateOrderRequest(String username, String password, String pickupaddress, String contactname, String phone1, String phone2, String flatno, String buildingno, String blockno, String road, String location, String note, String packagetype, String servicetype, String weight, String length, String height, String width, String deliverytime, String moneydeliverytype, String collectionamount, String paymentmethod) {
+    public CreateOrderRequest(String username, String password, String pickupaddress, String contactname, String phone1, String phone2, String flatno, String buildingno, String blockno, String road, String location, String note, String packagetype, String servicetype, String weight, String length, String height, String width, String deliverytime, String moneydeliverytype, String collectionamount, String paymentmethod, String pickupAddressLocationId) {
         super(username, password);
+        this.pickupAddressLocationId = pickupAddressLocationId;
         this.pickupaddress = pickupaddress;
         this.contactname = contactname;
         this.phone1 = phone1;
@@ -28,6 +30,10 @@ public class CreateOrderRequest extends LoginRequest {
         this.moneydeliverytype = moneydeliverytype;
         this.collectionamount = collectionamount;
         this.paymentmethod = paymentmethod;
+    }
+
+    public String getPickupAddressLocationId() {
+        return pickupAddressLocationId;
     }
 
     public String getServicetype() {

@@ -73,12 +73,18 @@ public class SettingsFragment extends Fragment {
         ApiRequests.getUserInformation(getActivity(), PreferenceUtil.getEmail(getActivity()), PreferenceUtil.getPassword(getActivity()), new Response.Listener<UserInfoResponse>() {
             @Override
             public void onResponse(UserInfoResponse userInfoResponse) {
+                if (getActivity() == null) {
+                    return;
+                }
                 cacheResponse(userInfoResponse);
                 updateUi();
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
+                if (getActivity() == null) {
+                    return;
+                }
                 Crouton.showText(getActivity(), "Failed", Style.ALERT);
             }
         });

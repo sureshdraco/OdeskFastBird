@@ -39,7 +39,13 @@ public class CashArrayAdapter extends ArrayAdapter<MRBTransactions> {
 		super.add(transaction);
 	}
 
-	@Override
+    @Override
+    public void clear() {
+        transactionsArrayList.clear();
+        super.clear();
+    }
+
+    @Override
 	public int getCount() {
 		return this.transactionsArrayList.size();
 	}

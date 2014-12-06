@@ -91,7 +91,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 		subtotalValue = serviceTypePrice + deliveryTimePrice + deliveryTypePrice;
 		float discountValue = Float.parseFloat(PreferenceUtil.getUserInfo(this).getData().getDiscountPercent());
 		subTotal.setText(String.valueOf(subtotalValue));
-		float totalValue = subtotalValue * (discountValue / 100);
+		float totalValue = subtotalValue - (subtotalValue * (discountValue / 100));
 
 		total.setText(String.valueOf(totalValue < 0 ? 0 : totalValue));
 		final Button createButton = (Button) findViewById(R.id.submitButton);
@@ -255,7 +255,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 		String user = PreferenceUtil.getEmail(getApplicationContext());
 		String password = PreferenceUtil.getPassword(getApplicationContext());
 		ApiRequests.getServiceTypePrice(getApplicationContext(),
-				new ServiceTypePriceRequest(user, password, createOrderRequest.getLocation(), createOrderRequest.getPickupaddress(), createOrderRequest.getWeight(),
+				new ServiceTypePriceRequest(user, password, createOrderRequest.getLocation(), createOrderRequest.getPickupAddressLocationId(), createOrderRequest.getWeight(),
 						createOrderRequest.getLength(), createOrderRequest.getHeight(), createOrderRequest.getWidth(), createOrderRequest.getServicetype()),
 				new Response.Listener<ServiceTypePriceResponse>() {
 					@Override

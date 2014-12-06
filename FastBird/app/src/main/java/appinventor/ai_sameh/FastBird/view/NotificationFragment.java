@@ -57,6 +57,8 @@ public class NotificationFragment extends Fragment {
     private void initview() {
         notificationsListView = (ListView) getActivity().findViewById(R.id.notificationsList);
         clearNotifBtn = (Button) getActivity().findViewById(R.id.clearNotif);
+        clearNotifBtn.setText("Clear");
+        clearNotifBtn.setBackground(getResources().getDrawable(R.drawable.red_button));
         notificationItemArrayList = new ArrayList<NotificationItem>();
         notificationsAdapter = new NotificationsAdapter(getActivity(), notificationItemArrayList);
         notificationsListView.setAdapter(notificationsAdapter);
