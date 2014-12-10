@@ -105,8 +105,8 @@ public class OrdersTabWithFastBirdOrdersFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 String url = "http://24bh.com/livehelp/";
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
+                Intent i = new Intent(getActivity(), WebViewActivity.class);
+                i.putExtra("url", url);
                 startActivity(i);
             }
         });

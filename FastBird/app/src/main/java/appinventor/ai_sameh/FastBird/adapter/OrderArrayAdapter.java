@@ -16,12 +16,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.util.OrderDialogUtil;
+import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 import appinventor.ai_sameh.FastBird.view.WithFastBirdOrdersFragment;
 
 public class OrderArrayAdapter extends ArrayAdapter<Order> {
@@ -32,25 +34,29 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
     private boolean isDrafts;
     private List<Order> orderList = new ArrayList<Order>();
     private Context context;
+    private int orderType;
 
     static class OrderViewHolder {
-        TextView orderNumber, orderTo, phone1, phone2, orderStatus;
+        TextView orderNumber, orderTo, phone1, phone2, orderStatus, remainingDays;
         Button commentButton, trackButton, editButton, deleteButton;
         ImageView shareIcon;
+        View orderStatusContainer;
     }
 
-    public OrderArrayAdapter(Context context, int textViewResourceId, boolean isDrafts, boolean enableEditBtn) {
+    public OrderArrayAdapter(Context context, int textViewResourceId, int orderType, boolean isDrafts, boolean enableEditBtn) {
         super(context, textViewResourceId);
         this.context = context;
         this.isDrafts = isDrafts;
         this.enableEditBtn = enableEditBtn;
+        this.orderType = orderType;
     }
 
-    public OrderArrayAdapter(Context context, int textViewResourceId, boolean isDrafts, boolean enableEditBtn, WithFastBirdOrdersFragment withFastBirdOrdersFragment) {
+    public OrderArrayAdapter(Context context, int textViewResourceId, int orderType, boolean isDrafts, boolean enableEditBtn, WithFastBirdOrdersFragment withFastBirdOrdersFragment) {
         super(context, textViewResourceId);
         this.withFastBirdOrdersFragment = withFastBirdOrdersFragment;
         this.context = context;
         this.isDrafts = isDrafts;
+        this.orderType = orderType;
         this.enableEditBtn = enableEditBtn;
     }
 
@@ -85,6 +91,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
             row = inflater.inflate(R.layout.orders_card_item, parent, false);
             viewHolder = new OrderViewHolder();
             viewHolder.orderNumber = (TextView) row.findViewById(R.id.orderNumber);
+            viewHolder.remainingDays = (TextView) row.findViewById(R.id.daysRemaining);
             viewHolder.orderStatus = (TextView) row.findViewById(R.id.orderStatus);
             viewHolder.orderTo = (TextView) row.findViewById(R.id.orderTo);
             viewHolder.phone1 = (TextView) row.findViewById(R.id.phone1);
@@ -93,6 +100,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
             viewHolder.trackButton = (Button) row.findViewById(R.id.btnTrackStatus);
             viewHolder.editButton = (Button) row.findViewById(R.id.btnEdit);
             viewHolder.deleteButton = (Button) row.findViewById(R.id.btnDelete);
+            viewHolder.orderStatusContainer = row.findViewById(R.id.orderStatusContainer);
             viewHolder.shareIcon = (ImageView) row.findViewById(R.id.share);
             viewHolder.phone1.setMovementMethod(LinkMovementMethod.getInstance());
             viewHolder.phone2.setMovementMethod(LinkMovementMethod.getInstance());
@@ -104,6 +112,24 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         viewHolder.orderNumber.setText(getContext().getResources().getString(R.string.order_number, order.getFBDNumber()));
         viewHolder.orderStatus.setText(order.getProgressStatus());
         viewHolder.orderTo.setText(getContext().getResources().getString(R.string.order_to, order.getDeliveryAddressTitle()));
+
+        try {
+            switch (orderType) {
+                case WithFastBirdOrdersFragment.ORDER_TYPE_HISTORY:
+                    viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getFastBirdDate(order.getProgressStatusDate())));
+                    break;
+                case WithFastBirdOrdersFragment.ORDER_TYPE_PICKUPS:
+                    viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getFastBirdDate(order.getOrderDate())));
+                    break;
+                case WithFastBirdOrdersFragment.ORDER_TYPE_SHIPMENTS:
+                    viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getFastBirdDate(order.getProgressStatusDate())));
+                    break;
+            }
+        } catch (Exception e) {
+            viewHolder.remainingDays.setText("");
+        }
+
+        //viewHolder.remainingDays.setText(order.getDaysRemaining());
 
         String htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone1(), order.getDeliveryPhone1());
         viewHolder.phone1.setText(Html.fromHtml(htmlString));
@@ -119,7 +145,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         viewHolder.deleteButton.setOnClickListener(new DeleteButtonClickListener(order, withFastBirdOrdersFragment));
         viewHolder.shareIcon.setOnClickListener(new ShareButtonClickListener(order));
         if (!TextUtils.isEmpty(order.getProgressColorCode())) {
-            viewHolder.orderStatus.setBackgroundColor(Color.parseColor(order.getProgressColorCode()));
+            viewHolder.orderStatusContainer.setBackgroundColor(Color.parseColor(order.getProgressColorCode()));
         }
         return row;
     }

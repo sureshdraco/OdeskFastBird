@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.webkit.WebSettings;
@@ -19,7 +20,7 @@ public class WebViewActivity extends Activity {
 
     private static final String TAG = WebViewActivity.class.getSimpleName();
     private WebView paymentWebView;
-    private java.lang.String paymentUrl;
+    private java.lang.String webUrl;
     private ProgressBar progress;
 
     @Override
@@ -27,12 +28,13 @@ public class WebViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.payment);
-        setupBuyCreditLink();
+        if (getIntent().getExtras() != null) {
+            webUrl = getIntent().getExtras().getString("url", "");
+        }
+        if (TextUtils.isEmpty(webUrl)) {
+            webUrl = String.format("http://www.fastbird.org/m/BuyCredits.aspx?username=%s&password=%s", PreferenceUtil.getEmail(this), PreferenceUtil.getPassword(this));
+        }
         initview();
-    }
-
-    private void setupBuyCreditLink() {
-        paymentUrl = String.format("http://www.fastbird.org/m/BuyCredits.aspx?username=%s&password=%s", PreferenceUtil.getEmail(this), PreferenceUtil.getPassword(this));
     }
 
     private void initview() {
@@ -49,7 +51,7 @@ public class WebViewActivity extends Activity {
         webSettings.setJavaScriptEnabled(true);
         webSettings.setSupportZoom(true);
         webSettings.setBuiltInZoomControls(true);
-        paymentWebView.loadUrl(paymentUrl);
+        paymentWebView.loadUrl(webUrl);
     }
 
     private void initWebView() {

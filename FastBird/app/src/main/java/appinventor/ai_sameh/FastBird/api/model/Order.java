@@ -1,5 +1,9 @@
 package appinventor.ai_sameh.FastBird.api.model;
 
+import java.util.Date;
+
+import appinventor.ai_sameh.FastBird.util.TimestampUtil;
+
 /**
  * Created by suresh on 21/10/14.
  */

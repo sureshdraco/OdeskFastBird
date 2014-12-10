@@ -200,6 +200,9 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getPackageTypes(getActivity(), new LoginRequest(email, password), new Response.Listener<PackageTypeResponse>() {
             @Override
             public void onResponse(PackageTypeResponse packageTypeResponse) {
+                if(getActivity() == null) {
+                    return;
+                }
                 if (packageTypeResponse.getData().getError() != null) {
                     dismissDialog();
                 }
@@ -246,6 +249,9 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getMyAddresses(getActivity(), new LoginRequest(email, password), new Response.Listener<MyAddressResponse>() {
             @Override
             public void onResponse(MyAddressResponse myAddressResponse) {
+                if(getActivity() == null) {
+                    return;
+                }
                 dismissDialog();
                 if (isDataUpdated(PreferenceUtil.getMyPickupAddress(getActivity()), myAddressResponse.getData().getAddresses())) {
                     updatePickupAddress(myAddressResponse.getData().getAddresses());
@@ -282,6 +288,9 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getDeliveryTimes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTimeResponse>() {
             @Override
             public void onResponse(DeliveryTimeResponse deliveryTimeResponse) {
+                if(getActivity() == null) {
+                    return;
+                }
                 dismissDialog();
                 if (isDataUpdated(PreferenceUtil.getDeliveryTime(getActivity()), deliveryTimeResponse.getData().getDeliveryTimes())) {
                     updateDeliveryTime(deliveryTimeResponse.getData().getDeliveryTimes());
@@ -318,6 +327,9 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getDeliveryTypes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTypeResponse>() {
             @Override
             public void onResponse(DeliveryTypeResponse deliveryTypeResponse) {
+                if(getActivity() == null) {
+                    return;
+                }
                 dismissDialog();
                 if (isDataUpdated(PreferenceUtil.getDeliveryType(getActivity()), deliveryTypeResponse.getData().getDeliveryTypes())) {
                     updateDeliveryType(deliveryTypeResponse.getData().getDeliveryTypes());
@@ -363,6 +375,9 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getServiceType(getActivity(), new ServiceTypeRequest(email, password, deliveryLocation, pickupLocation), new Response.Listener<ServiceTypeResponse>() {
             @Override
             public void onResponse(ServiceTypeResponse serviceTypeResponse) {
+                if(getActivity() == null) {
+                    return;
+                }
                 dismissDialog();
                 updateServiceTypes(serviceTypeResponse.getData().getServiceTypes());
             }
@@ -397,7 +412,7 @@ public class CreateOrderFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Crouton.showText(getActivity(), "Order Created", Style.INFO);
+        clearButton.performClick();
     }
 
     private void initView() {
@@ -414,7 +429,9 @@ public class CreateOrderFragment extends Fragment {
                             new Response.Listener<LocationResponse>() {
                                 @Override
                                 public void onResponse(LocationResponse locationResponse) {
-
+                                    if(getActivity() == null) {
+                                        return;
+                                    }
                                     try {
                                         getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
                                     } catch (Exception ex) {
@@ -600,7 +617,7 @@ public class CreateOrderFragment extends Fragment {
                     PreferenceUtil.savePendingUpdateOrderRequest(getActivity(), updateOrderRequest);
                     Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
                     intent.putExtra(CreateOrderFragment.UPDATE_ORDER, true);
-                    getActivity().startActivityForResult(intent, 1);
+                    startActivityForResult(intent, 1);
                 } else {
                     CreateOrderRequest createOrderRequest = new CreateOrderRequest(username, password, pickupAddress, contactNameString, phone1String, phone2String, flatNoString,
                             buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
@@ -608,7 +625,7 @@ public class CreateOrderFragment extends Fragment {
                             widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0), pickupAddressLocationId);
                     PreferenceUtil.savePendingCreateOrderRequest(getActivity(), createOrderRequest);
                     Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
-                    getActivity().startActivityForResult(intent, 1);
+                    startActivityForResult(intent, 1);
                 }
 
             }
