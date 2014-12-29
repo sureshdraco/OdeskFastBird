@@ -6,11 +6,11 @@
 	<corners
 		android:radius="5dp" />
 	<solid
-		android:color="#00000000" />
+		android:color="#ffffff" />
 	<padding
 		android:left="10dp"
 		android:right="10dp"
-		android:top="10dp"
+		android:top="0dp"
 		android:bottom="10dp"
 	/>
 </shape>

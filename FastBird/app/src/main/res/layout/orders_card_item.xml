@@ -19,7 +19,7 @@
             android:id="@+id/orderStatusContainer"
             android:paddingTop="7dp"
             android:paddingBottom="7dp"
-            android:background="@color/fast_bird_orange"
+            android:background="@drawable/order_status_background"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -52,12 +52,6 @@
             android:layout_height="wrap_content"
             android:paddingLeft="15dp"
             android:paddingRight="15dp">
-
-            <View
-                android:layout_marginTop="3dp"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="#d9d9d9" />
 
             <ImageView
                 android:visibility="gone"
@@ -151,17 +145,13 @@
             android:background="#d9d9d9" />
 
         <LinearLayout
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="3dp"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <Button
                 android:layout_weight="1"
-                style="@style/DialogButtonStyle"
+                android:background="@drawable/order_button_background"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 android:singleLine="true"
@@ -173,7 +163,7 @@
 
             <Button
                 android:layout_weight="1"
-                style="@style/DialogButtonStyle"
+                android:background="@drawable/order_button_background"
                 android:visibility="gone"
                 android:textStyle="bold"
                 android:textSize="16sp"
@@ -187,7 +177,7 @@
             <Button
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
-                style="@style/DialogButtonStyle"
+                android:background="@drawable/order_button_background"
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:ellipsize="end"
@@ -200,7 +190,7 @@
             <Button
                 android:layout_weight="1"
                 android:paddingLeft="10dp"
-                style="@style/DialogButtonStyle"
+                android:background="@drawable/order_button_background"
                 android:textStyle="bold"
                 android:singleLine="true"
                 android:ellipsize="end"

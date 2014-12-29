@@ -25,7 +25,7 @@ public class TimestampUtil {
         public static Date toDate(final String iso8601string)
                 throws ParseException {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO_8601_FORMAT);
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+3:00"));
             return simpleDateFormat.parse(iso8601string);
         }
     }
@@ -47,6 +47,12 @@ public class TimestampUtil {
         int days = (int) ((date1.getTime() - date2.getTime()) / DAY_IN_MILLIS);
         if (days <= 1) {
             return (int) ((date1.getTime() - date2.getTime()) / HOURS_IN_MILLIS) + " h";
+        } else if (days >= 365) {
+            return (days / 365) + " y";
+        } else if (days >= 120) {
+            return (days / 30) + " m";
+        } else if (days >= 14) {
+            return (days / 14) + " w";
         } else {
             return days + " days";
         }

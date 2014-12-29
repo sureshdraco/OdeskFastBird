@@ -1,44 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
+    android:scrollbarStyle="insideOverlay"
     android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/relDropdownContainer"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:padding="10dp"
-        android:background="#ffffff">
+        android:background="@drawable/background_dialog_window">
+
+        <LinearLayout
+            android:layout_alignParentTop="true"
+            android:paddingTop="0dp"
+            android:padding="10dp"
+            android:id="@+id/orderStatusContainer"
+            android:background="@color/fast_bird_orange"
+            android:layout_width="fill_parent"
+            android:layout_below="@id/closeBtn"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:textIsSelectable="true"
+                android:text="@string/progressStatus"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ProgressStatus" />
+
+            <TextView
+                android:textStyle="bold"
+                android:textIsSelectable="true"
+                android:textColor="@color/White"
+                android:text="@string/progressStatusDate"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ProgressStatusDate" />
+
+        </LinearLayout>
 
         <ImageView
+            android:paddingBottom="10dp"
             android:id="@+id/closeBtn"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/com_facebook_close" />
-
         <LinearLayout
+            android:padding="10dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="vertical"
-            android:layout_below="@id/closeBtn">
-
-            <TextView
-                android:textIsSelectable="true"
-                android:text="@string/progressStatus"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ProgressStatus" />
-
-            <TextView
-                android:textIsSelectable="true"
-                android:text="@string/progressStatusDate"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ProgressStatusDate" />
+            android:layout_below="@id/orderStatusContainer">
 
             <TextView
                 android:layout_marginTop="10dp"
@@ -47,6 +65,13 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <View
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#d9d9d9" />
 
             <TextView
                 android:textIsSelectable="true"
@@ -63,6 +88,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/OrderDate" />
+
+            <TextView
+                android:textIsSelectable="true"
+                android:text="@string/approval_date"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/approvalDate" />
 
             <TextView
                 android:textIsSelectable="true"
@@ -96,6 +129,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#d9d9d9" />
+
             <TextView
                 android:textIsSelectable="true"
                 android:text="@string/pickupAddressTitle"
@@ -112,6 +152,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#d9d9d9" />
+
             <TextView
                 android:textIsSelectable="true"
                 android:text="@string/deliverAddressTitle"
@@ -120,22 +167,44 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/DeliveryAddressTitle" />
 
-            <TextView
-                android:textIsSelectable="true"
-                android:text="@string/deliveryPhone1"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/DeliveryPhone1" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:textIsSelectable="true"
+                    android:text="@string/deliveryPhone1"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
 
-            <TextView
-                android:textIsSelectable="true"
-                android:text="@string/deliveryPhone2"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/DeliveryPhone2" />
+                <TextView
+                    android:textIsSelectable="true"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/DeliveryPhone1" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textIsSelectable="true"
+                    android:text="@string/deliveryPhone2"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:textIsSelectable="true"
+                    android:textSize="14sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/DeliveryPhone2" />
+            </LinearLayout>
 
             <TextView
                 android:textIsSelectable="true"
@@ -194,6 +263,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#d9d9d9" />
+
             <TextView
                 android:textIsSelectable="true"
                 android:text="@string/weight"
@@ -218,6 +294,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+            <View
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#d9d9d9" />
+
             <TextView
                 android:textIsSelectable="true"
                 android:text="@string/collection_amount"
@@ -233,6 +316,13 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <View
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="3dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="#d9d9d9" />
 
             <TextView
                 android:textIsSelectable="true"
@@ -252,23 +342,6 @@
                 android:id="@+id/MoneyDeliveryType" />
 
             <TextView
-                android:textIsSelectable="true"
-                android:text="@string/withdraw_money_net_total"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/NetTotal" />
-
-            <TextView
-                android:textIsSelectable="true"
-                android:text="@string/approval_date"
-                android:textSize="14sp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/approvalDate" />
-
-
-            <TextView
                 android:text="@string/service_type"
                 android:textIsSelectable="true"
                 android:textSize="14sp"
@@ -276,6 +349,13 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/ServiceType" />
 
+            <TextView
+                android:textIsSelectable="true"
+                android:text="@string/withdraw_money_net_total"
+                android:textSize="14sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/NetTotal" />
 
         </LinearLayout>
 

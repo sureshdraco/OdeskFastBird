@@ -31,6 +31,9 @@ public class CashDialog {
         final CustomDialog dialog = new CustomDialog(mContext);
         dialog.setCancelable(true);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        Window window = dialog.getWindow();
+        window.setBackgroundDrawableResource(R.drawable.background_dialog_window);
         dialog.setContentView(R.layout.order_detail);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT);
         dialog.findViewById(R.id.closeBtn).setOnClickListener(new OnClickListener() {

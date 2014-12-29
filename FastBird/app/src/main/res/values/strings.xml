@@ -17,7 +17,7 @@
     <string name="service_type">Service Type: %1$s</string>
     <string name="date">Date: %1$s</string>
     <string name="id">Payment ID: %1$s</string>
-    <string name="collection_amount">Collection Amount: %1$s</string>
+    <string name="collection_amount">Collection (BD): %1$s</string>
     <string name="fbd_number">FBD: %1$s</string>
     <string name="paymentResult">Payment: %1$s</string>
     <string name="fast_pay_code">Fast Pay: %1$s</string>
@@ -25,7 +25,7 @@
     <string name="error_required">Required</string>
     <string name="withdraw_money_mrbtotal">Collected Amount: %1$s</string>
     <string name="withdraw_money_checque_price">Bank Charges: %1$s</string>
-    <string name="withdraw_money_net_total">Final Amount: %1$s</string>
+    <string name="withdraw_money_net_total">Service Fee (BD): %1$s</string>
     <string name="approval_date">Approval Date: %1$s</string>
     <string name="deliverAddressTitle">Name: %1$s</string>
     <string name="deliverBlockNo">Block: %1$s</string>
@@ -34,8 +34,8 @@
     <string name="deliveryFlatNo">Flat: %1$s</string>
     <string name="deliveryLocation">Location: %1$s</string>
     <string name="deliveryNotes">Note: %1$s</string>
-    <string name="deliveryPhone1">Phone1: %1$s</string>
-    <string name="deliveryPhone2">Phone2: %1$s</string>
+    <string name="deliveryPhone1">Phone1: </string>
+    <string name="deliveryPhone2">Phone2: </string>
     <string name="deliveryRoad">Road: %1$s</string>
     <string name="paymentDate">Payment Date: %1$s</string>
     <string name="moneyDelivered">Money Delivered: %1$s</string>

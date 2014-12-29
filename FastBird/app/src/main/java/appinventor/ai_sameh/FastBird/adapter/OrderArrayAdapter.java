@@ -1,9 +1,12 @@
 package appinventor.ai_sameh.FastBird.adapter;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
@@ -35,6 +38,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
     private List<Order> orderList = new ArrayList<Order>();
     private Context context;
     private int orderType;
+    private ShapeDrawable footerBackground;
 
     static class OrderViewHolder {
         TextView orderNumber, orderTo, phone1, phone2, orderStatus, remainingDays;
@@ -116,12 +120,13 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         try {
             switch (orderType) {
                 case WithFastBirdOrdersFragment.ORDER_TYPE_HISTORY:
-                    viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getFastBirdDate(order.getProgressStatusDate())));
+                    viewHolder.remainingDays.setVisibility(View.GONE);
                     break;
                 case WithFastBirdOrdersFragment.ORDER_TYPE_PICKUPS:
-                    viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getFastBirdDate(order.getOrderDate())));
+                    viewHolder.remainingDays.setVisibility(View.GONE);
                     break;
                 case WithFastBirdOrdersFragment.ORDER_TYPE_SHIPMENTS:
+                    viewHolder.remainingDays.setVisibility(View.VISIBLE);
                     viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getFastBirdDate(order.getProgressStatusDate())));
                     break;
             }
@@ -145,7 +150,15 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
         viewHolder.deleteButton.setOnClickListener(new DeleteButtonClickListener(order, withFastBirdOrdersFragment));
         viewHolder.shareIcon.setOnClickListener(new ShareButtonClickListener(order));
         if (!TextUtils.isEmpty(order.getProgressColorCode())) {
-            viewHolder.orderStatusContainer.setBackgroundColor(Color.parseColor(order.getProgressColorCode()));
+            footerBackground = new ShapeDrawable();
+            float[] radii = new float[8];
+            radii[0] = 4;
+            radii[1] = 4;
+            radii[2] = 4;
+            radii[3] = 4;
+            footerBackground.setShape(new RoundRectShape(radii, null, null));
+            footerBackground.getPaint().setColor(Color.parseColor(order.getProgressColorCode()));
+            viewHolder.orderStatusContainer.setBackground(footerBackground);
         }
         return row;
     }

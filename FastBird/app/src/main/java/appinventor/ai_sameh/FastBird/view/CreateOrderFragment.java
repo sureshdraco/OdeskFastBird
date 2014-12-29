@@ -200,7 +200,7 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getPackageTypes(getActivity(), new LoginRequest(email, password), new Response.Listener<PackageTypeResponse>() {
             @Override
             public void onResponse(PackageTypeResponse packageTypeResponse) {
-                if(getActivity() == null) {
+                if (getActivity() == null) {
                     return;
                 }
                 if (packageTypeResponse.getData().getError() != null) {
@@ -249,7 +249,7 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getMyAddresses(getActivity(), new LoginRequest(email, password), new Response.Listener<MyAddressResponse>() {
             @Override
             public void onResponse(MyAddressResponse myAddressResponse) {
-                if(getActivity() == null) {
+                if (getActivity() == null) {
                     return;
                 }
                 dismissDialog();
@@ -288,7 +288,7 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getDeliveryTimes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTimeResponse>() {
             @Override
             public void onResponse(DeliveryTimeResponse deliveryTimeResponse) {
-                if(getActivity() == null) {
+                if (getActivity() == null) {
                     return;
                 }
                 dismissDialog();
@@ -327,7 +327,7 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getDeliveryTypes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTypeResponse>() {
             @Override
             public void onResponse(DeliveryTypeResponse deliveryTypeResponse) {
-                if(getActivity() == null) {
+                if (getActivity() == null) {
                     return;
                 }
                 dismissDialog();
@@ -375,7 +375,7 @@ public class CreateOrderFragment extends Fragment {
         ApiRequests.getServiceType(getActivity(), new ServiceTypeRequest(email, password, deliveryLocation, pickupLocation), new Response.Listener<ServiceTypeResponse>() {
             @Override
             public void onResponse(ServiceTypeResponse serviceTypeResponse) {
-                if(getActivity() == null) {
+                if (getActivity() == null) {
                     return;
                 }
                 dismissDialog();
@@ -412,56 +412,58 @@ public class CreateOrderFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        clearButton.performClick();
+        if (!updateOrder)
+            clearButton.performClick();
     }
 
     private void initView() {
         collectionAmount = (EditText) getActivity().findViewById(R.id.collectionAmount);
         blockNo = (EditText) getActivity().findViewById(R.id.blockNo);
-        blockNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if (!b) {
-                    String username = PreferenceUtil.getEmail(getActivity());
-                    String password = PreferenceUtil.getPassword(getActivity());
-                    getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                    ApiRequests.getLocationByBlockNo(getActivity(), new GetLocationByBlockNoRequest(username, password, blockNo.getText().toString()),
-                            new Response.Listener<LocationResponse>() {
-                                @Override
-                                public void onResponse(LocationResponse locationResponse) {
-                                    if(getActivity() == null) {
-                                        return;
-                                    }
-                                    try {
-                                        getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                                    } catch (Exception ex) {
+        if (!updateOrder)
+            blockNo.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View view, boolean b) {
+                    if (!b) {
+                        String username = PreferenceUtil.getEmail(getActivity());
+                        String password = PreferenceUtil.getPassword(getActivity());
+                        getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                        ApiRequests.getLocationByBlockNo(getActivity(), new GetLocationByBlockNoRequest(username, password, blockNo.getText().toString()),
+                                new Response.Listener<LocationResponse>() {
+                                    @Override
+                                    public void onResponse(LocationResponse locationResponse) {
+                                        if (getActivity() == null) {
+                                            return;
+                                        }
+                                        try {
+                                            getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                                        } catch (Exception ex) {
 
-                                    }
+                                        }
 
-                                    if (locationResponse.getData().getError() != null || locationResponse.getData().getLocations().isEmpty()) {
-                                        return;
-                                    }
-                                    ArrayList<DataDescription> locationList = locationResponse.getData().getLocations();
-                                    DataDescription location = locationResponse.getData().getLocations().get(0);
-                                    for (int i = 0; i < locationList.size(); i++) {
-                                        if (location.getId().equals(locationList.get(i).getId())) {
-                                            locationTypeSpinner.setSelection(i);
-                                            locationTypeSpinner.setText(location.getDescription());
-                                            setupServiceType();
-                                            setupLocalFields();
-                                            break;
+                                        if (locationResponse.getData().getError() != null || locationResponse.getData().getLocations().isEmpty()) {
+                                            return;
+                                        }
+                                        ArrayList<DataDescription> locationList = locationResponse.getData().getLocations();
+                                        DataDescription location = locationResponse.getData().getLocations().get(0);
+                                        for (int i = 0; i < locationList.size(); i++) {
+                                            if (location.getId().equals(locationList.get(i).getId())) {
+                                                locationTypeSpinner.setSelection(i);
+                                                locationTypeSpinner.setText(location.getDescription());
+                                                setupServiceType();
+                                                setupLocalFields();
+                                                break;
+                                            }
                                         }
                                     }
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError volleyError) {
-                                    getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                                }
-                            });
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError volleyError) {
+                                        getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                                    }
+                                });
+                    }
                 }
-            }
-        });
+            });
         buildingNo = (EditText) getActivity().findViewById(R.id.buildingNo);
         contactName = (EditText) getActivity().findViewById(R.id.contactName);
         road = (EditText) getActivity().findViewById(R.id.road);
@@ -729,7 +731,6 @@ public class CreateOrderFragment extends Fragment {
         lengthContainer.setVisibility(View.GONE);
         moneyDeliveryTypeContainer.setVisibility(View.GONE);
         packageTypeContainer.setVisibility(View.GONE);
-
         buildNoTextView.setText("Building No (*)");
         roadTextView.setText("Road (*)");
         blockNoTextView.setText("Block No (*)");
@@ -753,5 +754,10 @@ public class CreateOrderFragment extends Fragment {
         weight.setText(updateOrder ? order.getWeight() : Constant.DEBUG ? "12" : "");
         width.setText(updateOrder ? order.getWidth() : Constant.DEBUG ? "2" : "");
         height.setText(updateOrder ? order.getHeight() : Constant.DEBUG ? "4" : "");
+        if (updateOrder) {
+            locationTypeSpinner.setText(order.getDeliveryLocation());
+            locationTypeSpinner.setEnabled(false);
+            setupServiceType();
+        }
     }
 }

@@ -40,6 +40,7 @@ import appinventor.ai_sameh.FastBird.api.request.RegisterDeviceRequest;
 import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
 import appinventor.ai_sameh.FastBird.model.OpenOrder;
+import appinventor.ai_sameh.FastBird.util.Constant;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -249,7 +250,8 @@ public class MainActivity extends FragmentActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), tstMsg, Toast.LENGTH_SHORT).show();
+                        if (Constant.DEBUG)
+                            Toast.makeText(getApplicationContext(), tstMsg, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -263,15 +265,18 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onResponse(RegisterDeviceResponse registerDeviceResponse) {
                 if (TextUtils.isEmpty(registerDeviceResponse.getData().getError())) {
-                    Toast.makeText(getApplicationContext(), "Device Registered", Toast.LENGTH_SHORT).show();
+                    if (Constant.DEBUG)
+                        Toast.makeText(getApplicationContext(), "Device Registered", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), registerDeviceResponse.getData().getError(), Toast.LENGTH_SHORT).show();
+                    if (Constant.DEBUG)
+                        Toast.makeText(getApplicationContext(), registerDeviceResponse.getData().getError(), Toast.LENGTH_SHORT).show();
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError volleyError) {
-                Toast.makeText(getApplicationContext(), String.valueOf(volleyError.networkResponse.statusCode), Toast.LENGTH_SHORT).show();
+                if (Constant.DEBUG)
+                    Toast.makeText(getApplicationContext(), String.valueOf(volleyError.networkResponse.statusCode), Toast.LENGTH_SHORT).show();
             }
         });
     }

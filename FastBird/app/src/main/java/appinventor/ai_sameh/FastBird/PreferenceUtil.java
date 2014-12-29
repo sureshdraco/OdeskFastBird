@@ -199,7 +199,7 @@ public class PreferenceUtil {
             @Override
             public int compare(Order lhs, Order rhs) {
                 try {
-                    return TimestampUtil.getFastBirdDate(lhs.getProgressStatusDate()).compareTo(TimestampUtil.getFastBirdDate(rhs.getProgressStatusDate()));
+                    return TimestampUtil.getFastBirdDate(rhs.getProgressStatusDate()).compareTo(TimestampUtil.getFastBirdDate(lhs.getProgressStatusDate()));
                 } catch (ParseException e) {
                     return -1;
                 }
@@ -241,7 +241,7 @@ public class PreferenceUtil {
             @Override
             public int compare(Order lhs, Order rhs) {
                 try {
-                    return TimestampUtil.getFastBirdDate(lhs.getOrderDate()).compareTo(TimestampUtil.getFastBirdDate(rhs.getOrderDate()));
+                    return TimestampUtil.getFastBirdDate(rhs.getOrderDate()).compareTo(TimestampUtil.getFastBirdDate(lhs.getOrderDate()));
                 } catch (ParseException e) {
                     return -1;
                 }
@@ -264,7 +264,7 @@ public class PreferenceUtil {
             @Override
             public int compare(Order lhs, Order rhs) {
                 try {
-                    return TimestampUtil.getFastBirdDate(lhs.getProgressStatusDate()).compareTo(TimestampUtil.getFastBirdDate(rhs.getProgressStatusDate()));
+                    return TimestampUtil.getFastBirdDate(rhs.getProgressStatusDate()).compareTo(TimestampUtil.getFastBirdDate(lhs.getProgressStatusDate()));
                 } catch (ParseException e) {
                     return -1;
                 }

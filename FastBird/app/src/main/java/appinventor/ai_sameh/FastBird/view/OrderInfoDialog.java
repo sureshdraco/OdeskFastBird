@@ -3,6 +3,10 @@ package appinventor.ai_sameh.FastBird.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.text.Html;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -35,9 +39,18 @@ public class OrderInfoDialog {
         Resources resources = context.getResources();
         ((TextView) dialog.findViewById(R.id.collectionAmount)).setText(resources.getString(R.string.collection_amount, order.getCollectionAmount()));
         ((TextView) dialog.findViewById(R.id.DeliveryAddressTitle)).setText(resources.getString(R.string.deliverAddressTitle, order.getDeliveryAddressTitle()));
-        ((TextView) dialog.findViewById(R.id.DeliveryPhone1)).setText(resources.getString(R.string.deliveryPhone1, order.getDeliveryPhone1()));
-        ((TextView) dialog.findViewById(R.id.DeliveryPhone2)).setText(resources.getString(R.string.deliveryPhone2, order.getDeliveryPhone2()));
+        String htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone1(), order.getDeliveryPhone1());
+
+        ((TextView) dialog.findViewById(R.id.DeliveryPhone1)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) dialog.findViewById(R.id.DeliveryPhone1)).setText(Html.fromHtml(htmlString));
+        htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone2(), order.getDeliveryPhone2());
+
+        ((TextView) dialog.findViewById(R.id.DeliveryPhone2)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) dialog.findViewById(R.id.DeliveryPhone2)).setText(Html.fromHtml(htmlString));
         ((TextView) dialog.findViewById(R.id.fastPayCode)).setText(resources.getString(R.string.fast_pay_code, order.getFastPayCode()));
+        if (!TextUtils.isEmpty(order.getProgressColorCode())) {
+            dialog.findViewById(R.id.orderStatusContainer).setBackgroundColor(Color.parseColor(order.getProgressColorCode()));
+        }
         ((TextView) dialog.findViewById(R.id.paymentResult)).setText(resources.getString(R.string.paymentResult, order.getFastPayStatus()));
         ((TextView) dialog.findViewById(R.id.FBDNumber)).setText(resources.getString(R.string.fbd_number, order.getFBDNumber()));
         ((TextView) dialog.findViewById(R.id.MoneyDelivered)).setText(resources.getString(R.string.moneyDelivered, order.getMoneyDelivered()));
