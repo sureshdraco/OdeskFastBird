@@ -25,7 +25,6 @@ public class TimestampUtil {
         public static Date toDate(final String iso8601string)
                 throws ParseException {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(ISO_8601_FORMAT);
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT+3:00"));
             return simpleDateFormat.parse(iso8601string);
         }
     }
