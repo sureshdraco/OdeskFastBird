@@ -6,10 +6,10 @@ import appinventor.ai_sameh.FastBird.util.TimestampUtil;
  * Created by suresh on 21/10/14.
  */
 public class TrackStatus {
-    private String Date, Status, Comment;
+    private String Date, Status, ShipmentTrackingDetails;
 
     public String getComments() {
-        return Comment;
+        return ShipmentTrackingDetails;
     }
 
     public String getDate() {
@@ -23,9 +23,9 @@ public class TrackStatus {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("");
-        sb.append("Date: ").append(TimestampUtil.getFastBirdDateString(Date)).append("</br>");
-        sb.append("Status: ").append(Status).append("</br>");
-        sb.append("<b>Comments:</b> ").append(Comment).append("</br>");
+        sb.append("Date: ").append(TimestampUtil.getFastBirdDateString(Date)).append("<br/>");
+        sb.append("Status: ").append(Status).append("<br/>");
+        sb.append("<b>Comments:</b> ").append(ShipmentTrackingDetails == null ? "" : ShipmentTrackingDetails).append("<br/>");
         return sb.toString();
     }
 }

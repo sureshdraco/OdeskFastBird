@@ -1,5 +1,7 @@
 package appinventor.ai_sameh.FastBird.api.request;
 
+import android.text.TextUtils;
+
 /**
  * Created by suresh on 12/10/14.
  */
@@ -22,13 +24,13 @@ public class CreateOrderRequest extends LoginRequest {
         this.note = note;
         this.packagetype = packagetype;
         this.servicetype = servicetype;
-        this.weight = weight;
-        this.length = length;
-        this.height = height;
-        this.width = width;
+        this.weight = TextUtils.isEmpty(weight) ? "0" : weight;
+        this.length = TextUtils.isEmpty(length) ? "0" : length;
+        this.height = TextUtils.isEmpty(height) ? "0" : height;
+        this.width = TextUtils.isEmpty(width) ? "0" : width;
         this.deliverytime = deliverytime;
         this.moneydeliverytype = moneydeliverytype;
-        this.collectionamount = collectionamount;
+        this.collectionamount = TextUtils.isEmpty(collectionamount) ? "0" : collectionamount;
         this.paymentmethod = paymentmethod;
     }
 
@@ -93,18 +95,26 @@ public class CreateOrderRequest extends LoginRequest {
     }
 
     public String getWeight() {
+        if (TextUtils.isEmpty(weight))
+            return "0";
         return weight;
     }
 
     public String getLength() {
+        if (TextUtils.isEmpty(length))
+            return "0";
         return length;
     }
 
     public String getHeight() {
+        if (TextUtils.isEmpty(height))
+            return "0";
         return height;
     }
 
     public String getWidth() {
+        if (TextUtils.isEmpty(width))
+            return "0";
         return width;
     }
 

@@ -40,7 +40,7 @@ public class NotificationUtil {
     public static void cacheNotification(Context context, String title, String message, String imageUrl, String fullMessage) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimestampUtil.FAST_BIRD_DATE_FORMAT);
         Date date = new Date();
-        NotificationItem notificationItem = new NotificationItem(title, simpleDateFormat.format(date), message, imageUrl, fullMessage);
+        NotificationItem notificationItem = new NotificationItem(message, simpleDateFormat.format(date), title, imageUrl, fullMessage);
         Type listType = new TypeToken<ArrayList<NotificationItem>>() {
         }.getType();
         ArrayList<NotificationItem> notificationItemArrayList = gson.fromJson(PreferenceUtil.getNotificationList(context), listType);

@@ -7,9 +7,9 @@ public class OpenOrder {
 	public static final java.lang.String NOTIFICATION_EXTRA_PAGE_COMMENTS = "comments";
 	public static final java.lang.String NOTIFICATION_EXTRA_PAGE_TRACK = "track";
 	public static final java.lang.String NOTIFICATION_EXTRA_PAGE_INFO = "info";
-	public static final java.lang.String NOTIFICATION_EXTRA_ORDER_SHIPMENTS = "shipments";
-	public static final java.lang.String NOTIFICATION_EXTRA_ORDER_PICKUP = "pickup";
-	public static final java.lang.String NOTIFICATION_EXTRA_ORDER_HISTORY = "history";
+	public static final java.lang.String NOTIFICATION_EXTRA_ORDER_SHIPMENTS = "approved";
+	public static final java.lang.String NOTIFICATION_EXTRA_ORDER_PICKUP = "pending";
+	public static final java.lang.String NOTIFICATION_EXTRA_ORDER_HISTORY = "closed";
 	private String order, page, orderTab;
 
 	public OpenOrder(String order, String page, String orderTab) {

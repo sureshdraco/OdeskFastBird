@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
+import appinventor.ai_sameh.FastBird.FastBirdApplication;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.adapter.CashArrayAdapter;
@@ -34,6 +35,8 @@ import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.request.ServiceTypePriceRequest;
 import appinventor.ai_sameh.FastBird.api.response.CreateOrderResponse;
+import appinventor.ai_sameh.FastBird.api.response.GetClientCreditResponse;
+import appinventor.ai_sameh.FastBird.api.response.GetClientMoneyResponse;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import appinventor.ai_sameh.FastBird.api.response.ServiceTypePriceResponse;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -62,7 +65,12 @@ public class CreateOrderConfirmationActivity extends Activity {
         setContentView(R.layout.confirm_create_order);
         createOrderRequest = updateOrder ? PreferenceUtil.getPendingUpdateOrderRequest(this) : PreferenceUtil.getPendingCreateOrderRequest(this);
         setupCollectionAmountField();
-        getServiceTypePrice();
+        if (PreferenceUtil.getClientCredits((getApplicationContext())).equals("-")) {
+            setupBalance();
+        } else if (PreferenceUtil.getClientMoney(getApplicationContext()).equals("-")) {
+            setupMoneyBalance();
+        } else
+            getServiceTypePrice();
     }
 
     private void setupCollectionAmountField() {
@@ -120,8 +128,32 @@ public class CreateOrderConfirmationActivity extends Activity {
         });
     }
 
+    private void setupMoneyBalance() {
+        showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+        String email = PreferenceUtil.getEmail(getApplicationContext());
+        String password = PreferenceUtil.getPassword(getApplicationContext());
+        ApiRequests.getClientMoney(getApplicationContext(), new LoginRequest(email, password), new Response.Listener<GetClientMoneyResponse>() {
+            @Override
+            public void onResponse(GetClientMoneyResponse getClientMoneyResponse) {
+                if (getClientMoneyResponse.getData().getError() == null) {
+                    PreferenceUtil.saveClientMoney(FastBirdApplication.appContext, getClientMoneyResponse.getData().getMRBTotal());
+                    getServiceTypePrice();
+                } else {
+                    dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                    unableToGetPrice();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                unableToGetPrice();
+            }
+        });
+    }
+
     private void updateOrder() {
-        if (checkRules()) return;
+        if (!checkRules()) return;
         showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
         ApiRequests.updateOrder(this, PreferenceUtil.getPendingUpdateOrderRequest(getApplicationContext()),
                 new Response.Listener<CreateOrderResponse>() {
@@ -132,7 +164,7 @@ public class CreateOrderConfirmationActivity extends Activity {
                             Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
                             return;
                         }
-                        showCompletedDialog(createOrderResponse.getData().getFBDNumber(), createOrderResponse.getData().getFastPayCode());
+                        showUpdatedDialog();
                         Log.d(TAG, createOrderResponse.toString());
                     }
                 }, new Response.ErrorListener() {
@@ -144,22 +176,54 @@ public class CreateOrderConfirmationActivity extends Activity {
                 });
     }
 
-    private boolean checkRules() {
-        try {
-            if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientCredits(getApplicationContext()))) {
-                createOrderRequest.setPaymentmethod(String.valueOf(0));
-            } else if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientMoney(getApplicationContext()))) {
-                createOrderRequest.setPaymentmethod(String.valueOf(1));
-            }
-            if (isLocal && !PreferenceUtil.getUserInfo(getApplicationContext()).getData().isVIP()) {
-                if (subtotalValue > Float.parseFloat(collectionAmount.getText().toString())) {
-                    refillAccount();
-                    return true;
+    private void setupBalance() {
+        showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+
+        String email = PreferenceUtil.getEmail(getApplicationContext());
+        String password = PreferenceUtil.getPassword(getApplicationContext());
+        ApiRequests.getGetClientCredits(getApplicationContext(), new LoginRequest(email, password), new Response.Listener<GetClientCreditResponse>() {
+            @Override
+            public void onResponse(GetClientCreditResponse getClientCreditResponse) {
+                if (getClientCreditResponse.getData().getError() == null) {
+                    PreferenceUtil.saveClientCredits(FastBirdApplication.appContext, getClientCreditResponse.getData().getCredit());
+                    if (PreferenceUtil.getClientMoney(getApplicationContext()).equals("-")) {
+                        setupMoneyBalance();
+                    } else
+                        getServiceTypePrice();
+                } else {
+                    dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                    unableToGetPrice();
                 }
             }
-        } catch (NumberFormatException ex) {
-            Crouton.showText(this, "Failed!", Style.ALERT);
-            return false;
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+                unableToGetPrice();
+            }
+        });
+    }
+
+    private boolean checkRules() {
+        if (PreferenceUtil.getUserInfo(getApplicationContext()).getData().isVIP()) {
+            //vip
+            createOrderRequest.setPaymentmethod("1");
+        } else {
+            try {
+                if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientCredits(getApplicationContext()))) {
+                    createOrderRequest.setPaymentmethod(String.valueOf(0));
+                } else if (subtotalValue <= Float.parseFloat(PreferenceUtil.getClientMoney(getApplicationContext()))) {
+                    createOrderRequest.setPaymentmethod(String.valueOf(1));
+                } else if (isLocal) {
+                    if (subtotalValue > Float.parseFloat(collectionAmount.getText().toString())) {
+                        refillAccount();
+                        return false;
+                    }
+                }
+            } catch (NumberFormatException ex) {
+                Crouton.showText(this, "Invalid Client Credits!", Style.ALERT);
+                return false;
+            }
         }
         return true;
     }
@@ -235,6 +299,31 @@ public class CreateOrderConfirmationActivity extends Activity {
 
         ((TextView) promptsView.findViewById(R.id.fbdnumber)).setText(getString(R.string.fbd_number, fbdNumber));
         ((TextView) promptsView.findViewById(R.id.fastBirdNumber)).setText(getString(R.string.fast_bird_number, fastBirdNumber));
+
+        // set dialog message
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(final DialogInterface dialog, int id) {
+                                finish();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
+
+    private void showUpdatedDialog() {
+        LayoutInflater li = LayoutInflater.from(this);
+        View promptsView = li.inflate(R.layout.order_updated_info, null);
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+
+        // set prompts.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
 
         // set dialog message
         alertDialogBuilder
