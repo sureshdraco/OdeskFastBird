@@ -46,6 +46,7 @@ import appinventor.ai_sameh.FastBird.api.response.LocationResponse;
 import appinventor.ai_sameh.FastBird.api.response.MyAddressResponse;
 import appinventor.ai_sameh.FastBird.api.response.PackageTypeResponse;
 import appinventor.ai_sameh.FastBird.api.response.ServiceTypeResponse;
+import appinventor.ai_sameh.FastBird.model.OpenOrder;
 import appinventor.ai_sameh.FastBird.util.Constant;
 import appinventor.ai_sameh.FastBird.util.Keyboard;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -414,6 +415,10 @@ public class CreateOrderFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (!updateOrder)
             clearButton.performClick();
+        else {
+            getActivity().finish();
+            PreferenceUtil.saveOpenOrder(getActivity(), new OpenOrder("xxx", "info", "pending"));
+        }
     }
 
     private void initView() {
