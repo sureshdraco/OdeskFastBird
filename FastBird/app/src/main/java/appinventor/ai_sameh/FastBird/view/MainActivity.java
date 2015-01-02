@@ -254,8 +254,10 @@ public class MainActivity extends FragmentActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (Constant.DEBUG)
+                        if (Constant.DEBUG) {
                             Toast.makeText(getApplicationContext(), tstMsg, Toast.LENGTH_SHORT).show();
+                            Log.d("deviceId", tstMsg);
+                        }
                     }
                 });
             }
