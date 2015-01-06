@@ -12,7 +12,7 @@ public class Order {
 	private String ApprovalDate, DeliveryLocation, DeliveryNotes, DeliveryRoad, FastPayCode, FastPayStatus, MoneyDelivered, EPaymentDate,
 			MoneyDeliveryType, NetTotal, OrderDate, ProgressStatus, ProgressStatusDate, ServiceType, Size, Height, Weight, Length, Width, ReferenceNo, DeliveryBlockNo,
 			DeliveryBuildingNo,
-			DeliveryFlatNo, ProgressColorCode;
+			DeliveryFlatNo, ProgressColorCode, PaymentMehod;
 
 	public String getFBDNumber() {
 		return FBDNumber == null ? "" : FBDNumber;
@@ -137,4 +137,8 @@ public class Order {
 	public String getProgressColorCode() {
 		return ProgressColorCode;
 	}
+
+    public String getPaymentMehod() {
+        return PaymentMehod;
+    }
 }

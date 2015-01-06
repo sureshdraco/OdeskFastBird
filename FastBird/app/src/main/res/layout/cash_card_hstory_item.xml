@@ -20,7 +20,7 @@
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:id="@+id/history_cash_image"
-            android:src="@drawable/cash_to_bank" />
+            android:src="@drawable/cash_history" />
 
         <LinearLayout
             android:paddingLeft="5dp"

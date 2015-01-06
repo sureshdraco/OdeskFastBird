@@ -23,9 +23,9 @@ public class TrackStatus {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("");
-        sb.append("Date: ").append(TimestampUtil.getFastBirdDateString(Date)).append("<br/>");
-        sb.append("Status: ").append(Status).append("<br/>");
-        sb.append("<b>Comments:</b> ").append(ShipmentTrackingDetails == null ? "" : ShipmentTrackingDetails).append("<br/>");
+        sb.append("<b>Date: ").append(TimestampUtil.getFastBirdDateString(Date)).append("</b><br/>");
+        sb.append("<b>Status: </b>").append(Status);
+        sb.append(ShipmentTrackingDetails == null ? "" : "<br/>" + ShipmentTrackingDetails);
         return sb.toString();
     }
 }
