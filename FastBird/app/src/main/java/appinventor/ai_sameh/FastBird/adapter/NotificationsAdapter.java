@@ -45,7 +45,6 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }
-
         if (viewHolder.notificationContent != null) {
             NotificationItem menuItem = menuItems.get(position);
             viewHolder.notificationContent.setText(menuItem.getFullMessage());
@@ -54,7 +53,6 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
             viewHolder.notifImage.setDefaultImageResId(R.drawable.notif_icon);
             viewHolder.notifImage.setImageUrl(menuItem.getImageUrl(), ImageCacheManager.getInstance().getImageLoader());
         }
-
         return convertView;
     }
 
