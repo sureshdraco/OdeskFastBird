@@ -125,7 +125,6 @@ public class MainActivity extends FragmentActivity {
                 v.setBackgroundResource(R.drawable.apptheme_tab_indicator_holo);
             }
         }
-
         // setContentView(mTabHost);
     }
 

@@ -280,7 +280,13 @@ public class SettingsFragment extends Fragment {
 
         ((TextView) promptsView.findViewById(R.id.mrbTotal)).setText(getString(R.string.withdraw_money_mrbtotal, mrbTotal));
         ((TextView) promptsView.findViewById(R.id.chequePrice)).setText(getString(R.string.withdraw_money_checque_price, chequePrice));
-        ((TextView) promptsView.findViewById(R.id.netTotal)).setText(getString(R.string.withdraw_money_net_total, netTotal));
+        Float serviceFee = 0.000F;
+        try {
+            serviceFee = Float.parseFloat(netTotal);
+            serviceFee = serviceFee < 0 ? 0.000f : serviceFee;
+        } catch (NumberFormatException ex) {
+        }
+        ((TextView) promptsView.findViewById(R.id.netTotal)).setText(getString(R.string.withdraw_money_net_total, serviceFee));
 
         // set dialog message
         alertDialogBuilder

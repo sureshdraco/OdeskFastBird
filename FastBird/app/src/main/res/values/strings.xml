@@ -21,6 +21,8 @@
     <string name="id">Payment ID: %1$s</string>
     <string name="collection_amount">Collection (BD): %1$s</string>
     <string name="fbd_number">FBD: %1$s</string>
+    <string name="reference">Reference: %1$s</string>
+    <string name="payment_method">Payment Method: %1$s</string>
     <string name="paymentResult">Payment: %1$s</string>
     <string name="bold_paymentResult"><![CDATA[<b>Payment</b>]]>: %1$s</string>
     <string name="fast_pay_code">Fast Pay: %1$s</string>

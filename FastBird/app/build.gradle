@@ -35,7 +35,7 @@ android {
         applicationId "appinventor.ai_sameh.FastBird"
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 21
+        versionCode 22
         versionName "2.0.0"
     }
     buildTypes {
@@ -59,4 +59,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:21.0.0'
     compile 'com.mcxiaoke.volley:library:1.0.6@aar'
     compile 'com.google.code.gson:gson:2.3'
+    compile 'com.jakewharton:disklrucache:2.0.2'
 }

@@ -12,6 +12,7 @@ import com.android.volley.toolbox.NetworkImageView;
 import java.util.List;
 
 import appinventor.ai_sameh.FastBird.R;
+import appinventor.ai_sameh.FastBird.model.ImageCacheManager;
 import appinventor.ai_sameh.FastBird.util.NotificationItem;
 import appinventor.ai_sameh.FastBird.volley.VolleyClient;
 
@@ -51,7 +52,7 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
             viewHolder.notificationTitle.setText(menuItem.getTitle());
             viewHolder.notificationDate.setText(menuItem.getDate());
             viewHolder.notifImage.setDefaultImageResId(R.drawable.notif_icon);
-            viewHolder.notifImage.setImageUrl(menuItem.getImageUrl(), VolleyClient.getInstance(context).getImageLoader());
+            viewHolder.notifImage.setImageUrl(menuItem.getImageUrl(), ImageCacheManager.getInstance().getImageLoader());
         }
 
         return convertView;

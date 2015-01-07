@@ -1,6 +1,7 @@
 package appinventor.ai_sameh.FastBird.view;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -42,6 +43,7 @@ public class WithFastBirdOrdersFragment extends Fragment {
     private SwipeRefreshLayout swipeContainer;
     private OpenOrder openOrderFromNotification = null;
     private Order orderToBeOpened;
+    private String email, password;
 
     public WithFastBirdOrdersFragment() {
     }
@@ -54,10 +56,10 @@ public class WithFastBirdOrdersFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initView(view);
         if (PreferenceUtil.getOpenOrder(getActivity()) != null) {
             openOrderFromNotification = PreferenceUtil.getOpenOrder(getActivity());
         }
-        initView(view);
         handleNotificationIntent();
     }
 
@@ -73,14 +75,14 @@ public class WithFastBirdOrdersFragment extends Fragment {
                 }
             }
             PreferenceUtil.saveOpenOrder(getActivity(), null);
+            openOrderFromNotification = null;
         }
     }
 
     private void initView(View view) {
         ordersListView = (ListView) view.findViewById(R.id.order_listView);
-        final String email = PreferenceUtil.getEmail(getActivity());
-        final String password = PreferenceUtil.getPassword(getActivity());
-        setupList(email, password);
+        email = PreferenceUtil.getEmail(getActivity());
+        password = PreferenceUtil.getPassword(getActivity());
         swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipe_container);
         ordersListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -115,6 +117,12 @@ public class WithFastBirdOrdersFragment extends Fragment {
                 getFastBirdOrders(email, password);
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setupList(email, password);
     }
 
     private void getFastBirdOrders(String email, String password) {

@@ -14,7 +14,11 @@ public class Order {
 			DeliveryBuildingNo,
 			DeliveryFlatNo, ProgressColorCode, PaymentMehod;
 
-	public String getFBDNumber() {
+    public String getPaymentMethod() {
+        return PaymentMehod;
+    }
+
+    public String getFBDNumber() {
 		return FBDNumber == null ? "" : FBDNumber;
 	}
 
