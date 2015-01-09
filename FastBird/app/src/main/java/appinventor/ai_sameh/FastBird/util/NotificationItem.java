@@ -4,30 +4,40 @@ package appinventor.ai_sameh.FastBird.util;
  * Created by suresh on 18/10/14.
  */
 public class NotificationItem {
-    private String notificationMessage;
-    private String date, title, imageUrl, fullMessage;
+	private String notificationMessage;
+	private String date, title, imageUrl, fullMessage;
+	private boolean seen;
 
-    public NotificationItem(String notificationMessage, String date, String title, String imageUrl, String fullMessage) {
-        this.notificationMessage = notificationMessage;
-        this.date = date;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.fullMessage = fullMessage;
-    }
+	public NotificationItem(String notificationMessage, String date, String title, String imageUrl, String fullMessage) {
+		this.notificationMessage = notificationMessage;
+		this.date = date;
+		this.title = title;
+		this.imageUrl = imageUrl;
+		this.fullMessage = fullMessage;
+		this.seen = false;
+	}
 
-    public String getTitle() {
-        return title;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getDate() {
-        return date;
-    }
+	public String getDate() {
+		return date;
+	}
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+	public String getImageUrl() {
+		return imageUrl;
+	}
 
-    public String getFullMessage() {
-        return fullMessage;
-    }
+	public String getFullMessage() {
+		return fullMessage;
+	}
+
+	public boolean isSeen() {
+		return seen;
+	}
+
+	public void setSeen(boolean seen) {
+		this.seen = seen;
+	}
 }

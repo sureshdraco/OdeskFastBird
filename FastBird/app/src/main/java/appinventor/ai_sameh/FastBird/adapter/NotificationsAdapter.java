@@ -9,55 +9,61 @@ import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 
+import java.util.Date;
 import java.util.List;
 
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.model.ImageCacheManager;
 import appinventor.ai_sameh.FastBird.util.NotificationItem;
+import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 import appinventor.ai_sameh.FastBird.volley.VolleyClient;
 
 /**
  * Created by suresh on 18/10/14.
  */
 public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
-    private final Context context;
-    private final List<NotificationItem> menuItems;
+	private final Context context;
+	private final List<NotificationItem> menuItems;
 
-    public NotificationsAdapter(Context context, List<NotificationItem> menuItems) {
-        super(context, R.layout.notifications_row, menuItems);
-        this.context = context;
-        this.menuItems = menuItems;
-    }
+	public NotificationsAdapter(Context context, List<NotificationItem> menuItems) {
+		super(context, R.layout.notifications_row, menuItems);
+		this.context = context;
+		this.menuItems = menuItems;
+	}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ViewHolder viewHolder;
 
-        if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.notifications_row, null);
-            viewHolder = new ViewHolder();
-            viewHolder.notificationTitle = (TextView) convertView.findViewById(R.id.notificationTitle);
-            viewHolder.notificationContent = (TextView) convertView.findViewById(R.id.notificationContent);
-            viewHolder.notificationDate = (TextView) convertView.findViewById(R.id.notificationDate);
-            viewHolder.notifImage = (NetworkImageView) convertView.findViewById(R.id.notifImage);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-        if (viewHolder.notificationContent != null) {
-            NotificationItem menuItem = menuItems.get(position);
-            viewHolder.notificationContent.setText(menuItem.getFullMessage());
-            viewHolder.notificationTitle.setText(menuItem.getTitle());
-            viewHolder.notificationDate.setText(menuItem.getDate());
-            viewHolder.notifImage.setDefaultImageResId(R.drawable.notif_icon);
-            viewHolder.notifImage.setImageUrl(menuItem.getImageUrl(), ImageCacheManager.getInstance().getImageLoader());
-        }
-        return convertView;
-    }
+		if (convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			convertView = inflater.inflate(R.layout.notifications_row, null);
+			viewHolder = new ViewHolder();
+			viewHolder.notificationTitle = (TextView) convertView.findViewById(R.id.notificationTitle);
+			viewHolder.notificationContent = (TextView) convertView.findViewById(R.id.notificationContent);
+			viewHolder.notificationDate = (TextView) convertView.findViewById(R.id.notificationDate);
+			viewHolder.notifImage = (NetworkImageView) convertView.findViewById(R.id.notifImage);
+			convertView.setTag(viewHolder);
+		} else {
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
+		if (viewHolder != null && viewHolder.notificationContent != null) {
+			NotificationItem menuItem = menuItems.get(position);
+			viewHolder.notificationContent.setText(menuItem.getFullMessage());
+			viewHolder.notificationTitle.setText(menuItem.getTitle());
+			try {
+				viewHolder.notificationDate.setText(TimestampUtil.getElapsedTimeForNotification(new Date(), TimestampUtil.getFastbirdDate(menuItem.getDate())));
+			} catch (Exception e) {
+				viewHolder.notificationDate.setText("");
+			}
+			viewHolder.notifImage.setDefaultImageResId(R.drawable.notif_icon);
+			viewHolder.notifImage.setImageUrl(menuItem.getImageUrl(), ImageCacheManager.getInstance().getImageLoader());
+		}
+		return convertView;
+	}
 
-    static class ViewHolder {
-        private TextView notificationTitle, notificationContent, notificationDate;
-        private NetworkImageView notifImage;
-    }
+	static class ViewHolder {
+		private TextView notificationTitle, notificationContent, notificationDate;
+		private NetworkImageView notifImage;
+	}
 }

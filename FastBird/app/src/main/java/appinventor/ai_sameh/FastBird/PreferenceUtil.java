@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -199,7 +198,7 @@ public class PreferenceUtil {
             @Override
             public int compare(Order lhs, Order rhs) {
                 try {
-                    return TimestampUtil.getFastBirdDate(rhs.getProgressStatusDate()).compareTo(TimestampUtil.getFastBirdDate(lhs.getProgressStatusDate()));
+                    return TimestampUtil.getIso8601Date(rhs.getProgressStatusDate()).compareTo(TimestampUtil.getIso8601Date(lhs.getProgressStatusDate()));
                 } catch (ParseException e) {
                     return -1;
                 }
@@ -241,7 +240,7 @@ public class PreferenceUtil {
             @Override
             public int compare(Order lhs, Order rhs) {
                 try {
-                    return TimestampUtil.getFastBirdDate(rhs.getOrderDate()).compareTo(TimestampUtil.getFastBirdDate(lhs.getOrderDate()));
+                    return TimestampUtil.getIso8601Date(rhs.getOrderDate()).compareTo(TimestampUtil.getIso8601Date(lhs.getOrderDate()));
                 } catch (ParseException e) {
                     return -1;
                 }
@@ -264,7 +263,7 @@ public class PreferenceUtil {
             @Override
             public int compare(Order lhs, Order rhs) {
                 try {
-                    return TimestampUtil.getFastBirdDate(rhs.getProgressStatusDate()).compareTo(TimestampUtil.getFastBirdDate(lhs.getProgressStatusDate()));
+                    return TimestampUtil.getIso8601Date(rhs.getProgressStatusDate()).compareTo(TimestampUtil.getIso8601Date(lhs.getProgressStatusDate()));
                 } catch (ParseException e) {
                     return -1;
                 }
