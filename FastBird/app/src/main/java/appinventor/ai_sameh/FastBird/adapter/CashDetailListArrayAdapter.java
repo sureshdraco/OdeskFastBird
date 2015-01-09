@@ -19,6 +19,7 @@ import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.MoneyDetail;
 import appinventor.ai_sameh.FastBird.api.model.Order;
+import appinventor.ai_sameh.FastBird.util.DecimalUtil;
 import appinventor.ai_sameh.FastBird.view.CommentActivity;
 
 public class CashDetailListArrayAdapter extends ArrayAdapter<MoneyDetail> {
@@ -68,9 +69,9 @@ public class CashDetailListArrayAdapter extends ArrayAdapter<MoneyDetail> {
 		}
 		MoneyDetail moneyDetail = getItem(position);
 		viewHolder.fbdNumber.setText(getContext().getResources().getString(R.string.fbd_number, moneyDetail.getFBDNumber()));
-		viewHolder.amount.setText(getContext().getResources().getString(R.string.total_amount, moneyDetail.getAmount()));
-		viewHolder.collectionAmount.setText(getContext().getResources().getString(R.string.collectionAmount, moneyDetail.getMoneyCollectionAmount()));
-		viewHolder.serviceFee.setText(getContext().getResources().getString(R.string.serviceFee, moneyDetail.getNetTotal()));
+		viewHolder.amount.setText(getContext().getResources().getString(R.string.total_amount, DecimalUtil.formatDecimal(moneyDetail.getAmount())));
+		viewHolder.collectionAmount.setText(getContext().getResources().getString(R.string.collectionAmount, DecimalUtil.formatDecimal(moneyDetail.getMoneyCollectionAmount())));
+		viewHolder.serviceFee.setText(getContext().getResources().getString(R.string.serviceFee, DecimalUtil.formatDecimal(moneyDetail.getNetTotal())));
 		return row;
 	}
 }

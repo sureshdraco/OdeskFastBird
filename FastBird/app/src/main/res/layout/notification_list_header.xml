@@ -8,6 +8,7 @@
     <TextView
         android:id="@+id/notifHeader"
         android:text="Recent"
+        android:textStyle="bold"
         android:textSize="18sp"
         android:padding="15dp"
         android:paddingBottom="5dp"

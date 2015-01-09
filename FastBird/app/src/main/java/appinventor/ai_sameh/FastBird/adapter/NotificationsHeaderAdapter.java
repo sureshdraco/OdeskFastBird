@@ -30,7 +30,7 @@ public class NotificationsHeaderAdapter extends ArrayAdapter<String> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
 
-		if (convertView == null) {
+		if (convertView == null || !ViewHolder.class.isInstance(convertView.getTag())) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.notification_list_header, null);
 			viewHolder = new ViewHolder();
@@ -39,7 +39,7 @@ public class NotificationsHeaderAdapter extends ArrayAdapter<String> {
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		if (viewHolder != null && viewHolder.notificationTitle != null) {
+		if (viewHolder.notificationTitle != null) {
 			viewHolder.notificationTitle.setText(getItem(position));
 		}
 		return convertView;

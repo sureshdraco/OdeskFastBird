@@ -35,7 +35,7 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder viewHolder;
 
-		if (convertView == null) {
+		if (convertView == null || !ViewHolder.class.isInstance(convertView.getTag())) {
 			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.notifications_row, null);
 			viewHolder = new ViewHolder();
@@ -45,9 +45,20 @@ public class NotificationsAdapter extends ArrayAdapter<NotificationItem> {
 			viewHolder.notifImage = (NetworkImageView) convertView.findViewById(R.id.notifImage);
 			convertView.setTag(viewHolder);
 		} else {
-			viewHolder = (ViewHolder) convertView.getTag();
+			try {
+				viewHolder = (ViewHolder) convertView.getTag();
+			} catch (ClassCastException e) {
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				convertView = inflater.inflate(R.layout.notifications_row, null);
+				viewHolder = new ViewHolder();
+				viewHolder.notificationTitle = (TextView) convertView.findViewById(R.id.notificationTitle);
+				viewHolder.notificationContent = (TextView) convertView.findViewById(R.id.notificationContent);
+				viewHolder.notificationDate = (TextView) convertView.findViewById(R.id.notificationDate);
+				viewHolder.notifImage = (NetworkImageView) convertView.findViewById(R.id.notifImage);
+				convertView.setTag(viewHolder);
+			}
 		}
-		if (viewHolder != null && viewHolder.notificationContent != null) {
+		if (viewHolder.notificationContent != null) {
 			NotificationItem menuItem = menuItems.get(position);
 			viewHolder.notificationContent.setText(menuItem.getFullMessage());
 			viewHolder.notificationTitle.setText(menuItem.getTitle());

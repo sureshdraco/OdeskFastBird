@@ -15,6 +15,7 @@ import java.util.List;
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
+import appinventor.ai_sameh.FastBird.util.DecimalUtil;
 import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 
 public class CashArrayAdapter extends ArrayAdapter<MRBTransactions> {
@@ -80,7 +81,7 @@ public class CashArrayAdapter extends ArrayAdapter<MRBTransactions> {
         viewHolder.date.setText(Html.fromHtml(text));
         text = getContext().getResources().getString(R.string.bold_paymentResult, transaction.getId());
         viewHolder.id.setText(Html.fromHtml(text));
-        text = getContext().getResources().getString(R.string.bold_total_amount, transaction.getTotalAmounts());
+        text = getContext().getResources().getString(R.string.bold_total_amount, DecimalUtil.formatDecimal(transaction.getTotalAmounts()));
         viewHolder.totalAmount.setText(Html.fromHtml(text));
         row.setOnClickListener(new InfoClickListener(transaction));
         return row;

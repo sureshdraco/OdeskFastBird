@@ -12,6 +12,7 @@
     <color name="BlackDuRietz">#ff121212</color>
     <color name="White">#ffffff</color>
     <color name="LightGrey">#eeeeee</color>
+    <color name="LightGrey_pressed">#eeeeee</color>
     <color name="MediumGrey">#aaaaaa</color>
     <color name="MediumGrey2">#666666</color>
     <color name="Grey">#777777</color>
