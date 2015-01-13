@@ -28,6 +28,7 @@ import java.util.Date;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
+import appinventor.ai_sameh.FastBird.model.OpenOrder;
 import appinventor.ai_sameh.FastBird.view.MainActivity;
 
 /**
@@ -37,10 +38,10 @@ public class NotificationUtil {
     private static final int NOTIFICATION_ID = 1;
     private static Gson gson = new Gson();
 
-    public static void cacheNotification(Context context, String title, String message, String imageUrl, String fullMessage) {
+    public static void cacheNotification(Context context, OpenOrder openOrder, String title, String message, String imageUrl, String fullMessage) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(TimestampUtil.FAST_BIRD_DATE_FORMAT);
         Date date = new Date();
-        NotificationItem notificationItem = new NotificationItem(message, simpleDateFormat.format(date), title, imageUrl, fullMessage);
+        NotificationItem notificationItem = new NotificationItem(openOrder, message, simpleDateFormat.format(date), title, imageUrl, fullMessage);
         Type listType = new TypeToken<ArrayList<NotificationItem>>() {
         }.getType();
         ArrayList<NotificationItem> notificationItemArrayList = gson.fromJson(PreferenceUtil.getNotificationList(context), listType);
