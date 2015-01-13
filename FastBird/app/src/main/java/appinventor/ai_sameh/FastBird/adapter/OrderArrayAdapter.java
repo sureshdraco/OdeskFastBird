@@ -1,7 +1,6 @@
 package appinventor.ai_sameh.FastBird.adapter;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.util.OrderDialogUtil;
@@ -127,7 +125,7 @@ public class OrderArrayAdapter extends ArrayAdapter<Order> {
                     break;
                 case WithFastBirdOrdersFragment.ORDER_TYPE_SHIPMENTS:
                     viewHolder.remainingDays.setVisibility(View.VISIBLE);
-                    viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getFastBirdDate(order.getProgressStatusDate())));
+                    viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getIso8601Date(order.getProgressStatusDate())));
                     break;
             }
         } catch (Exception e) {

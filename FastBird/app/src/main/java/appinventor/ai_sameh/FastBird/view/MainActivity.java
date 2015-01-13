@@ -41,6 +41,7 @@ import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
 import appinventor.ai_sameh.FastBird.model.OpenOrder;
 import appinventor.ai_sameh.FastBird.util.Constant;
+import appinventor.ai_sameh.FastBird.util.DecimalUtil;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -333,7 +334,7 @@ public class MainActivity extends FragmentActivity {
                     MRBTransactions transactions = new Gson().fromJson(PreferenceUtil.getSelectedCashInWay(this), MRBTransactions.class);
                     ((TextView) dialog.findViewById(R.id.id)).setText(getResources().getString(R.string.id, transactions.getId()));
                     ((TextView) dialog.findViewById(R.id.date)).setText(getResources().getString(R.string.date, transactions.getDate()));
-                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getTotalAmounts()));
+                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, DecimalUtil.formatDecimal(transactions.getTotalAmounts())));
 
                     if (transactions.getDetails() != null && transactions.getDetails().size() > 0) {
                         ListView cashList = (ListView) dialog.findViewById(R.id.moneyDetailList);
@@ -354,7 +355,7 @@ public class MainActivity extends FragmentActivity {
                     MRBTransactions transactions = new Gson().fromJson(PreferenceUtil.getSelectedCashHistory(this), MRBTransactions.class);
                     ((TextView) dialog.findViewById(R.id.id)).setText(getResources().getString(R.string.id, transactions.getId()));
                     ((TextView) dialog.findViewById(R.id.date)).setText(getResources().getString(R.string.date, transactions.getDate()));
-                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, transactions.getTotalAmounts()));
+                    ((TextView) dialog.findViewById(R.id.totalAmounts)).setText(getResources().getString(R.string.total_amount, DecimalUtil.formatDecimal(transactions.getTotalAmounts())));
 
                     if (transactions.getDetails() != null && transactions.getDetails().size() > 0) {
                         ListView cashList = (ListView) dialog.findViewById(R.id.moneyDetailList);

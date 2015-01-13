@@ -3,7 +3,6 @@ package appinventor.ai_sameh.FastBird.api.model;
 import android.support.annotation.NonNull;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 
 import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 
@@ -35,7 +34,7 @@ public class Comment implements Comparable<Comment> {
 	@Override
 	public int compareTo(@NonNull Comment comment) {
 		try {
-			return TimestampUtil.getFastBirdDate(getDate()).compareTo(TimestampUtil.getFastBirdDate(comment.getDate()));
+			return TimestampUtil.getIso8601Date(getDate()).compareTo(TimestampUtil.getIso8601Date(comment.getDate()));
 		} catch (ParseException e) {
 			return -1;
 		}

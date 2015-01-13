@@ -15,11 +15,17 @@ import appinventor.ai_sameh.FastBird.R;
 public class SeparatedNotifListAdapter extends BaseAdapter {
 
 	public final Map<String, Adapter> sections = new LinkedHashMap<String, Adapter>();
-	public final ArrayAdapter<String> headers;
+	public final NotificationsHeaderAdapter headers;
 	public final static int TYPE_SECTION_HEADER = 0;
 
 	public SeparatedNotifListAdapter(Context context) {
-		headers = new ArrayAdapter<String>(context, R.layout.notification_list_header);
+		headers = new NotificationsHeaderAdapter(context);
+	}
+
+	public void clear() {
+		headers.clear();
+		sections.clear();
+		notifyDataSetChanged();
 	}
 
 	public void addSection(String section, Adapter adapter) {
@@ -32,7 +38,7 @@ public class SeparatedNotifListAdapter extends BaseAdapter {
 			Adapter adapter = sections.get(section);
 			int size = adapter.getCount() + 1;
 
-			// check if position inside this section
+			// check if position inside this sect
 			if (position == 0) return section;
 			if (position < size) return adapter.getItem(position - 1);
 

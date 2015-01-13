@@ -18,101 +18,103 @@ import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
 import appinventor.ai_sameh.FastBird.api.model.Order;
+import appinventor.ai_sameh.FastBird.util.DecimalUtil;
 
 public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
-    public static final int DIALOG_CASH_IN_PROGRESS = 4;
-    private List<Order> orderArrayList = new ArrayList<Order>();
-    private Context context;
+	public static final int DIALOG_CASH_IN_PROGRESS = 4;
+	private List<Order> orderArrayList = new ArrayList<Order>();
+	private Context context;
 
-    static class CashViewHolder {
-        TextView name, phone, fbdNumber, collectionAmount, serviceType, netTotal, totalBd, payment, collectionBd;
-    }
+	static class CashViewHolder {
+		TextView name, phone, fbdNumber, collectionAmount, serviceType, netTotal, totalBd, payment, collectionBd;
+	}
 
-    public CashInProgressArrayAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-        this.context = context;
-    }
+	public CashInProgressArrayAdapter(Context context, int textViewResourceId) {
+		super(context, textViewResourceId);
+		this.context = context;
+	}
 
-    @Override
-    public void add(Order order) {
-        orderArrayList.add(order);
-        super.add(order);
-    }
+	@Override
+	public void add(Order order) {
+		orderArrayList.add(order);
+		super.add(order);
+	}
 
-    @Override
-    public void clear() {
-        orderArrayList.clear();
-        super.clear();
-    }
+	@Override
+	public void clear() {
+		orderArrayList.clear();
+		super.clear();
+	}
 
-    @Override
-    public int getCount() {
-        return this.orderArrayList.size();
-    }
+	@Override
+	public int getCount() {
+		return this.orderArrayList.size();
+	}
 
-    @Override
-    public Order getItem(int index) {
-        return this.orderArrayList.get(index);
-    }
+	@Override
+	public Order getItem(int index) {
+		return this.orderArrayList.get(index);
+	}
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        CashViewHolder viewHolder;
-        if (row == null) {
-            LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            row = inflater.inflate(R.layout.cash_in_progress_card_item, parent, false);
-            viewHolder = new CashViewHolder();
-            viewHolder.name = (TextView) row.findViewById(R.id.name);
-            viewHolder.phone = (TextView) row.findViewById(R.id.phone);
-            viewHolder.phone.setMovementMethod(LinkMovementMethod.getInstance());
-            viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdnumber);
-            viewHolder.collectionAmount = (TextView) row.findViewById(R.id.collectionAmount);
-            viewHolder.netTotal = (TextView) row.findViewById(R.id.netTotal);
-            viewHolder.serviceType = (TextView) row.findViewById(R.id.serviceType);
-            viewHolder.totalBd = (TextView) row.findViewById(R.id.total);
-            viewHolder.payment = (TextView) row.findViewById(R.id.payment);
-            viewHolder.collectionBd = (TextView) row.findViewById(R.id.collectionBd);
-            row.setTag(viewHolder);
-        } else {
-            viewHolder = (CashViewHolder) row.getTag();
-        }
-        Order order = getItem(position);
-        viewHolder.fbdNumber.setText(order.getFBDNumber());
-        viewHolder.name.setText(order.getDeliveryAddressTitle());
-        String htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone1(), order.getDeliveryPhone1());
-        viewHolder.phone.setText(Html.fromHtml(htmlString));
-        viewHolder.collectionAmount.setText(order.getCollectionAmount());
-        viewHolder.netTotal.setText(order.getNetTotal());
-        viewHolder.serviceType.setText(order.getServiceType());
-        if (!TextUtils.isEmpty(order.getPaymentMehod()) && order.getPaymentMehod().equals("0")) {
-            viewHolder.collectionBd.setText(context.getResources().getString(R.string.total_amount_bd));
-            viewHolder.payment.setText("Credit");
-        } else {
-            viewHolder.collectionBd.setText(context.getResources().getString(R.string.collection_amount_bd));
-            viewHolder.payment.setText("Cash On Delivery");
-        }
-        try {
-            Float totalBd = Float.parseFloat(order.getCollectionAmount()) - Float.parseFloat(order.getNetTotal());
-            viewHolder.totalBd.setText(context.getResources().getString(R.string.total_bd, String.valueOf(totalBd)));
-        } catch (Exception ex) {
-            viewHolder.totalBd.setText("");
-        }
-        row.setOnClickListener(new InfoClickListener(order));
-        return row;
-    }
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View row = convertView;
+		CashViewHolder viewHolder;
+		if (row == null) {
+			LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			row = inflater.inflate(R.layout.cash_in_progress_card_item, parent, false);
+			viewHolder = new CashViewHolder();
+			viewHolder.name = (TextView) row.findViewById(R.id.name);
+			viewHolder.phone = (TextView) row.findViewById(R.id.phone);
+			viewHolder.phone.setMovementMethod(LinkMovementMethod.getInstance());
+			viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdnumber);
+			viewHolder.collectionAmount = (TextView) row.findViewById(R.id.collectionAmount);
+			viewHolder.netTotal = (TextView) row.findViewById(R.id.netTotal);
+			viewHolder.serviceType = (TextView) row.findViewById(R.id.serviceType);
+			viewHolder.totalBd = (TextView) row.findViewById(R.id.total);
+			viewHolder.payment = (TextView) row.findViewById(R.id.payment);
+			viewHolder.collectionBd = (TextView) row.findViewById(R.id.collectionBd);
+			row.setTag(viewHolder);
+		} else {
+			viewHolder = (CashViewHolder) row.getTag();
+		}
+		Order order = getItem(position);
+		viewHolder.fbdNumber.setText(order.getFBDNumber());
+		viewHolder.name.setText(order.getDeliveryAddressTitle());
+		String htmlString = String.format("<a href='tel:%s'>%s</a>", order.getDeliveryPhone1(), order.getDeliveryPhone1());
+		viewHolder.phone.setText(Html.fromHtml(htmlString));
+		viewHolder.collectionAmount.setText(DecimalUtil.formatDecimal(order.getCollectionAmount()));
+		viewHolder.netTotal.setText(DecimalUtil.formatDecimal(order.getNetTotal()));
+		viewHolder.serviceType.setText(order.getServiceType());
+		if (!TextUtils.isEmpty(order.getPaymentMehod()) && order.getPaymentMehod().equals("0")) {
+			viewHolder.collectionBd.setText(context.getResources().getString(R.string.total_amount_bd));
+			viewHolder.payment.setText("Credit");
+			viewHolder.totalBd.setText(DecimalUtil.formatDecimal(order.getCollectionAmount()));
+		} else {
+			viewHolder.collectionBd.setText(context.getResources().getString(R.string.collection_amount_bd));
+			viewHolder.payment.setText("Cash On Delivery");
+			try {
+				Float totalBd = Float.parseFloat(order.getCollectionAmount()) - Float.parseFloat(order.getNetTotal());
+				viewHolder.totalBd.setText(context.getResources().getString(R.string.total_bd, DecimalUtil.formatDecimal(String.valueOf(totalBd))));
+			} catch (Exception ex) {
+				viewHolder.totalBd.setText("");
+			}
+		}
+		row.setOnClickListener(new InfoClickListener(order));
+		return row;
+	}
 
-    class InfoClickListener implements View.OnClickListener {
-        private final Order order;
+	class InfoClickListener implements View.OnClickListener {
+		private final Order order;
 
-        public InfoClickListener(Order order) {
-            this.order = order;
-        }
+		public InfoClickListener(Order order) {
+			this.order = order;
+		}
 
-        @Override
-        public void onClick(View v) {
-            PreferenceUtil.saveSelectedCashInProgress(context, order);
-            ((Activity) context).showDialog(DIALOG_CASH_IN_PROGRESS);
-        }
-    }
+		@Override
+		public void onClick(View v) {
+			PreferenceUtil.saveSelectedCashInProgress(context, order);
+			((Activity) context).showDialog(DIALOG_CASH_IN_PROGRESS);
+		}
+	}
 }

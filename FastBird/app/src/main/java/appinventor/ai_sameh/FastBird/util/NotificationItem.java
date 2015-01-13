@@ -17,6 +17,7 @@ public class NotificationItem {
         this.title = title;
         this.imageUrl = imageUrl;
         this.fullMessage = fullMessage;
+        this.seen = false;
     }
 
     public OpenOrder getOpenOrder() {
@@ -38,4 +39,13 @@ public class NotificationItem {
     public String getFullMessage() {
         return fullMessage;
     }
+	private boolean seen;
+
+	public boolean isSeen() {
+		return seen;
+	}
+
+	public void setSeen(boolean seen) {
+		this.seen = seen;
+	}
 }
