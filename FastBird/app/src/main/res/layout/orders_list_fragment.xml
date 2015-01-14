@@ -9,7 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#E5E5E5">
-
+        <Button
+            android:layout_marginTop="5dp"
+            android:background="@drawable/red_button"
+            android:textSize="18sp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="@color/White"
+            android:id="@+id/withdrawBtn"
+            android:text="Withdraw" />
         <ListView
             android:id="@+id/order_listView"
             android:layout_width="match_parent"

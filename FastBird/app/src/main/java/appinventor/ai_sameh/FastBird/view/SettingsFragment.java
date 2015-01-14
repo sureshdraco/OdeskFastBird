@@ -341,7 +341,6 @@ public class SettingsFragment extends Fragment {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(isChecked);
-
 			}
 		});
 	}

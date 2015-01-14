@@ -1,12 +1,18 @@
 package appinventor.ai_sameh.FastBird.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -28,6 +34,9 @@ import appinventor.ai_sameh.FastBird.api.response.CashOnProgressResponse;
 import appinventor.ai_sameh.FastBird.api.response.CashOnTheWayListResponse;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
+import appinventor.ai_sameh.FastBird.api.response.GetClientMoneyResponse;
+import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
+import appinventor.ai_sameh.FastBird.util.DecimalUtil;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 
@@ -57,7 +66,12 @@ public class MoneyViewFragment extends Fragment {
 
 	private void initView(View view) {
 		ordersListView = (ListView) view.findViewById(R.id.order_listView);
-
+		getActivity().findViewById(R.id.withdrawBtn).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				getClientMoney();
+			}
+		});
 		email = PreferenceUtil.getEmail(getActivity());
 		password = PreferenceUtil.getPassword(getActivity());
 		setupList(email, password);
@@ -80,6 +94,107 @@ public class MoneyViewFragment extends Fragment {
 			@Override
 			public void onRefresh() {
 				setupList(email, password);
+			}
+		});
+	}
+
+	private void getClientMoney() {
+		getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+		String email = PreferenceUtil.getEmail(getActivity());
+		String password = PreferenceUtil.getPassword(getActivity());
+		ApiRequests.getClientMoney(getActivity(), new LoginRequest(email, password), new Response.Listener<GetClientMoneyResponse>() {
+			@Override
+			public void onResponse(GetClientMoneyResponse getClientMoneyResponse) {
+				getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+				if (getClientMoneyResponse.getData().getError() != null) {
+					Crouton.showText(getActivity(), getClientMoneyResponse.getData().getError(), Style.ALERT);
+					return;
+				}
+				PreferenceUtil.saveClientMoney(getActivity(), getClientMoneyResponse.getData().getMRBTotal());
+				showConfirmWithdrawDialog(getClientMoneyResponse.getData().getMRBTotal(), getClientMoneyResponse.getData().getChequePrice(), getClientMoneyResponse.getData()
+						.getNetTotal());
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError volleyError) {
+				getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+				Crouton.showText(getActivity(), "Failed", Style.ALERT);
+			}
+		});
+	}
+
+	private void showConfirmWithdrawDialog(final String mrbTotal, final String chequePrice, final String netTotal) {
+		LayoutInflater li = LayoutInflater.from(getActivity());
+		View promptsView = li.inflate(R.layout.withdraw_money_confirm_dialog, null);
+
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+				getActivity());
+
+		// set prompts.xml to alertdialog builder
+		alertDialogBuilder.setView(promptsView);
+
+		((TextView) promptsView.findViewById(R.id.mrbTotal)).setText(getString(R.string.withdraw_money_mrbtotal, DecimalUtil.formatDecimal(mrbTotal)));
+		((TextView) promptsView.findViewById(R.id.chequePrice)).setText(getString(R.string.withdraw_money_checque_price, DecimalUtil.formatDecimal(chequePrice)));
+		Float serviceFee = 0.000F;
+		try {
+			serviceFee = Float.parseFloat(netTotal);
+			serviceFee = serviceFee < 0 ? 0.000f : serviceFee;
+		} catch (NumberFormatException ex) {
+		}
+		((TextView) promptsView.findViewById(R.id.netTotal)).setText(getString(R.string.withdraw_money_net_total, DecimalUtil.formatDecimal(String.valueOf(serviceFee))));
+
+		// set dialog message
+		alertDialogBuilder
+				.setCancelable(true)
+				.setPositiveButton("OK",
+						new DialogInterface.OnClickListener() {
+							public void onClick(final DialogInterface dialog, int id) {
+								getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+								String email = PreferenceUtil.getEmail(getActivity());
+								String password = PreferenceUtil.getPassword(getActivity());
+								ApiRequests.withdrawClientMoney(getActivity(), new LoginRequest(email, password), new Response.Listener<LoginResponse>() {
+									@Override
+									public void onResponse(LoginResponse withdrawMoneyResponse) {
+										getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+										if (withdrawMoneyResponse.getData().getError() != null) {
+											Crouton.showText(getActivity(), withdrawMoneyResponse.getData().getError(), Style.ALERT);
+											return;
+										}
+										Crouton.showText(getActivity(), "Success!", Style.INFO);
+										dialog.dismiss();
+									}
+								}, new Response.ErrorListener() {
+									@Override
+									public void onErrorResponse(VolleyError volleyError) {
+										if (getActivity() == null) {
+											return;
+										}
+										getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+										Crouton.showText(getActivity(), getActivity().getString(R.string.no_internet), Style.ALERT);
+									}
+								});
+							}
+						})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int id) {
+								dialog.cancel();
+							}
+						});
+
+		// create alert dialog
+		final AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+		alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
+		CheckBox terms = (CheckBox) promptsView.findViewById(R.id.checkboxTerms);
+		terms.setMovementMethod(LinkMovementMethod.getInstance());
+		terms.setText(Html.fromHtml("I agree to the FBD <a href='http://fastbird.net/terms-condition/'>Terms of Service and Privacy Policy</a>"));
+		terms.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(isChecked);
 			}
 		});
 	}

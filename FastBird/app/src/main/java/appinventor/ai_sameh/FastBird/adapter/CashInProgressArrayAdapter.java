@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
@@ -19,6 +21,7 @@ import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.api.model.MRBTransactions;
 import appinventor.ai_sameh.FastBird.api.model.Order;
 import appinventor.ai_sameh.FastBird.util.DecimalUtil;
+import appinventor.ai_sameh.FastBird.util.TimestampUtil;
 
 public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
 	public static final int DIALOG_CASH_IN_PROGRESS = 4;
@@ -27,6 +30,7 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
 
 	static class CashViewHolder {
 		TextView name, phone, fbdNumber, collectionAmount, serviceType, netTotal, totalBd, payment, collectionBd;
+		TextView remainingDays;
 	}
 
 	public CashInProgressArrayAdapter(Context context, int textViewResourceId) {
@@ -66,6 +70,7 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
 			viewHolder = new CashViewHolder();
 			viewHolder.name = (TextView) row.findViewById(R.id.name);
 			viewHolder.phone = (TextView) row.findViewById(R.id.phone);
+			viewHolder.remainingDays = (TextView) row.findViewById(R.id.daysRemaining);
 			viewHolder.phone.setMovementMethod(LinkMovementMethod.getInstance());
 			viewHolder.fbdNumber = (TextView) row.findViewById(R.id.fbdnumber);
 			viewHolder.collectionAmount = (TextView) row.findViewById(R.id.collectionAmount);
@@ -86,10 +91,15 @@ public class CashInProgressArrayAdapter extends ArrayAdapter<Order> {
 		viewHolder.collectionAmount.setText(DecimalUtil.formatDecimal(order.getCollectionAmount()));
 		viewHolder.netTotal.setText(DecimalUtil.formatDecimal(order.getNetTotal()));
 		viewHolder.serviceType.setText(order.getServiceType());
+		try {
+			viewHolder.remainingDays.setText(TimestampUtil.getDaysBetween(new Date(), TimestampUtil.getIso8601Date(order.getProgressStatusDate())));
+		} catch (ParseException e) {
+			viewHolder.remainingDays.setText("");
+		}
 		if (!TextUtils.isEmpty(order.getPaymentMehod()) && order.getPaymentMehod().equals("0")) {
 			viewHolder.collectionBd.setText(context.getResources().getString(R.string.total_amount_bd));
 			viewHolder.payment.setText("Credit");
-			viewHolder.totalBd.setText(DecimalUtil.formatDecimal(order.getCollectionAmount()));
+			viewHolder.totalBd.setText(context.getResources().getString(R.string.total_bd, DecimalUtil.formatDecimal(order.getCollectionAmount())));
 		} else {
 			viewHolder.collectionBd.setText(context.getResources().getString(R.string.collection_amount_bd));
 			viewHolder.payment.setText("Cash On Delivery");
