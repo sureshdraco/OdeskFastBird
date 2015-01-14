@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
 import appinventor.ai_sameh.FastBird.adapter.NotificationsAdapter;
 import appinventor.ai_sameh.FastBird.adapter.SeparatedNotifListAdapter;
+import appinventor.ai_sameh.FastBird.model.OpenOrder;
 import appinventor.ai_sameh.FastBird.util.NotificationItem;
 import appinventor.ai_sameh.FastBird.util.NotificationUtil;
 
@@ -49,8 +52,8 @@ public class NotificationFragment extends Fragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-        handler = new Handler();
-        setupTitleBar();
+		handler = new Handler();
+		setupTitleBar();
 		initview();
 		updateNotifications();
 	}
@@ -67,6 +70,17 @@ public class NotificationFragment extends Fragment {
 		recentNotificationsAdapter = new NotificationsAdapter(getActivity(), recentNotificationItemArrayList);
 		olderNotificationsAdapter = new NotificationsAdapter(getActivity(), olderNotificationItemArrayList);
 		notificationsListView.setAdapter(adapter);
+		notificationsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				OpenOrder openOrder = ((NotificationItem) adapter.getItem(position)).getOpenOrder();
+				if (TextUtils.isEmpty(openOrder.getOrder())) {
+					return;
+				}
+				PreferenceUtil.saveOpenOrder(getActivity(), ((NotificationItem) adapter.getItem(position)).getOpenOrder());
+				((MainActivity) getActivity()).handleNotification();
+			}
+		});
 	}
 
 	private void initview() {
@@ -89,9 +103,9 @@ public class NotificationFragment extends Fragment {
 		handler.post(new Runnable() {
 			@Override
 			public void run() {
-                adapter = new SeparatedNotifListAdapter(getActivity());
-                notificationsListView.setAdapter(adapter);
-                recentNotificationItemArrayList.clear();
+				adapter = new SeparatedNotifListAdapter(getActivity());
+				notificationsListView.setAdapter(adapter);
+				recentNotificationItemArrayList.clear();
 				olderNotificationItemArrayList.clear();
 				Type listType = new TypeToken<ArrayList<NotificationItem>>() {
 				}.getType();
