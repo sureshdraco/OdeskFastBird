@@ -96,12 +96,12 @@ public class MoneyTabFragment extends Fragment {
 		fragments = new ArrayList<Fragment>();
 		MoneyViewFragment cashInProgressFragment = new MoneyViewFragment();
 		Bundle b = new Bundle();
-		b.putString("key", "In - Progress");
+		b.putString("key", "Collected Money");
 		cashInProgressFragment.setArguments(b);
 		fragments.add(cashInProgressFragment);
 		MoneyViewFragment cashInTheWayFragment = new MoneyViewFragment();
 		b = new Bundle();
-		b.putString("key", "In the Way");
+		b.putString("key", "To Bank");
 		cashInTheWayFragment.setArguments(b);
 		fragments.add(cashInTheWayFragment);
 		MoneyViewFragment cashHistoryFragment = new MoneyViewFragment();

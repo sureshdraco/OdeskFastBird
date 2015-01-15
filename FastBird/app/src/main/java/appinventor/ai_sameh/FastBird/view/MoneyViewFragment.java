@@ -49,8 +49,9 @@ public class MoneyViewFragment extends Fragment {
 	private SwipeRefreshLayout swipeContainer;
 	private String password;
 	private String email;
+    private View withdrawBtn;
 
-	public MoneyViewFragment() {
+    public MoneyViewFragment() {
 	}
 
 	@Override
@@ -66,12 +67,13 @@ public class MoneyViewFragment extends Fragment {
 
 	private void initView(View view) {
 		ordersListView = (ListView) view.findViewById(R.id.order_listView);
-		getActivity().findViewById(R.id.withdrawBtn).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				getClientMoney();
-			}
-		});
+		withdrawBtn = view.findViewById(R.id.withdrawBtn);
+        withdrawBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getClientMoney();
+            }
+        });
 		email = PreferenceUtil.getEmail(getActivity());
 		password = PreferenceUtil.getPassword(getActivity());
 		setupList(email, password);
@@ -96,7 +98,7 @@ public class MoneyViewFragment extends Fragment {
 				setupList(email, password);
 			}
 		});
-	}
+    }
 
 	private void getClientMoney() {
 		getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
@@ -202,19 +204,23 @@ public class MoneyViewFragment extends Fragment {
 	private void setupList(String email, String password) {
 		if (getArguments() != null) {
 			String tab = getArguments().getString("key");
-			if (tab.equals("In - Progress")) {
+			if (tab.equals("Collected Money")) {
 				cashInProgressArrayAdapter = new CashInProgressArrayAdapter(getActivity(), R.layout.cash_card_item);
 				ordersListView.setAdapter(cashInProgressArrayAdapter);
 				getCashInProgress(email, password);
-			} else if (tab.equals("In the Way")) {
+                withdrawBtn.setVisibility(View.VISIBLE);
+
+			} else if (tab.equals("To Bank")) {
 				cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, true);
 				ordersListView.setAdapter(cashArrayAdapter);
 				getCashOnMyWay(email, password);
-			} else {
+                withdrawBtn.setVisibility(View.GONE);
+            } else {
 				cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, false);
 				ordersListView.setAdapter(cashArrayAdapter);
 				getCashHistory(email, password);
-			}
+                withdrawBtn.setVisibility(View.GONE);
+            }
 		}
 	}
 
@@ -331,7 +337,7 @@ public class MoneyViewFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.orders_list_fragment, container, false);
+		return inflater.inflate(R.layout.cash_list_fragment, container, false);
 	}
 
 }
