@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#E5E5E5">
+
         <Button
             android:layout_marginTop="5dp"
             android:background="@drawable/red_button"
@@ -19,6 +20,7 @@
             android:textColor="@color/White"
             android:id="@+id/withdrawBtn"
             android:text="Withdraw" />
+
         <ListView
             android:id="@+id/order_listView"
             android:layout_width="match_parent"
@@ -27,5 +29,29 @@
             android:cacheColorHint="@android:color/transparent"
             android:divider="@null"
             android:dividerHeight="2dp" />
+
+        <RelativeLayout
+            android:visibility="gone"
+            android:id="@+id/empty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_centerInParent="true"
+                android:id="@+id/emptyCards"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/empty_view" />
+
+            <TextView
+                android:layout_marginTop="5dp"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/Gray3"
+                android:textSize="26sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emptyCards"
+                android:text="@string/no_items" />
+        </RelativeLayout>
     </LinearLayout>
 </android.support.v4.widget.SwipeRefreshLayout>

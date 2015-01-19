@@ -61,5 +61,6 @@
     <string name="no_internet">Network Error, No Internet Connection</string>
     <string name="title_activity_update_order">UpdateOrderActivity</string>
     <string name="clear">Clear</string>
+    <string name="no_items">No Items</string>
 
 </resources>
