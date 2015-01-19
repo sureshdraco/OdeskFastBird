@@ -49,9 +49,9 @@ public class MoneyViewFragment extends Fragment {
 	private SwipeRefreshLayout swipeContainer;
 	private String password;
 	private String email;
-    private View withdrawBtn;
+	private View withdrawBtn;
 
-    public MoneyViewFragment() {
+	public MoneyViewFragment() {
 	}
 
 	@Override
@@ -68,12 +68,12 @@ public class MoneyViewFragment extends Fragment {
 	private void initView(View view) {
 		ordersListView = (ListView) view.findViewById(R.id.order_listView);
 		withdrawBtn = view.findViewById(R.id.withdrawBtn);
-        withdrawBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getClientMoney();
-            }
-        });
+		withdrawBtn.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				getClientMoney();
+			}
+		});
 		email = PreferenceUtil.getEmail(getActivity());
 		password = PreferenceUtil.getPassword(getActivity());
 		setupList(email, password);
@@ -98,7 +98,7 @@ public class MoneyViewFragment extends Fragment {
 				setupList(email, password);
 			}
 		});
-    }
+	}
 
 	private void getClientMoney() {
 		getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
@@ -129,8 +129,7 @@ public class MoneyViewFragment extends Fragment {
 		LayoutInflater li = LayoutInflater.from(getActivity());
 		View promptsView = li.inflate(R.layout.withdraw_money_confirm_dialog, null);
 
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
-				getActivity());
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
 
 		// set prompts.xml to alertdialog builder
 		alertDialogBuilder.setView(promptsView);
@@ -204,23 +203,23 @@ public class MoneyViewFragment extends Fragment {
 	private void setupList(String email, String password) {
 		if (getArguments() != null) {
 			String tab = getArguments().getString("key");
+			ordersListView.setEmptyView(getView().findViewById(R.id.empty));
 			if (tab.equals("Collected Money")) {
 				cashInProgressArrayAdapter = new CashInProgressArrayAdapter(getActivity(), R.layout.cash_card_item);
 				ordersListView.setAdapter(cashInProgressArrayAdapter);
 				getCashInProgress(email, password);
-                withdrawBtn.setVisibility(View.VISIBLE);
-
+				withdrawBtn.setVisibility(View.VISIBLE);
 			} else if (tab.equals("To Bank")) {
 				cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, true);
 				ordersListView.setAdapter(cashArrayAdapter);
 				getCashOnMyWay(email, password);
-                withdrawBtn.setVisibility(View.GONE);
-            } else {
+				withdrawBtn.setVisibility(View.GONE);
+			} else {
 				cashArrayAdapter = new CashArrayAdapter(getActivity(), R.layout.cash_card_item, false);
 				ordersListView.setAdapter(cashArrayAdapter);
 				getCashHistory(email, password);
-                withdrawBtn.setVisibility(View.GONE);
-            }
+				withdrawBtn.setVisibility(View.GONE);
+			}
 		}
 	}
 

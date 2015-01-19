@@ -107,6 +107,7 @@ public class WithFastBirdOrdersFragment extends Fragment {
 
 	public void setupList(String email, String password) {
 		if (getArguments() != null) {
+			ordersListView.setEmptyView(getView().findViewById(R.id.empty));
 			String tab = getArguments().getString("key");
 			if (tab.equals("With Me")) {
 				getMyOrders(email, password);
