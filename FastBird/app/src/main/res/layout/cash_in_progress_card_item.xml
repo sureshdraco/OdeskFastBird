@@ -12,10 +12,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="15dp"
-        android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingRight="15dp"
         android:background="@drawable/card_background_selector"
         android:descendantFocusability="afterDescendants">
 
@@ -49,14 +45,10 @@
 
         </RelativeLayout>
 
-        <View
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#d9d9d9" />
-
         <LinearLayout
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -74,6 +66,9 @@
         </LinearLayout>
 
         <LinearLayout
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -91,6 +86,9 @@
         </LinearLayout>
 
         <LinearLayout
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingRight="15dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -109,6 +107,9 @@
         </LinearLayout>
 
         <LinearLayout
+            android:paddingTop="5dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -126,8 +127,11 @@
         </LinearLayout>
 
         <LinearLayout
+            android:paddingTop="5dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
             android:layout_height="wrap_content">
 
             <TextView
@@ -144,6 +148,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:paddingLeft="15dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingRight="15dp"
             android:orientation="horizontal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
@@ -160,13 +168,6 @@
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
-
-        <View
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#d9d9d9" />
 
         <TextView
             android:background="#757575"

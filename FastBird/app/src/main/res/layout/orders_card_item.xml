@@ -138,13 +138,8 @@
             </LinearLayout>
         </LinearLayout>
 
-        <View
-            android:layout_marginTop="10dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="#d9d9d9" />
-
         <LinearLayout
+            android:layout_marginTop="2dp"
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
