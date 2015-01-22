@@ -11,6 +11,7 @@ import com.google.android.gms.analytics.Tracker;
 import java.util.HashMap;
 
 import appinventor.ai_sameh.FastBird.model.ImageCacheManager;
+import appinventor.ai_sameh.FastBird.util.TypefaceCache;
 
 /**
  * Created by suresh on 18/10/14.
@@ -35,6 +36,7 @@ public class FastBirdApplication extends Application {
         super.onCreate();
         appContext = this;
         createImageCache();
+        TypefaceCache.init(this);
         // Get tracker.
         Tracker t = getTracker(TrackerName.GLOBAL_TRACKER);
         // Enable Advertising Features.

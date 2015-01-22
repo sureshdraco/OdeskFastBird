@@ -98,6 +98,14 @@ public class LoginActivity extends Activity {
 		if (Constant.DEBUG) mPasswordView.setText("123456789");
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (PreferenceUtil.getUserLoggedIn(this)) {
+			finish();
+		}
+	}
+
 	/**
 	 * Attempts to sign in or register the account specified by the login form. If there are form errors (invalid email, missing fields, etc.), the errors are presented and no
 	 * actual login attempt is made.
