@@ -36,7 +36,7 @@ public class FastBirdApplication extends Application {
         appContext = this;
         createImageCache();
         // Get tracker.
-        Tracker t = getTracker(TrackerName.APP_TRACKER);
+        Tracker t = getTracker(TrackerName.GLOBAL_TRACKER);
         // Enable Advertising Features.
         t.enableAdvertisingIdCollection(true);
     }
@@ -49,7 +49,7 @@ public class FastBirdApplication extends Application {
                 , DISK_IMAGECACHE_QUALITY);
     }
 
-    synchronized Tracker getTracker(TrackerName trackerId) {
+    public synchronized Tracker getTracker(TrackerName trackerId) {
         if (!mTrackers.containsKey(trackerId)) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             Tracker t = (trackerId == TrackerName.APP_TRACKER) ? analytics.newTracker("UA-56885681-1")
