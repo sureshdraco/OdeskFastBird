@@ -55,6 +55,9 @@
             android:name="appinventor.ai_sameh.FastBird.view.CreateOrderConfirmationActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="appinventor.ai_sameh.FastBird.view.CreateOrderActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="appinventor.ai_sameh.FastBird.view.WebViewActivity"
             android:screenOrientation="portrait" />
 

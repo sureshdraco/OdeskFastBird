@@ -95,7 +95,7 @@ public class MainActivity extends FragmentActivity {
 		b = new Bundle();
 		b.putString("key", "+");
 		mTabHost.addTab(mTabHost.newTabSpec("+")
-				.setIndicator("", getResources().getDrawable(R.drawable.add_order_icon_selector)), CreateOrderFragment.class, b);
+				.setIndicator("", getResources().getDrawable(R.drawable.add_order_icon_selector)), CreateOrderDummyFragment.class, b);
 		b = new Bundle();
 		b.putString("key", "$$");
 		mTabHost.addTab(mTabHost.newTabSpec("$$").setIndicator("", getResources().getDrawable(R.drawable.money_icon_selector)),
