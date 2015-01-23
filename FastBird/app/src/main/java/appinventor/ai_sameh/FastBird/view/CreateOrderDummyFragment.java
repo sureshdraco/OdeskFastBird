@@ -65,5 +65,6 @@ public class CreateOrderDummyFragment extends Fragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		startActivity(new Intent(getActivity(), CreateOrderActivity.class));
-	}
+        ((MainActivity) getActivity()).setCurrentTab(0);
+    }
 }

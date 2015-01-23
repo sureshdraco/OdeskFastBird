@@ -129,6 +129,10 @@ public class MainActivity extends FragmentActivity {
 		// setContentView(mTabHost);
 	}
 
+	public void setCurrentTab(int index) {
+		mTabHost.setCurrentTab(index);
+	}
+
 	public void updateBalance() {
 		ApiRequests.getUserInformation(this, PreferenceUtil.getEmail(this), PreferenceUtil.getPassword(this), new Response.Listener<UserInfoResponse>() {
 			@Override

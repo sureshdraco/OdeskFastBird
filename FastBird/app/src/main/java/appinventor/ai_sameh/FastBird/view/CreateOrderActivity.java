@@ -10,7 +10,7 @@ public class CreateOrderActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_update_order);
+		setContentView(R.layout.activity_create_order);
 		if (savedInstanceState == null) {
 			CreateOrderFragment createOrderFragment = new CreateOrderFragment();
 			getSupportFragmentManager().beginTransaction()
