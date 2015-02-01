@@ -39,7 +39,7 @@ android {
         applicationId "appinventor.ai_sameh.FastBird"
         minSdkVersion 11
         targetSdkVersion 21
-        versionCode 28
+        versionCode 29
         versionName "2.0.0"
     }
     buildTypes {
