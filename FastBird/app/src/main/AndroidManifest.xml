@@ -52,6 +52,11 @@
             android:launchMode="singleInstance"
             android:screenOrientation="portrait" />
         <activity
+            android:name="appinventor.ai_sameh.FastBird.view.RegisterActivity"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="appinventor.ai_sameh.FastBird.view.CreateOrderConfirmationActivity"
             android:screenOrientation="portrait" />
         <activity

@@ -20,18 +20,13 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import appinventor.ai_sameh.FastBird.PreferenceUtil;
 import appinventor.ai_sameh.FastBird.R;
-import appinventor.ai_sameh.FastBird.adapter.CashArrayAdapter;
-import appinventor.ai_sameh.FastBird.adapter.CashInProgressArrayAdapter;
-import appinventor.ai_sameh.FastBird.adapter.OrderArrayAdapter;
 import appinventor.ai_sameh.FastBird.api.ApiRequests;
 import appinventor.ai_sameh.FastBird.api.request.ForgetPasswordRequest;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
@@ -42,13 +37,13 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends Activity {
+public class RegisterActivity extends Activity {
 
-    private static final String TAG = LoginActivity.class.getSimpleName();
+    private static final String TAG = RegisterActivity.class.getSimpleName();
 
     // UI references.
     private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
+    private EditText mPasswordView, mFirstName, mLastName, mPhone1, mPhone2, mFax, mCompanyName, mCprNo, mCrNo, mConfirmPwd, mMobile;
     private View mProgressView;
     private View mLoginFormView;
 
@@ -61,13 +56,23 @@ public class LoginActivity extends Activity {
             return;
         }
 
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_register);
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mCompanyName = (EditText) findViewById(R.id.companyName);
+        mConfirmPwd = (EditText) findViewById(R.id.confirmPassword);
+        mCprNo = (EditText) findViewById(R.id.cpr);
+        mCrNo = (EditText) findViewById(R.id.crno);
+        mFax = (EditText) findViewById(R.id.faxno);
+        mFirstName = (EditText) findViewById(R.id.firstName);
+        mLastName = (EditText) findViewById(R.id.lastName);
+        mMobile = (EditText) findViewById(R.id.mobile);
+        mPhone1 = (EditText) findViewById(R.id.phone1);
+        mPhone2 = (EditText) findViewById(R.id.phone2);
+        mCrNo.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
@@ -86,21 +91,8 @@ public class LoginActivity extends Activity {
             }
         });
 
-        findViewById(R.id.registerButton).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
-            }
-        });
-
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
-        findViewById(R.id.forgetPassword).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickForgetPassword(view);
-            }
-        });
         if (Constant.DEBUG) mEmailView.setText("sales@fastbird.org");
         if (Constant.DEBUG) mPasswordView.setText("123456789");
     }
@@ -162,7 +154,7 @@ public class LoginActivity extends Activity {
                         loginUser(email, password);
                     } else {
                         showProgress(false);
-                        Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
+                        Crouton.showText(RegisterActivity.this, loginResponse.getData().getError(), Style.ALERT);
                     }
                 }
             }, new Response.ErrorListener() {
@@ -170,7 +162,7 @@ public class LoginActivity extends Activity {
                 public void onErrorResponse(VolleyError volleyError) {
                     Log.e(TAG, volleyError.toString());
                     showProgress(false);
-                    Crouton.showText(LoginActivity.this, "Failed to login!", Style.ALERT);
+                    Crouton.showText(RegisterActivity.this, "Failed to login!", Style.ALERT);
                 }
             });
         }
@@ -274,7 +266,7 @@ public class LoginActivity extends Activity {
                             return;
                         }
                         showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                        ApiRequests.forgetPassword(LoginActivity.this,
+                        ApiRequests.forgetPassword(RegisterActivity.this,
                                 new ForgetPasswordRequest(PreferenceUtil.getEmail(getApplicationContext()), PreferenceUtil.getPassword(getApplicationContext()), cpr.getText()
                                         .toString(), mobileNumber.getText().toString()), new Response.Listener<LoginResponse>() {
                                     @Override
@@ -282,10 +274,10 @@ public class LoginActivity extends Activity {
                                         alertDialog1.dismiss();
                                         dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
                                         if (loginResponse.getData().getError() != null) {
-                                            Crouton.showText(LoginActivity.this, loginResponse.getData().getError(), Style.ALERT);
+                                            Crouton.showText(RegisterActivity.this, loginResponse.getData().getError(), Style.ALERT);
                                             return;
                                         }
-                                        Crouton.showText(LoginActivity.this, "Success!", Style.INFO);
+                                        Crouton.showText(RegisterActivity.this, "Success!", Style.INFO);
 
                                     }
                                 }, new Response.ErrorListener() {
@@ -293,7 +285,7 @@ public class LoginActivity extends Activity {
                                     public void onErrorResponse(VolleyError volleyError) {
                                         alertDialog1.dismiss();
                                         dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-                                        Crouton.showText(LoginActivity.this, getString(R.string.no_internet), Style.ALERT);
+                                        Crouton.showText(RegisterActivity.this, getString(R.string.no_internet), Style.ALERT);
                                     }
                                 });
                     }
