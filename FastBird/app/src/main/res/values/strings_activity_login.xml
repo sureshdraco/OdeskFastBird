@@ -3,22 +3,23 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
-    <string name="prompt_firstname">First Name</string>
-    <string name="prompt_lastname">Last Name</string>
+    <string name="prompt_firstname">First Name (*)</string>
+    <string name="prompt_lastname">Last Name (*)</string>
     <string name="prompt_phone1">Phone 1</string>
-    <string name="prompt_mobile">Mobile</string>
+    <string name="prompt_mobile">Mobile (*)</string>
     <string name="prompt_phone2">Phone 2</string>
     <string name="prompt_fax_no">Fax No.</string>
-    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="prompt_confirm_password">Confirm Password (*)</string>
     <string name="prompt_companyname">Company Name</string>
-    <string name="prompt_cprno">CPR No</string>
+    <string name="prompt_cprno">CPR No (*)</string>
     <string name="prompt_crno">CR No</string>
-    <string name="prompt_password">Password</string>
+    <string name="prompt_password">Password (*)</string>
     <string name="action_sign_in">Log In</string>
     <string name="action_sign_up">Register</string>
     <string name="action_sign_in_short">Sign in</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_password_mismatch">Password and Confirm Password doesn\'t match!</string>
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
