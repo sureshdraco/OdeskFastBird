@@ -54,6 +54,7 @@ public class ApiRequests {
 	private static final String REGISTER_USER = "Clients.svc/Register";
 	private static final String ME_PENDING_ORDERS = "NOrder.svc/ListPendingOrders";
 	private static final String ME_HISTORY_ORDERS = "NOrder.svc/ListClosedOrders";
+	private static final String MARK_COMMENTS_AS_READ = "NOrder.svc/MarkOrderCommentsAsRead";
 	private static final String GET_CASH_ON_THE_WAY = "MoneyCollection.svc/GetCashOnTheWay";
 	private static final String IN_PROGRESS_MONEY = "NOrder.svc/ListReturnedMoneyOrders";
 	private static final String CREATE_ORDER = "NOrder.svc/Create";
@@ -252,6 +253,14 @@ public class ApiRequests {
 				.getInstance(context)
 				.getRequestQueue()
 				.add(new GsonRequest<CommentListResponse>(Request.Method.POST, API_BASE_URL + COMMENT_LIST, commentListRequest, CommentListResponse.class, null, listener,
+						errorListener, VolleyClient.NO_RETRY_POLICY));
+	}
+
+	public static void markCommentsAsRead(Context context, CommentListRequest commentListRequest, Response.Listener<LoginResponse> listener, Response.ErrorListener errorListener) {
+		VolleyClient
+				.getInstance(context)
+				.getRequestQueue()
+				.add(new GsonRequest<LoginResponse>(Request.Method.POST, API_BASE_URL + MARK_COMMENTS_AS_READ, commentListRequest, LoginResponse.class, null, listener,
 						errorListener, VolleyClient.NO_RETRY_POLICY));
 	}
 

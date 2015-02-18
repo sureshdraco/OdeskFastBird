@@ -47,6 +47,7 @@ import appinventor.ai_sameh.FastBird.api.response.CommentListResponse;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import appinventor.ai_sameh.FastBird.api.response.RegisterDeviceResponse;
 import appinventor.ai_sameh.FastBird.api.response.UserInfoResponse;
+import appinventor.ai_sameh.FastBird.util.Constant;
 import appinventor.ai_sameh.FastBird.util.NotificationUtil;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -119,6 +120,19 @@ public class CommentActivity extends Activity {
 
 	private void getComments() {
 		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+		ApiRequests.markCommentsAsRead(this, new CommentListRequest(email, password, fbdNumber), new Response.Listener<LoginResponse>() {
+			@Override
+			public void onResponse(LoginResponse loginResponse) {
+				if (!TextUtils.isEmpty(loginResponse.getData().getError())) {
+					if (Constant.DEBUG) Log.e(TAG, loginResponse.getData().getError());
+				}
+			}
+		}, new Response.ErrorListener() {
+			@Override
+			public void onErrorResponse(VolleyError volleyError) {
+				if (Constant.DEBUG) Log.e(TAG, String.valueOf(volleyError));
+			}
+		});
 		ApiRequests.getComments(this, new CommentListRequest(email, password, fbdNumber), new Response.Listener<CommentListResponse>() {
 			@Override
 			public void onResponse(CommentListResponse commentListResponse) {
