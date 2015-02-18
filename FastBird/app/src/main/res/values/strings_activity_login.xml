@@ -3,6 +3,7 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
+    <string name="prompt_email_register">Email (*)</string>
     <string name="prompt_firstname">First Name (*)</string>
     <string name="prompt_lastname">Last Name (*)</string>
     <string name="prompt_phone1">Phone 1</string>

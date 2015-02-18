@@ -60,6 +60,8 @@
 
             <Button
                 android:id="@+id/email_sign_in_button"
+                android:background="@drawable/login_button"
+                android:textColor="@color/White"
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -69,13 +71,14 @@
 
             <Button
                 android:id="@+id/registerButton"
+                android:textColor="@color/White"
                 style="?android:textAppearanceSmall"
-                android:background="@drawable/red_button"
+                android:background="@drawable/register_button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_up"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
             <appinventor.ai_sameh.FastBird.view.TextViewPlus
                 app:font="roboto_regular"
