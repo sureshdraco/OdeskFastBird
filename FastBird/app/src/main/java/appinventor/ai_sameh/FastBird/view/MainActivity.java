@@ -325,7 +325,7 @@ public class MainActivity extends FragmentActivity {
 		case OrderArrayAdapter.ORDER_INFO_DIALOG:
 			Order selectedOrder = PreferenceUtil.getSelectedOrder(this);
 			if (selectedOrder != null) {
-				OrderInfoDialog.setupOrderDetailUi(getApplicationContext(), dialog, selectedOrder);
+				OrderInfoDialog.setupOrderDetailUi(getApplicationContext(), dialog.getWindow().getDecorView(), selectedOrder);
 			} else {
 				dialog.dismiss();
 			}
@@ -380,7 +380,7 @@ public class MainActivity extends FragmentActivity {
 		case CashInProgressArrayAdapter.DIALOG_CASH_IN_PROGRESS:
 			Order selectedOrder1 = PreferenceUtil.getSelectedCashInProgress(this);
 			if (selectedOrder1 != null) {
-				OrderInfoDialog.setupOrderDetailUi(context, dialog, selectedOrder1);
+				OrderInfoDialog.setupOrderDetailUi(context, dialog.getWindow().getDecorView(), selectedOrder1);
 			} else {
 				dialog.dismiss();
 			}
@@ -388,5 +388,9 @@ public class MainActivity extends FragmentActivity {
 			break;
 		}
 
+	}
+
+	public void onClickSearchBtn(View view) {
+		startActivity(new Intent(this, SearchActivity.class));
 	}
 }

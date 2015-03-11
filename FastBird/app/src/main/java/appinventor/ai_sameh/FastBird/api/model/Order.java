@@ -14,11 +14,50 @@ public class Order {
 			DeliveryBuildingNo,
 			DeliveryFlatNo, ProgressColorCode, PaymentMehod;
 
-    public String getPaymentMethod() {
-        return PaymentMehod;
-    }
+	public Order(String FBDNumber, String deliveryPhone1, String deliveryPhone2, String deliveryContactName, String pickupAddressTitle, String deliveryAddressTitle,
+			String collectionAmount, String approvalDate, String deliveryLocation, String deliveryNotes, String deliveryRoad, String fastPayCode, String fastPayStatus,
+			String moneyDelivered, String EPaymentDate, String moneyDeliveryType, String netTotal, String orderDate, String progressStatus, String progressStatusDate,
+			String serviceType, String size, String height, String weight, String length, String width, String referenceNo, String deliveryBlockNo, String deliveryBuildingNo,
+			String deliveryFlatNo, String progressColorCode, String paymentMehod) {
+		this.FBDNumber = FBDNumber;
+		DeliveryPhone1 = deliveryPhone1;
+		DeliveryPhone2 = deliveryPhone2;
+		DeliveryContactName = deliveryContactName;
+		PickupAddressTitle = pickupAddressTitle;
+		DeliveryAddressTitle = deliveryAddressTitle;
+		CollectionAmount = collectionAmount;
+		ApprovalDate = approvalDate;
+		DeliveryLocation = deliveryLocation;
+		DeliveryNotes = deliveryNotes;
+		DeliveryRoad = deliveryRoad;
+		FastPayCode = fastPayCode;
+		FastPayStatus = fastPayStatus;
+		MoneyDelivered = moneyDelivered;
+		this.EPaymentDate = EPaymentDate;
+		MoneyDeliveryType = moneyDeliveryType;
+		NetTotal = netTotal;
+		OrderDate = orderDate;
+		ProgressStatus = progressStatus;
+		ProgressStatusDate = progressStatusDate;
+		ServiceType = serviceType;
+		Size = size;
+		Height = height;
+		Weight = weight;
+		Length = length;
+		Width = width;
+		ReferenceNo = referenceNo;
+		DeliveryBlockNo = deliveryBlockNo;
+		DeliveryBuildingNo = deliveryBuildingNo;
+		DeliveryFlatNo = deliveryFlatNo;
+		ProgressColorCode = progressColorCode;
+		PaymentMehod = paymentMehod;
+	}
 
-    public String getFBDNumber() {
+	public String getPaymentMethod() {
+		return PaymentMehod;
+	}
+
+	public String getFBDNumber() {
 		return FBDNumber == null ? "" : FBDNumber;
 	}
 
@@ -142,7 +181,7 @@ public class Order {
 		return ProgressColorCode;
 	}
 
-    public String getPaymentMehod() {
-        return PaymentMehod;
-    }
+	public String getPaymentMehod() {
+		return PaymentMehod;
+	}
 }

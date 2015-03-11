@@ -63,6 +63,9 @@
             android:name="appinventor.ai_sameh.FastBird.view.CreateOrderActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name="appinventor.ai_sameh.FastBird.view.SearchActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name="appinventor.ai_sameh.FastBird.view.WebViewActivity"
             android:screenOrientation="portrait" />
 

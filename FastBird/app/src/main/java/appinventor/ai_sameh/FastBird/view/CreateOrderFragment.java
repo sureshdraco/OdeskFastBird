@@ -161,6 +161,9 @@ public class CreateOrderFragment extends Fragment {
 		ApiRequests.getLocations(getActivity(), new LoginRequest(email, password), new Response.Listener<LocationResponse>() {
 			@Override
 			public void onResponse(LocationResponse locationResponse) {
+				if (getActivity() == null) {
+					return;
+				}
 				if (locationResponse.getData().getError() != null) {
 					dismissDialog();
 				}
@@ -463,7 +466,10 @@ public class CreateOrderFragment extends Fragment {
 								}, new Response.ErrorListener() {
 									@Override
 									public void onErrorResponse(VolleyError volleyError) {
-										getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+										try {
+											getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+										} catch (Exception ignored) {
+										}
 									}
 								});
 					}

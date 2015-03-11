@@ -29,6 +29,7 @@ import appinventor.ai_sameh.FastBird.api.response.DeliveryTimeResponse;
 import appinventor.ai_sameh.FastBird.api.response.DeliveryTypeResponse;
 import appinventor.ai_sameh.FastBird.api.response.GetClientCreditResponse;
 import appinventor.ai_sameh.FastBird.api.response.GetClientMoneyResponse;
+import appinventor.ai_sameh.FastBird.api.response.GetOrderResponse;
 import appinventor.ai_sameh.FastBird.api.response.LocationResponse;
 import appinventor.ai_sameh.FastBird.api.response.LoginResponse;
 import appinventor.ai_sameh.FastBird.api.response.MyAddressResponse;
@@ -63,6 +64,7 @@ public class ApiRequests {
 	private static final String DELIVERY_TIME = "Masters.svc/ListDeliveryTimes";
 	private static final String PACKAGE_TYPES = "Masters.svc/ListPackageTypes";
 	private static final String COMMENT_LIST = "NOrder.svc/ListOrderComments";
+	private static final String SEARCH_ORDER = "NOrder.svc/GetOrder";
 	private static final String INSERT_COMMENT = "NOrder.svc/InsertOrderComment";
 	private static final String SERVICE_TYPE = "Masters.svc/ListServiceTypes";
 	private static final String SERVICE_TYPE_PRICE = "Masters.svc/GetServiceTypePrice";
@@ -345,4 +347,11 @@ public class ApiRequests {
 						errorListener, VolleyClient.NO_RETRY_POLICY));
 	}
 
+	public static void searchOrders(Context context, CommentListRequest searchRequest, Response.Listener<GetOrderResponse> listener, Response.ErrorListener errorListener) {
+		VolleyClient
+				.getInstance(context)
+				.getRequestQueue()
+				.add(new GsonRequest<>(Request.Method.POST, API_BASE_URL + SEARCH_ORDER, searchRequest, GetOrderResponse.class, null, listener,
+						errorListener, VolleyClient.NO_RETRY_POLICY));
+	}
 }
