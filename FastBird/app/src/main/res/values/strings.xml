@@ -64,5 +64,6 @@
     <string name="no_items">No Items</string>
     <string name="search_btn">Search</string>
     <string name="search_order">Search Order</string>
+    <string name="comments_btn">Comments</string>
 
 </resources>

@@ -151,7 +151,7 @@
                 android:textSize="16sp"
                 android:singleLine="true"
                 android:ellipsize="end"
-                android:text="Comments"
+                android:text="@string/comments_btn"
                 android:id="@+id/btnComment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

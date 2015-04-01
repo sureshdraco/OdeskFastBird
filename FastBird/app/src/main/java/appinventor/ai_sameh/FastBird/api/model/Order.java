@@ -1,9 +1,5 @@
 package appinventor.ai_sameh.FastBird.api.model;
 
-import java.util.Date;
-
-import appinventor.ai_sameh.FastBird.util.TimestampUtil;
-
 /**
  * Created by suresh on 21/10/14.
  */
@@ -12,7 +8,7 @@ public class Order {
 	private String ApprovalDate, DeliveryLocation, DeliveryNotes, DeliveryRoad, FastPayCode, FastPayStatus, MoneyDelivered, EPaymentDate,
 			MoneyDeliveryType, NetTotal, OrderDate, ProgressStatus, ProgressStatusDate, ServiceType, Size, Height, Weight, Length, Width, ReferenceNo, DeliveryBlockNo,
 			DeliveryBuildingNo,
-			DeliveryFlatNo, ProgressColorCode, PaymentMehod;
+			DeliveryFlatNo, ProgressColorCode, PaymentMehod, TotalUnreadComments;
 
 	public Order(String FBDNumber, String deliveryPhone1, String deliveryPhone2, String deliveryContactName, String pickupAddressTitle, String deliveryAddressTitle,
 			String collectionAmount, String approvalDate, String deliveryLocation, String deliveryNotes, String deliveryRoad, String fastPayCode, String fastPayStatus,
@@ -184,4 +180,8 @@ public class Order {
 	public String getPaymentMehod() {
 		return PaymentMehod;
 	}
+
+    public String getTotalUnreadComments() {
+        return TotalUnreadComments;
+    }
 }
