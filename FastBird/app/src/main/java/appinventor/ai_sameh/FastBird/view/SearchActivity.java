@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -25,22 +26,31 @@ import de.keyboardsurfer.android.widget.crouton.Style;
 public class SearchActivity extends Activity {
 	EditText searchText;
 	private View searchResult;
+	private ProgressBar progressBar;
+	private View orderDetail;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.search_activity);
+		progressBar = (ProgressBar) findViewById(R.id.progressBar);
+		orderDetail = findViewById(R.id.relDropdownContainer);
 		searchText = (EditText) findViewById(R.id.searchText);
 		searchResult = findViewById(R.id.searchOrderResult);
 		searchResult.setVisibility(View.GONE);
 		searchResult.findViewById(R.id.closeBtn).setVisibility(View.GONE);
+		progressBar.setVisibility(View.GONE);
 	}
 
 	public void onClickSearchBtn(View view) {
+		progressBar.setVisibility(View.VISIBLE);
+		orderDetail.setVisibility(View.GONE);
 		ApiRequests.searchOrders(this, new CommentListRequest(PreferenceUtil.getEmail(this), PreferenceUtil.getPassword(this), searchText.getText().toString().trim()),
 				new Response.Listener<GetOrderResponse>() {
 					@Override
 					public void onResponse(GetOrderResponse getOrderResponse) {
+						progressBar.setVisibility(View.GONE);
+						orderDetail.setVisibility(View.VISIBLE);
 						if (getOrderResponse.getData().getError() == null) {
 							OrderInfoDialog.setupOrderDetailUi(getApplicationContext(), searchResult, getOrderResponse.getData().getOrder());
 							searchResult.setVisibility(View.VISIBLE);
@@ -51,6 +61,8 @@ public class SearchActivity extends Activity {
 				}, new Response.ErrorListener() {
 					@Override
 					public void onErrorResponse(VolleyError volleyError) {
+						progressBar.setVisibility(View.GONE);
+						orderDetail.setVisibility(View.VISIBLE);
 						searchResult.setVisibility(View.GONE);
 						Crouton.showText(SearchActivity.this, "Order not found!", Style.ALERT);
 					}
