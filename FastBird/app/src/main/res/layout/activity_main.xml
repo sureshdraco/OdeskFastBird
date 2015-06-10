@@ -8,64 +8,71 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:background="@color/app_orange">
+        android:background="@color/app_orange"
+        android:orientation="horizontal">
 
         <TextView
-            android:paddingLeft="10dp"
-            android:textStyle="bold"
-            android:layout_alignParentLeft="true"
-            android:textColor="@color/White"
-            android:layout_centerVertical="true"
             android:id="@+id/viewTitle"
-            android:text="@string/balance"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:onClick="onClickSearchBtn"
-            android:layout_margin="10dp"
-            android:layout_marginRight="0dp"
-            android:layout_toLeftOf="@+id/rightTitleBox"
-            android:id="@+id/searchBtn"
-            android:src="@drawable/ic_search"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="10dp"
+            android:text="Title"
+            android:textColor="@color/White"
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:id="@+id/rightTitleBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:gravity="center_vertical">
 
-            <TextView
-                android:visibility="gone"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
+
+            <ImageView
+                android:id="@+id/searchBtn"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginTop="10dp"
+                android:onClick="onClickSearchBtn"
+                android:src="@drawable/ic_search" />
+
+            <LinearLayout
+                android:id="@+id/rightTitleBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/balance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/balance"
+                    android:textColor="@color/White"
+                    android:visibility="gone" />
+
+                <ProgressBar
+                    android:id="@+id/balanceProgress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/clearNotif"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:background="@drawable/red_button"
+                android:text="Clear"
                 android:textColor="@color/White"
-                android:id="@+id/balance"
-                android:text="@string/balance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <ProgressBar
-                android:visibility="gone"
-                android:id="@+id/balanceProgress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
+                android:visibility="gone" />
         </LinearLayout>
-
-        <Button
-            android:layout_alignParentRight="true"
-            android:background="@drawable/red_button"
-            android:visibility="gone"
-            android:id="@+id/clearNotif"
-            android:text="Clear"
-            android:textColor="@color/White"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent" />
 
     </RelativeLayout>
 

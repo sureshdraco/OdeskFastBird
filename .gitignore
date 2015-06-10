@@ -24,3 +24,6 @@ proguard/
 
 # Log Files
 *.log
+FastBird.iml
+app/app.iml
+fastbirdwear/fastbirdwear.iml
