@@ -27,3 +27,9 @@ proguard/
 FastBird.iml
 app/app.iml
 fastbirdwear/fastbirdwear.iml
+FastBird/.idea/compiler.xml
+FastBird/.idea/misc.xml
+FastBird/.idea/modules.xml
+FastBird/.idea/vcs.xml
+FastBird/app/app.iml
+FastBird/fastbirdwear/fastbirdwear.iml
