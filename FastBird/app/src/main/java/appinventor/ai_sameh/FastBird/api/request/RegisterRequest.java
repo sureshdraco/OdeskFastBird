@@ -29,4 +29,12 @@ public class RegisterRequest extends TokenRequest {
     public String getPassword() {
         return password;
     }
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setConfirmationcode(String confirmationcode) {
+		this.confirmationcode = confirmationcode;
+	}
 }

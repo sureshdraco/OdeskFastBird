@@ -10,6 +10,7 @@ import appinventor.ai_sameh.FastBird.api.model.ProgressOrderList;
 import appinventor.ai_sameh.FastBird.api.request.CommentListRequest;
 import appinventor.ai_sameh.FastBird.api.request.CreateOrderRequest;
 import appinventor.ai_sameh.FastBird.api.request.ForgetPasswordRequest;
+import appinventor.ai_sameh.FastBird.api.request.GetConfirmationCodeRequest;
 import appinventor.ai_sameh.FastBird.api.request.GetLocationByBlockNoRequest;
 import appinventor.ai_sameh.FastBird.api.request.InsertCommentRequest;
 import appinventor.ai_sameh.FastBird.api.request.LoginRequest;
@@ -46,9 +47,11 @@ import appinventor.ai_sameh.FastBird.volley.VolleyClient;
  * Created by suresh on 12/10/14.
  */
 public class ApiRequests {
+	//http://www.fastbird.org/clients/api/Clients.svc/GetClientConfirmationCode
+
 	public static final String API_BASE_URL = "http://www.fastbird.org/clients/api/";
 	private static final String LOGIN_API_URL = "Clients.svc/ValidateLogin";
-	private static final String GET_CONFIRMATION_CODE = "Admin.svc/GetClientConfirmationCode";
+	private static final String GET_CONFIRMATION_CODE = "Clients.svc/GetClientConfirmationCode";
 	private static final String REGISTER_DEVICE_API_URL = "Clients.svc/AddDevice";
 	private static final String UNREGISTER_DEVICE_API_URL = "Clients.svc/RemoveDevice";
 	private static final String FAST_BIRD_PENDING_ORDERS = "NOrder.svc/ListInProgressOrders";
@@ -131,10 +134,10 @@ public class ApiRequests {
 						errorListener, VolleyClient.NO_RETRY_POLICY));
 	}
 
-	public static void getConfirmationCode(Context context, LoginRequest loginRequest, Response.Listener<ConfirmationCodeResponse> listener, Response.ErrorListener errorListener) {
+	public static void getConfirmationCode(Context context, GetConfirmationCodeRequest getConfirmationCodeRequest, Response.Listener<ConfirmationCodeResponse> listener, Response.ErrorListener errorListener) {
 		VolleyClient
 				.getInstance(context).getRequestQueue()
-				.add(new GsonRequest<ConfirmationCodeResponse>(Request.Method.POST, API_BASE_URL + GET_CONFIRMATION_CODE, loginRequest, ConfirmationCodeResponse.class, null,
+				.add(new GsonRequest<ConfirmationCodeResponse>(Request.Method.POST, API_BASE_URL + GET_CONFIRMATION_CODE, getConfirmationCodeRequest, ConfirmationCodeResponse.class, null,
 						listener, errorListener, VolleyClient.NO_RETRY_POLICY));
 	}
 
