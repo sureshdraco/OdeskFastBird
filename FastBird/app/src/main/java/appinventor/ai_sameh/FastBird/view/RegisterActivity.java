@@ -67,7 +67,7 @@ public class RegisterActivity extends Activity {
 
                 //strip flag
                 String message = sms.getMessageBody();
-                message = message.replace("code", "");
+                message = message.replace("Your Code Is ", "");
                 message = message.replace(" ", "");
                 code.setText(message);
                 confirmBtn.performClick();
