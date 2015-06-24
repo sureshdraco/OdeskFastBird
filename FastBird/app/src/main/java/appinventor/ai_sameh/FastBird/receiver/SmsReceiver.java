@@ -23,7 +23,7 @@ public class SmsReceiver extends BroadcastReceiver {
             Object[] pdus = (Object[]) bundle.get("pdus");
             SmsMessage sms = SmsMessage.createFromPdu((byte[]) pdus[0]);
 
-            if (sms.getMessageBody().contains("code")) {
+            if (sms.getMessageBody().contains("Your Code Is ")) {
                 Intent myIntent = new Intent(context, RegisterActivity.class);
                 myIntent.putExtra("mySMS", bundle);
                 myIntent.setAction(RegisterActivity.SMS_CODE_RECEIVER);

@@ -27,7 +27,8 @@
     <string name="bold_paymentResult"><![CDATA[<b>Payment</b>]]>: %1$s</string>
     <string name="fast_pay_code">Fast Pay: %1$s</string>
     <string name="fast_bird_number">Fast Bird Number: %1$s</string>
-    <string name="error_required">Required</string>
+	<string name="error_required">Required</string>
+	<string name="internation_weight_error">Cannot be less than 500</string>
     <string name="collection_amount_bd">Collection (BD): </string>
     <string name="total_amount_bd">Total (BD): </string>
     <string name="withdraw_money_mrbtotal">Collected Amount: %1$s</string>

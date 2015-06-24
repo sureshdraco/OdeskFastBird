@@ -22,6 +22,7 @@ public class WebViewActivity extends Activity {
     private WebView paymentWebView;
     private java.lang.String webUrl;
     private ProgressBar progress;
+    private boolean isChat;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +30,8 @@ public class WebViewActivity extends Activity {
         getWindow().requestFeature(Window.FEATURE_PROGRESS);
         setContentView(R.layout.payment);
         if (getIntent().getExtras() != null) {
-            webUrl = getIntent().getExtras().getString("url", "");
+            isChat = true;
+            webUrl = getIntent().getExtras().getString("url");
         }
         if (TextUtils.isEmpty(webUrl)) {
             webUrl = String.format("http://www.fastbird.org/m/BuyCredits.aspx?username=%s&password=%s", PreferenceUtil.getEmail(this), PreferenceUtil.getPassword(this));
@@ -62,6 +64,13 @@ public class WebViewActivity extends Activity {
     private class MyWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            if (isChat) {
+                if (url.equals("http://24bh.com/livehelp/offline.php?LANGUAGE=en")) {
+                    setResult(1);
+                    finish();
+                    return false;
+                }
+            }
             view.loadUrl(url);
             return true;
         }

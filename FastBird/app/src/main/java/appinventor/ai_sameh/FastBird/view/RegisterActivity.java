@@ -334,7 +334,28 @@ public class RegisterActivity extends Activity {
         });
     }
 
-    private void loginUser(String email, String password) {
+    private void loginUser(final String email, final String password) {
+        ApiRequests.login(getApplicationContext(), email, password, new Response.Listener<LoginResponse>() {
+            @Override
+            public void onResponse(LoginResponse loginResponse) {
+                if (TextUtils.isEmpty(loginResponse.getData().getError())) {
+                    gotoApp(email, password);
+                } else {
+                    showProgress(false);
+                    Crouton.showText(RegisterActivity.this, loginResponse.getData().getError(), Style.ALERT);
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError volleyError) {
+                Log.e(TAG, volleyError.toString());
+                showProgress(false);
+                Crouton.showText(RegisterActivity.this, "Failed to login!", Style.ALERT);
+            }
+        });
+    }
+
+    private void gotoApp(String email, String password) {
         PreferenceUtil.saveEmail(getApplicationContext(), email);
         PreferenceUtil.savePassword(getApplicationContext(), password);
         PreferenceUtil.saveUserLoggedIn(getApplicationContext(), true);
