@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="15dp"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp">
 
     <TextView
-        android:textStyle="bold"
-        android:textSize="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Order Confirmation" />
+        android:text="Order Confirmation"
+        android:textSize="24dp"
+        android:textStyle="bold" />
 
     <LinearLayout
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:layout_marginTop="40dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Service Type (*)" />
+
+        <Spinner
+            android:id="@+id/serviceType"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -26,19 +44,19 @@
             android:text="Sub Total (*)" />
 
         <EditText
-            android:enabled="false"
-            android:imeOptions="actionNext"
-            android:singleLine="true"
             android:id="@+id/subTotal"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:singleLine="true" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
-        android:layout_marginTop="8dp"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,19 +64,19 @@
             android:text="Discount" />
 
         <EditText
-            android:enabled="false"
-            android:imeOptions="actionNext"
-            android:singleLine="true"
             android:id="@+id/discount"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:singleLine="true" />
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -66,26 +84,26 @@
             android:text="Total" />
 
         <EditText
-            android:enabled="false"
-            android:imeOptions="actionNext"
-            android:singleLine="true"
             android:id="@+id/total"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:imeOptions="actionNext"
+            android:singleLine="true" />
     </LinearLayout>
 
 
     <LinearLayout
         android:id="@+id/collectionAmountContainer"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical">
 
         <TextView
-            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Money Collection"
             android:textStyle="bold" />
 
@@ -95,29 +113,29 @@
             android:text="Collection Amount (Shipment Price + Delivery Charge)" />
 
         <EditText
-            android:imeOptions="actionNext"
-            android:singleLine="true"
             android:id="@+id/collectionAmount"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:singleLine="true" />
     </LinearLayout>
 
     <CheckBox
-        android:textSize="12sp"
-        android:layout_marginTop="10dp"
         android:id="@+id/checkboxTerms"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="12sp" />
 
     <Button
-        android:layout_marginTop="10dp"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/White"
-        android:background="@drawable/create_order_button"
         android:id="@+id/submitButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Create Order" />
+        android:layout_marginTop="10dp"
+        android:background="@drawable/create_order_button"
+        android:text="Create Order"
+        android:textColor="@color/White"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </LinearLayout>

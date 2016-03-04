@@ -4,10 +4,10 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:padding="15dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -16,9 +16,9 @@
             android:textStyle="bold" />
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -26,24 +26,44 @@
                 android:text="Pickup Address" />
 
             <Spinner
-                android:imeOptions="actionNext"
                 android:id="@+id/pickupAddress"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
         </LinearLayout>
 
         <TextView
-            android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:text="Delivery Address"
             android:textStyle="bold" />
 
         <LinearLayout
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Country / City (*)" />
+
+            <AutoCompleteTextView
+                android:id="@+id/location"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:completionThreshold="1"
+                android:imeOptions="actionNext"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -51,19 +71,19 @@
                 android:text="Contact Name (*)" />
 
             <EditText
-                android:nextFocusDown="@+id/phone1"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/contactName"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/phone1"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,19 +91,20 @@
                 android:text="Phone1 (*)" />
 
             <EditText
-                android:nextFocusDown="@+id/phone2"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/phone1"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/phone2"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -91,19 +112,21 @@
                 android:text="Phone2" />
 
             <EditText
-                android:nextFocusDown="@+id/flatno"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/phone2"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/flatno"
+                android:singleLine="true"
+                android:text="0" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -111,19 +134,20 @@
                 android:text="Flat No." />
 
             <EditText
-                android:nextFocusDown="@+id/buildingNo"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/flatno"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/buildingNo"
+                android:singleLine="true"
+                android:text="0" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/buildNoTextView"
@@ -132,19 +156,19 @@
                 android:text="Building No. (*)" />
 
             <EditText
-                android:nextFocusDown="@+id/road"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/buildingNo"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/road"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/roadTextView"
@@ -153,19 +177,19 @@
                 android:text="Road (*)" />
 
             <EditText
-                android:nextFocusDown="@+id/blockNo"
                 android:id="@+id/road"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:nextFocusDown="@+id/blockNo"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/blockNoTextView"
@@ -174,39 +198,20 @@
                 android:text="Block No. (*)" />
 
             <EditText
-                android:nextFocusDown="@+id/location"
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/blockNo"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_marginTop="8dp"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Location (*)" />
-
-            <AutoCompleteTextView
-                android:completionThreshold="1"
-                android:singleLine="true"
                 android:imeOptions="actionNext"
-                android:id="@+id/location"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:nextFocusDown="@+id/location"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_height="wrap_content">
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -214,18 +219,20 @@
                 android:text="Note" />
 
             <EditText
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/note"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:singleLine="true"
+                android:text="0" />
         </LinearLayout>
 
         <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -233,19 +240,19 @@
                 android:text="Delivery Time (*)" />
 
             <Spinner
-                android:imeOptions="actionNext"
                 android:id="@+id/deliveryTime"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
         </LinearLayout>
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/moneyDeliveryTypeContainer"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -253,19 +260,27 @@
                 android:text="Money Delivery Type (*)" />
 
             <Spinner
-                android:imeOptions="actionNext"
                 android:id="@+id/moneyDeliveryType"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext" />
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/packageSizeHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Package Size"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/weightContainer"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -273,20 +288,21 @@
                 android:text="Weight (Gram)(*)" />
 
             <EditText
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/weight"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/lengthContainer"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -294,20 +310,21 @@
                 android:text="Length (cm)(*)" />
 
             <EditText
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/length"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/heightContainer"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -315,20 +332,21 @@
                 android:text="Height (cm)(*)" />
 
             <EditText
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/height"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:singleLine="true" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/widthContainer"
-            android:visibility="gone"
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -336,25 +354,26 @@
                 android:text="Width (cm)(*)" />
 
             <EditText
-                android:imeOptions="actionNext"
-                android:singleLine="true"
                 android:id="@+id/width"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:singleLine="true" />
         </LinearLayout>
 
 
         <LinearLayout
             android:id="@+id/packageTypeContainer"
-            android:visibility="gone"
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
-                android:layout_marginTop="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="Package Details (*)"
                 android:textStyle="bold" />
 
@@ -364,56 +383,38 @@
                 android:text="Package Type (*)" />
 
             <Spinner
-                android:imeOptions="actionNext"
                 android:id="@+id/packageType"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="8dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Service Type (*)" />
-
-            <Spinner
-                android:imeOptions="actionNext"
-                android:id="@+id/serviceType"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content" />
+                android:imeOptions="actionNext" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_marginTop="25dp"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical">
 
             <Button
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/White"
-                android:background="@drawable/create_order_button"
                 android:id="@+id/submitButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Get Price" />
+                android:background="@drawable/create_order_button"
+                android:text="Get Price"
+                android:textColor="@color/White"
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <Button
-                android:layout_marginTop="5dp"
-                android:background="@drawable/clear_order_button"
-                android:textSize="18sp"
+                android:id="@+id/clearBtn"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textStyle="bold"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/clear_order_button"
+                android:text="Clear"
                 android:textColor="@color/White"
-                android:id="@+id/clearBtn"
-                android:text="Clear" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </LinearLayout>

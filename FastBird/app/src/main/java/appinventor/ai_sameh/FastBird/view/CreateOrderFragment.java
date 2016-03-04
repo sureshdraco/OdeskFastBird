@@ -55,12 +55,9 @@ public class CreateOrderFragment extends Fragment {
     private static final String TAG = CreateOrderFragment.class.getSimpleName();
     private Button submitButton;
     private Spinner pickupAddressSpinner;
-    private Spinner serviceTypeSpinner;
     private String email;
     private String password;
     private Gson gson;
-    private Spinner deliveryTimeSpinner;
-    private Spinner moneyDeliveryTypeSpinner;
     private AutoCompleteTextView locationTypeSpinner;
     private int previousPickup = -1;
     private int previousLocation = -1;
@@ -106,11 +103,7 @@ public class CreateOrderFragment extends Fragment {
         password = PreferenceUtil.getPassword(getActivity());
         initView();
         setupPickAddress();
-        setupDeliveryTime();
-        setupDeliveryType();
         setupLocations();
-        setupPackageTypes();
-        setupServiceType();
         setupUpdateOrderData();
     }
 
@@ -281,129 +274,83 @@ public class CreateOrderFragment extends Fragment {
         pickupAddressSpinner.setAdapter(dataAdapter);
     }
 
-    private void setupDeliveryTime() {
-        if (PreferenceUtil.getDeliveryTime(getActivity()).size() == 0) {
-            getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-        } else {
-            updateDeliveryTime(PreferenceUtil.getDeliveryTime(getActivity()));
-        }
-        ApiRequests.getDeliveryTimes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTimeResponse>() {
-            @Override
-            public void onResponse(DeliveryTimeResponse deliveryTimeResponse) {
-                if (getActivity() == null) {
-                    return;
-                }
-                dismissDialog();
-                if (isDataUpdated(PreferenceUtil.getDeliveryTime(getActivity()), deliveryTimeResponse.getData().getDeliveryTimes())) {
-                    updateDeliveryTime(deliveryTimeResponse.getData().getDeliveryTimes());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                dismissDialog();
-            }
-        });
-    }
+//    private void setupDeliveryTime() {
+//        if (PreferenceUtil.getDeliveryTime(getActivity()).size() == 0) {
+//            getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+//        } else {
+//            updateDeliveryTime(PreferenceUtil.getDeliveryTime(getActivity()));
+//        }
+//        ApiRequests.getDeliveryTimes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTimeResponse>() {
+//            @Override
+//            public void onResponse(DeliveryTimeResponse deliveryTimeResponse) {
+//                if (getActivity() == null) {
+//                    return;
+//                }
+//                dismissDialog();
+//                if (isDataUpdated(PreferenceUtil.getDeliveryTime(getActivity()), deliveryTimeResponse.getData().getDeliveryTimes())) {
+//                    updateDeliveryTime(deliveryTimeResponse.getData().getDeliveryTimes());
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                dismissDialog();
+//            }
+//        });
+//    }
+//
+//    private void updateDeliveryTime(ArrayList<DeliveryTime> deliveryTimes) {
+//        PreferenceUtil.saveDeliveryTime(getActivity(), deliveryTimes);
+//        ArrayList<String> deliveryTimeList = new ArrayList<String>();
+//        for (DeliveryTime deliveryTime : deliveryTimes) {
+//            deliveryTimeList.add(deliveryTime.getDescription());
+//        }
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+//                (getActivity(), android.R.layout.simple_spinner_item, deliveryTimeList);
+//
+//        dataAdapter.setDropDownViewResource
+//                (android.R.layout.simple_spinner_dropdown_item);
+//        deliveryTimeSpinner.setAdapter(dataAdapter);
+//    }
 
-    private void updateDeliveryTime(ArrayList<DeliveryTime> deliveryTimes) {
-        PreferenceUtil.saveDeliveryTime(getActivity(), deliveryTimes);
-        ArrayList<String> deliveryTimeList = new ArrayList<String>();
-        for (DeliveryTime deliveryTime : deliveryTimes) {
-            deliveryTimeList.add(deliveryTime.getDescription());
-        }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_spinner_item, deliveryTimeList);
-
-        dataAdapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
-        deliveryTimeSpinner.setAdapter(dataAdapter);
-    }
-
-    private void setupDeliveryType() {
-        if (PreferenceUtil.getDeliveryType(getActivity()).size() == 0) {
-            getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-        } else {
-            updateDeliveryType(PreferenceUtil.getDeliveryType(getActivity()));
-        }
-        ApiRequests.getDeliveryTypes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTypeResponse>() {
-            @Override
-            public void onResponse(DeliveryTypeResponse deliveryTypeResponse) {
-                if (getActivity() == null) {
-                    return;
-                }
-                dismissDialog();
-                if (isDataUpdated(PreferenceUtil.getDeliveryType(getActivity()), deliveryTypeResponse.getData().getDeliveryTypes())) {
-                    updateDeliveryType(deliveryTypeResponse.getData().getDeliveryTypes());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                dismissDialog();
-            }
-        });
-    }
-
-    private void updateDeliveryType(ArrayList<DeliveryTime> deliveryTypes) {
-        PreferenceUtil.saveDeliveryType(getActivity(), deliveryTypes);
-        ArrayList<String> deliveryTimeList = new ArrayList<String>();
-        for (DeliveryTime deliveryTime : deliveryTypes) {
-            deliveryTimeList.add(deliveryTime.getDescription());
-        }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_spinner_item, deliveryTimeList);
-
-        dataAdapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
-        moneyDeliveryTypeSpinner.setAdapter(dataAdapter);
-    }
-
-    private void setupServiceType() {
-        if (pickupAddressSpinner.getSelectedItemPosition() == -1) {
-            return;
-        }
-        if (TextUtils.isEmpty(locationTypeSpinner.getText())) {
-            return;
-        }
-        getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-        String pickupLocation = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
-        String deliveryLocation = "";
-        for (DataDescription dataDescription : PreferenceUtil.getLocations(getActivity())) {
-            if (dataDescription.getDescription().equals(locationTypeSpinner.getText().toString())) {
-                deliveryLocation = dataDescription.getId();
-            }
-        }
-        ApiRequests.getServiceType(getActivity(), new ServiceTypeRequest(email, password, deliveryLocation, pickupLocation), new Response.Listener<ServiceTypeResponse>() {
-            @Override
-            public void onResponse(ServiceTypeResponse serviceTypeResponse) {
-                if (getActivity() == null) {
-                    return;
-                }
-                dismissDialog();
-                updateServiceTypes(serviceTypeResponse.getData().getServiceTypes());
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError volleyError) {
-                dismissDialog();
-            }
-        });
-    }
-
-    private void updateServiceTypes(ArrayList<DataDescription> serviceTypes) {
-        PreferenceUtil.saveServiceTypes(getActivity(), serviceTypes);
-        ArrayList<String> serviceTypeList = new ArrayList<String>();
-        for (DataDescription serviceType : serviceTypes) {
-            serviceTypeList.add(serviceType.getDescription());
-        }
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
-                (getActivity(), android.R.layout.simple_spinner_item, serviceTypeList);
-
-        dataAdapter.setDropDownViewResource
-                (android.R.layout.simple_spinner_dropdown_item);
-        serviceTypeSpinner.setAdapter(dataAdapter);
-    }
+//    private void setupDeliveryType() {
+//        if (PreferenceUtil.getDeliveryType(getActivity()).size() == 0) {
+//            getActivity().showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+//        } else {
+//            updateDeliveryType(PreferenceUtil.getDeliveryType(getActivity()));
+//        }
+//        ApiRequests.getDeliveryTypes(getActivity(), new LoginRequest(email, password), new Response.Listener<DeliveryTypeResponse>() {
+//            @Override
+//            public void onResponse(DeliveryTypeResponse deliveryTypeResponse) {
+//                if (getActivity() == null) {
+//                    return;
+//                }
+//                dismissDialog();
+//                if (isDataUpdated(PreferenceUtil.getDeliveryType(getActivity()), deliveryTypeResponse.getData().getDeliveryTypes())) {
+//                    updateDeliveryType(deliveryTypeResponse.getData().getDeliveryTypes());
+//                }
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError volleyError) {
+//                dismissDialog();
+//            }
+//        });
+//    }
+//
+//    private void updateDeliveryType(ArrayList<DeliveryTime> deliveryTypes) {
+//        PreferenceUtil.saveDeliveryType(getActivity(), deliveryTypes);
+//        ArrayList<String> deliveryTimeList = new ArrayList<String>();
+//        for (DeliveryTime deliveryTime : deliveryTypes) {
+//            deliveryTimeList.add(deliveryTime.getDescription());
+//        }
+//        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>
+//                (getActivity(), android.R.layout.simple_spinner_item, deliveryTimeList);
+//
+//        dataAdapter.setDropDownViewResource
+//                (android.R.layout.simple_spinner_dropdown_item);
+//        moneyDeliveryTypeSpinner.setAdapter(dataAdapter);
+//    }
 
     private boolean isDataUpdated(Object cache, Object network) {
         String cacheString = gson.toJson(cache);
@@ -414,9 +361,8 @@ public class CreateOrderFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (!updateOrder)
-            clearButton.performClick();
-        else {
+        if (!updateOrder) {
+        } else {
             getActivity().finish();
             PreferenceUtil.saveOpenOrder(getActivity(), new OpenOrder("xxx", "info", "pending"));
         }
@@ -455,7 +401,6 @@ public class CreateOrderFragment extends Fragment {
                                             if (location.getId().equals(locationList.get(i).getId())) {
                                                 locationTypeSpinner.setSelection(i);
                                                 locationTypeSpinner.setText(location.getDescription());
-                                                setupServiceType();
                                                 setupLocalFields();
                                                 break;
                                             }
@@ -501,10 +446,8 @@ public class CreateOrderFragment extends Fragment {
         total = (EditText) getActivity().findViewById(R.id.total);
         pickupAddressSpinner = (Spinner) getActivity().findViewById(R.id.pickupAddress);
         packageTypeSpinner = (Spinner) getActivity().findViewById(R.id.packageType);
-        serviceTypeSpinner = (Spinner) getActivity().findViewById(R.id.serviceType);
         locationTypeSpinner = (AutoCompleteTextView) getActivity().findViewById(R.id.location);
-        deliveryTimeSpinner = (Spinner) getActivity().findViewById(R.id.deliveryTime);
-        moneyDeliveryTypeSpinner = (Spinner) getActivity().findViewById(R.id.moneyDeliveryType);
+//        deliveryTimeSpinner = (Spinner) getActivity().findViewById(R.id.deliveryTime);
         submitButton = (Button) getActivity().findViewById(R.id.submitButton);
         clearButton = (Button) getActivity().findViewById(R.id.clearBtn);
         clearButton.setOnClickListener(new View.OnClickListener() {
@@ -543,11 +486,9 @@ public class CreateOrderFragment extends Fragment {
                 String pickupAddressLocationId = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
                 String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getId();
 
-                String packageTypeString = isLocal ? PACKAGE_TYPE_LOCAL : PreferenceUtil.getPackageTypes(getActivity()).get(packageTypeSpinner.getSelectedItemPosition()).getId();
-                String serviceTypeString = PreferenceUtil.getServiceTypes(getActivity()).get(serviceTypeSpinner.getSelectedItemPosition()).getId();
-                String deliveryTimeString = PreferenceUtil.getDeliveryTime(getActivity()).get(deliveryTimeSpinner.getSelectedItemPosition()).getId();
-                String moneyDeliveryTypeString = isLocal ? MONEY_DELIVERY_TYPE_LOCAL : PreferenceUtil.getDeliveryType(getActivity())
-                        .get(moneyDeliveryTypeSpinner.getSelectedItemPosition()).getId();
+                String packageTypeString = "0";
+                String deliveryTimeString = "0";
+                String moneyDeliveryTypeString = "0";
                 String locationString = "";
                 for (DataDescription dataDescription : PreferenceUtil.getLocations(getActivity())) {
                     if (dataDescription.getDescription().equals(locationTypeSpinner.getText().toString())) {
@@ -568,12 +509,12 @@ public class CreateOrderFragment extends Fragment {
                 String heightString = height.getText().toString();
                 String lengthString = length.getText().toString();
                 String weightString = weight.getText().toString();
-                try {
-                    Float price = Float.parseFloat((String) deliveryTimeSpinner.getSelectedItem());
-                    Log.d(TAG, String.valueOf(price));
-                } catch (Exception ex) {
-
-                }
+//                try {
+//                    Float price = Float.parseFloat((String) deliveryTimeSpinner.getSelectedItem());
+//                    Log.d(TAG, String.valueOf(price));
+//                } catch (Exception ex) {
+//
+//                }
                 if (TextUtils.isEmpty(contactNameString)) {
                     contactName.setError(getActivity().getString(R.string.error_required));
                     contactName.requestFocus();
@@ -637,7 +578,7 @@ public class CreateOrderFragment extends Fragment {
                 if (updateOrder) {
                     UpdateOrderRequest updateOrderRequest = new UpdateOrderRequest(username, password, pickupAddress, contactNameString, phone1String,
                             phone2String, flatNoString,
-                            buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
+                            buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, weightString, lengthString,
                             heightString, widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0), order.getFBDNumber(),
                             pickupAddressLocationId);
                     PreferenceUtil.savePendingUpdateOrderRequest(getActivity(), updateOrderRequest);
@@ -646,7 +587,7 @@ public class CreateOrderFragment extends Fragment {
                     startActivityForResult(intent, 1);
                 } else {
                     CreateOrderRequest createOrderRequest = new CreateOrderRequest(username, password, pickupAddress, contactNameString, phone1String, phone2String, flatNoString,
-                            buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, serviceTypeString, weightString, lengthString,
+                            buildingNoString, blockNoString, roadString, locationString, noteString, packageTypeString, weightString, lengthString,
                             heightString,
                             widthString, deliveryTimeString, moneyDeliveryTypeString, collectionAmountString, String.valueOf(0), pickupAddressLocationId);
                     PreferenceUtil.savePendingCreateOrderRequest(getActivity(), createOrderRequest);
@@ -656,23 +597,9 @@ public class CreateOrderFragment extends Fragment {
 
             }
         });
-        pickupAddressSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (previousPickup != position) {
-                    setupServiceType();
-                }
-                previousPickup = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
         locationTypeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                setupServiceType();
                 setupLocalFields();
             }
         });
@@ -680,7 +607,6 @@ public class CreateOrderFragment extends Fragment {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    setupServiceType();
                     setupLocalFields();
                 }
             }
@@ -732,11 +658,12 @@ public class CreateOrderFragment extends Fragment {
     private void handleInternational() {
         isLocal = false;
         widthContainer.setVisibility(View.VISIBLE);
+        getView().findViewById(R.id.packageSizeHeader).setVisibility(View.VISIBLE);
         weightContainer.setVisibility(View.VISIBLE);
         heightContainer.setVisibility(View.VISIBLE);
         lengthContainer.setVisibility(View.VISIBLE);
-        moneyDeliveryTypeContainer.setVisibility(View.VISIBLE);
-        packageTypeContainer.setVisibility(View.VISIBLE);
+//        moneyDeliveryTypeContainer.setVisibility(View.VISIBLE);
+//        packageTypeContainer.setVisibility(View.VISIBLE);
 
         buildNoTextView.setText("Address 1 (*)");
         roadTextView.setText("Address 2 (*)");
@@ -749,6 +676,7 @@ public class CreateOrderFragment extends Fragment {
         weight.setText("0");
         height.setText("0");
         length.setText("0");
+        getView().findViewById(R.id.packageSizeHeader).setVisibility(View.GONE);
         widthContainer.setVisibility(View.GONE);
         weightContainer.setVisibility(View.GONE);
         heightContainer.setVisibility(View.GONE);
@@ -781,7 +709,6 @@ public class CreateOrderFragment extends Fragment {
         if (updateOrder) {
             locationTypeSpinner.setText(order.getDeliveryLocation());
             locationTypeSpinner.setEnabled(false);
-            setupServiceType();
         }
     }
 }
