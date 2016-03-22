@@ -473,6 +473,9 @@ public class CreateOrderConfirmationActivity extends Activity {
 						for (DataDescription type : serviceTypeResponse.getData().getServiceTypes()) {
 							getServiceTypePrice(type.getId());
 						}
+						if (serviceTypeResponse.getData().getServiceTypes().isEmpty()) {
+							dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
+						}
 					}
 				}, new Response.ErrorListener() {
 					@Override

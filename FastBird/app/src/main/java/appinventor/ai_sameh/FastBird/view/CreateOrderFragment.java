@@ -297,8 +297,7 @@ public class CreateOrderFragment extends Fragment {
 								}
 								try {
 									getActivity().dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-								} catch (Exception ex) {
-
+								} catch (Exception ignore) {
 								}
 
 								if (locationResponse.getData().getError() != null || locationResponse.getData().getLocations().isEmpty()) {
@@ -395,7 +394,7 @@ public class CreateOrderFragment extends Fragment {
 				String pickupAddressLocationId = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
 				String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getId();
 
-				String packageTypeString = "0";
+				String packageTypeString = "product";
 				String deliveryTimeString = "0";
 				String moneyDeliveryTypeString = "0";
 				String locationString = "";
