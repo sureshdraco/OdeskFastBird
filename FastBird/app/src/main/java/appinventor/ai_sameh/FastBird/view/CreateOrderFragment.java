@@ -394,7 +394,7 @@ public class CreateOrderFragment extends Fragment {
 				String pickupAddressLocationId = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getLocationId();
 				String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getId();
 
-				String packageTypeString = "product";
+				String packageTypeString = "ff842bdf-e10a-48ee-9cd4-25417a49a789";
 				String deliveryTimeString = "0";
 				String moneyDeliveryTypeString = "0";
 				String locationString = "";
