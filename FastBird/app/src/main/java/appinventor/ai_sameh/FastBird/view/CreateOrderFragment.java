@@ -94,6 +94,10 @@ public class CreateOrderFragment extends Fragment {
 		gson = new Gson();
 		email = PreferenceUtil.getEmail(getActivity());
 		password = PreferenceUtil.getPassword(getActivity());
+		reinitView();
+	}
+
+	private void reinitView() {
 		initView();
 		setupPickAddress();
 		setupLocations();
@@ -271,6 +275,9 @@ public class CreateOrderFragment extends Fragment {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if (!updateOrder) {
+			locationTypeSpinner.setText("");
+			getView().findViewById(R.id.formContainer).setVisibility(View.GONE);
+
 		} else {
 			getActivity().finish();
 			PreferenceUtil.saveOpenOrder(getActivity(), new OpenOrder("xxx", "info", "pending"));
@@ -395,8 +402,8 @@ public class CreateOrderFragment extends Fragment {
 				String pickupAddress = PreferenceUtil.getMyPickupAddress(getActivity()).get(pickupAddressSpinner.getSelectedItemPosition()).getId();
 
 				String packageTypeString = "ff842bdf-e10a-48ee-9cd4-25417a49a789";
-				String deliveryTimeString = "0";
-				String moneyDeliveryTypeString = "0";
+				String deliveryTimeString = "5bf60fed-bb26-4730-a12f-57ff3d516145";
+				String moneyDeliveryTypeString = "86734c8f-84f0-4652-9e86-43b42e77b5dd";
 				String locationString = "";
 				for (DataDescription dataDescription : PreferenceUtil.getLocations(getActivity())) {
 					if (dataDescription.getDescription().equals(locationTypeSpinner.getText().toString())) {
@@ -502,7 +509,6 @@ public class CreateOrderFragment extends Fragment {
 					Intent intent = new Intent(getActivity(), CreateOrderConfirmationActivity.class);
 					startActivityForResult(intent, 1);
 				}
-
 			}
 		});
 		locationTypeSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {

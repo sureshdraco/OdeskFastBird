@@ -127,7 +127,6 @@ public class CreateOrderConfirmationActivity extends Activity {
 		createButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				getServiceTypePrice();
 				if (isLocal)
 					createOrderRequest.setCollectionamount(collectionAmount.getText().toString());
 				if (updateOrder) {
@@ -211,7 +210,6 @@ public class CreateOrderConfirmationActivity extends Activity {
 
 	private void setupBalance() {
 		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
-
 		String email = PreferenceUtil.getEmail(getApplicationContext());
 		String password = PreferenceUtil.getPassword(getApplicationContext());
 		ApiRequests.getGetClientCredits(getApplicationContext(), new LoginRequest(email, password), new Response.Listener<GetClientCreditResponse>() {
@@ -295,19 +293,21 @@ public class CreateOrderConfirmationActivity extends Activity {
 
 		// create alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
-
 		// show it
 		alertDialog.show();
 	}
 
 	private void createOrder() {
-		if (!checkRules()) return;
+		if (!checkRules()) {
+			Crouton.showText(this, "Failed!", Style.ALERT);
+			return;
+		}
 		showDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 		ApiRequests.createOrder(this, createOrderRequest, new Response.Listener<CreateOrderResponse>() {
 			@Override
 			public void onResponse(CreateOrderResponse createOrderResponse) {
-				dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 				if (createOrderResponse.getData().getError() != null) {
+					dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 					Crouton.showText(CreateOrderConfirmationActivity.this, createOrderResponse.getData().getError(), Style.ALERT);
 					return;
 				}
@@ -341,6 +341,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 				.setPositiveButton("OK",
 						new DialogInterface.OnClickListener() {
 							public void onClick(final DialogInterface dialog, int id) {
+								setResult(1);
 								finish();
 							}
 						});
@@ -349,6 +350,7 @@ public class CreateOrderConfirmationActivity extends Activity {
 		AlertDialog alertDialog = alertDialogBuilder.create();
 		// show it
 		alertDialog.show();
+		dismissDialog(ActivityProgressIndicator.ACTIVITY_PROGRESS_LOADER);
 	}
 
 	private void showUpdatedDialog() {
